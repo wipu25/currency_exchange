@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCzSee_DtFpYN--82PNtmZVVJ_wGOJKV0I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>417457051185</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.currencyExchange</string>
+	<key>PROJECT_ID</key>
+	<string>currency-exchange-a5789</string>
+	<key>STORAGE_BUCKET</key>
+	<string>currency-exchange-a5789.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:417457051185:ios:ad82e24e98dcd41cf6a710</string>
+</dict>
+</plist>
