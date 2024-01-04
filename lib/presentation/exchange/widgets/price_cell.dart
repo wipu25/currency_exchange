@@ -39,7 +39,10 @@ class PriceCell extends StatelessWidget {
                               ),
                             )
                           : CustomTextField(
-                              value: exchangeController.checkCurrentEdit(currencyIndex ,priceIndex, priceType) ? exchangeController.editText : priceRange[priceIndex].price?.toString(),
+                              value: exchangeController.checkCurrentEdit(
+                                      currencyIndex, priceIndex, priceType)
+                                  ? exchangeController.editText
+                                  : priceRange[priceIndex].price?.toString(),
                               onChanged: (value) {
                                 try {
                                   exchangeController.addRate(currencyIndex,

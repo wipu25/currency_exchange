@@ -112,9 +112,10 @@ class CalculateScreen extends StatelessWidget {
                                                         .addToReceipt()
                                                     : null,
                                             text: AppStrings.addReceipt,
-                                            bgColor: calculateControllers.isAddEnable
-                                                ? Colors.green
-                                                : Colors.grey,
+                                            bgColor:
+                                                calculateControllers.isAddEnable
+                                                    ? Colors.green
+                                                    : Colors.grey,
                                           )),
                             ],
                           ),

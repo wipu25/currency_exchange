@@ -142,7 +142,12 @@ class HistoryScreen extends StatelessWidget {
                                                             .priceRange
                                                             .length,
                                                         (price) => Text(
-                                                          item.calculatedItem[index].priceRange[price].getRange(),
+                                                              item
+                                                                  .calculatedItem[
+                                                                      index]
+                                                                  .priceRange[
+                                                                      price]
+                                                                  .getRange(),
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
