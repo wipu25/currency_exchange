@@ -17,17 +17,14 @@ class PriceRange with _$PriceRange {
   String getRange() {
     var minStr = min.toString();
     var maxStr = max.toString();
-    if(min == null) {
+    if (min == null) {
       minStr = '0.0';
     }
-    if(max == null) {
+    if (max == null) {
       maxStr = '~';
     }
     return '$minStr - $maxStr';
   }
 }
 
-enum PriceType {
-  buy, sell
-}
-
+enum PriceType { buy, sell }

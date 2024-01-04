@@ -10,7 +10,8 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController(text: value);
-    textController.selection = TextSelection.fromPosition(TextPosition(offset: value?.length ?? 0));
+    textController.selection =
+        TextSelection.fromPosition(TextPosition(offset: value?.length ?? 0));
     return TextField(
       controller: value != null ? textController : null,
       decoration: const InputDecoration(

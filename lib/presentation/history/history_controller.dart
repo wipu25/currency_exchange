@@ -48,13 +48,13 @@ class HistoryController with ChangeNotifier {
           .decode(utf8.decode(todayFile!))['transaction']
           .map((item) => TransactionItem.fromJson(item)));
     } catch (e) {
-      if(e is PlatformException){
-          if (e.code == 'object-not-found' ||
-              (e.code == 'firebase_storage' &&
-                  (e.details as Map<dynamic, dynamic>)['code'] ==
-                      'object-not-found')) {
-            _historyList = [];
-          }
+      if (e is PlatformException) {
+        if (e.code == 'object-not-found' ||
+            (e.code == 'firebase_storage' &&
+                (e.details as Map<dynamic, dynamic>)['code'] ==
+                    'object-not-found')) {
+          _historyList = [];
+        }
       }
       debugPrint(e.toString());
     }
