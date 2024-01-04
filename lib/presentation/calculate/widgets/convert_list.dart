@@ -120,9 +120,8 @@ class ConvertList extends StatelessWidget {
     return DropdownButton<PriceRange>(
       value: selectRange,
       items: buyRange
-          .map<DropdownMenuItem<PriceRange>>((price) => DropdownMenuItem(
-              value: price,
-              child: Text(price.getRange())))
+          .map<DropdownMenuItem<PriceRange>>((price) =>
+              DropdownMenuItem(value: price, child: Text(price.getRange())))
           .toList(),
       onChanged: (value) {
         if (value != null) {

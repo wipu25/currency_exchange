@@ -35,7 +35,8 @@ class ExchangeController with ChangeNotifier {
         .decode(utf8.decode(currencyFile!))['country']
         .map((item) => Country.fromJson(item))));
     _currencyListService.generateBuySellList();
-    final initPriceEditText = _currencyListService.currencyList.first.buyPriceRange.first.price;
+    final initPriceEditText =
+        _currencyListService.currencyList.first.buyPriceRange.first.price;
     _editText = initPriceEditText != null ? initPriceEditText.toString() : '';
     _isCurrencyLoading = false;
     notifyListeners();
@@ -60,7 +61,7 @@ class ExchangeController with ChangeNotifier {
       //     notifyListeners();
       //     return await _firebaseService.getCurrencyFile();
       //   }
-    } catch(_) {
+    } catch (_) {
       throw GetCurrencyException('Something wrong with template files');
     }
   }
@@ -74,8 +75,8 @@ class ExchangeController with ChangeNotifier {
 
   bool checkCurrentEdit(int currency, int rate, PriceType type) {
     final currentPos = [currency, rate, type.index];
-    for(var i = 0;i < currentPos.length; i++) {
-      if(currentPos[i] != _currentEdit[i]){
+    for (var i = 0; i < currentPos.length; i++) {
+      if (currentPos[i] != _currentEdit[i]) {
         return false;
       }
     }

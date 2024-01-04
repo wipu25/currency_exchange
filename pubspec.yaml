@@ -58,6 +58,8 @@ dev_dependencies:
   freezed: ^2.4.2
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
+  mockito: ^5.4.4
+
 
 flutter_icons:
   android: "launcher_icon"
@@ -76,8 +78,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - images/
+  #  assets:
   fonts:
     - family: sarabun
       fonts:
