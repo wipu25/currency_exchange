@@ -17,5 +17,10 @@ class Country with _$Country {
       _$CountryFromJson(json);
 
   @override
-  bool operator ==(Object o) => o is Country && identical(o, this);
+  bool operator ==(Object other) => other is Country && identical(other, this);
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => currency.hashCode;
+
 }

@@ -146,7 +146,8 @@ class SummaryPanel extends StatelessWidget {
                 final calculateController =
                     pageContext.read<CalculateController>();
                 calculateController.createPdf().then((value) {
-                  var snackBar = const SnackBar(content: Text(AppStrings.successPrint));
+                  var snackBar =
+                      const SnackBar(content: Text(AppStrings.successPrint));
                   Navigator.of(pageContext).pop();
                   if (!value) {
                     snackBar = const SnackBar(

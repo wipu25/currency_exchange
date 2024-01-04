@@ -1,17 +1,15 @@
 import 'dart:convert';
 
-import 'package:currency_exchange/presentation/calculate/services/receipt_service.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:currency_exchange/models/calculated_item.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:currency_exchange/presentation/calculate/services/receipt_service.dart';
+import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:currency_exchange/services/print_receipt_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CalculateController with ChangeNotifier {
@@ -48,7 +46,7 @@ class CalculateController with ChangeNotifier {
   void removeSplitItem(int position) {
     _selectedPriceRange.removeAt(position);
     _inputPrice.removeAt(position);
-    if(position == _currentInsert) {
+    if (position == _currentInsert) {
       _currentInsert = 0;
       _tempText = _inputPrice[0].amount.toString();
     }
@@ -125,7 +123,8 @@ class CalculateController with ChangeNotifier {
       _receiptService.addTotal(calculatedItem.amount, calculatedItem.price);
     }
     _isAddEnable = shouldEnableAdd;
-    if(_receiptService.totalAmount == 0.0 || _receiptService.totalPrice == 0.0) {
+    if (_receiptService.totalAmount == 0.0 ||
+        _receiptService.totalPrice == 0.0) {
       _isAddEnable = false;
     }
     notifyListeners();
@@ -210,7 +209,7 @@ class CalculateController with ChangeNotifier {
 
   Future<bool> createPdf() async {
     _setCurrentTransaction();
-    if(!kReleaseMode) {
+    if (!kReleaseMode) {
       return true;
     }
     return await PrintReceiptService()
