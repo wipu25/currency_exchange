@@ -22,5 +22,4 @@ class Country with _$Country {
   @override
   // TODO: implement hashCode
   int get hashCode => currency.hashCode;
-
 }

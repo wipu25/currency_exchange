@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PriceCell extends StatelessWidget {
-  final List<PriceRange> priceRange;
+  final List<List<String?>> currencyList;
   final int currencyIndex;
   final PriceType priceType;
   const PriceCell(
       {super.key,
-      required this.priceRange,
+      required this.currencyList,
       required this.currencyIndex,
       required this.priceType});
 
@@ -27,42 +27,38 @@ class PriceCell extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-                priceRange.length,
-                (priceIndex) => Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: !exchangeController.isEdit
-                          ? Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                '${priceRange[priceIndex].price ?? ''}',
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            )
-                          : CustomTextField(
-                              value: exchangeController.checkCurrentEdit(
-                                      currencyIndex, priceIndex, priceType)
-                                  ? exchangeController.editText
-                                  : priceRange[priceIndex].price?.toString(),
-                              onChanged: (value) {
-                                try {
-                                  exchangeController.addRate(currencyIndex,
-                                      priceIndex, value, priceType);
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context)
-                                      .removeCurrentSnackBar();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text(e is CalculateException
-                                        ? e.message
-                                        : AppStrings.notNumberAlert),
-                                    duration: const Duration(seconds: 3),
-                                  ));
-                                }
-                              },
-                            ),
-                    )).toList(),
+              currencyList[currencyIndex].length,
+              (index) => Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: !exchangeController.isEdit
+                    ? Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          currencyList[currencyIndex][index] ?? '',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      )
+                    : CustomTextField(
+                        value: currencyList[currencyIndex][index],
+                        onChanged: (value) {
+                          try {
+                            exchangeController.addRate(
+                                currencyIndex, index, value, priceType);
+                            ScaffoldMessenger.of(context).clearSnackBars();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context)
+                                .removeCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(e is CalculateException
+                                  ? e.message
+                                  : AppStrings.notNumberAlert),
+                              duration: const Duration(seconds: 3),
+                            ));
+                          }
+                        },
+                      ),
+              ),
+            ).toList(),
           ),
         ),
       );

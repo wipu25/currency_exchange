@@ -52,12 +52,14 @@ class ExchangeScreen extends StatelessWidget {
                                     currencyInfo(item),
                                     priceRange(item),
                                     PriceCell(
-                                      priceRange: item.buyPriceRange,
+                                      currencyList:
+                                          exchangeController.buyCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.buy,
                                     ),
                                     PriceCell(
-                                      priceRange: item.sellPriceRange,
+                                      currencyList:
+                                          exchangeController.sellCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.sell,
                                     ),

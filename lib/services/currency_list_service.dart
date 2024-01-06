@@ -1,25 +1,28 @@
+import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:flutter/cupertino.dart';
 
 class CurrencyListService extends ChangeNotifier {
-  final List<List<double?>> _buyCurrencyList = [];
-  final List<List<double?>> _sellCurrencyList = [];
+  final List<List<String?>> _buyCurrencyList = [];
+  final List<List<String?>> _sellCurrencyList = [];
   List<Country> _currencyList = <Country>[];
 
   List<Country> get currencyList => _currencyList;
+  List<List<String?>> get buyCurrencyList => _buyCurrencyList;
+  List<List<String?>> get sellCurrencyList => _sellCurrencyList;
 
   void setCurrencyList(List<Country> value) {
     _currencyList = value;
     notifyListeners();
   }
 
-  void setBuyCurrencyList(int currency, int rate, double? amount) {
+  void setBuyCurrencyList(int currency, int rate, String? amount) {
     _buyCurrencyList[currency][rate] = amount;
   }
 
-  void setSellCurrencyList(int currency, int rate, double? amount) {
+  void setSellCurrencyList(int currency, int rate, String? amount) {
     _sellCurrencyList[currency][rate] = amount;
   }
 
@@ -33,10 +36,10 @@ class CurrencyListService extends ChangeNotifier {
     final List<PriceRange> priceRange = [];
     for (var j = 0; j < currentPriceRange.length; j++) {
       final currentRange = currentPriceRange[j];
+      final priceToDouble = double.parse(currencyList[index][j] ?? '0.0');
+      currencyList[index][j] = priceToDouble.toString();
       priceRange.add(PriceRange(
-          min: currentRange.min,
-          max: currentRange.max,
-          price: currencyList[index][j]));
+          min: currentRange.min, max: currentRange.max, price: priceToDouble));
     }
     return priceRange;
   }
@@ -55,61 +58,71 @@ class CurrencyListService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void generateBuySellList() {
+  bool generateBuySellList() {
+    var isNullItem = false;
     for (var currency in _currencyList) {
-      final List<double?> buyRangeList = [];
-      final List<double?> sellRangeList = [];
+      final List<String?> buyRangeList = [];
+      final List<String?> sellRangeList = [];
       for (var buyPriceRange in currency.buyPriceRange) {
-        buyRangeList.add(buyPriceRange.price);
+        var buyPrice = buyPriceRange.price.toString();
+        if (buyPriceRange.price == null) {
+          isNullItem = true;
+          buyPrice = '';
+        }
+        buyRangeList.add(buyPrice);
       }
       for (var sellPriceRange in currency.sellPriceRange) {
-        sellRangeList.add(sellPriceRange.price);
+        var sellPrice = sellPriceRange.price.toString();
+        if (sellPriceRange.price == null) {
+          isNullItem = true;
+          sellPrice = '';
+        }
+        sellRangeList.add(sellPrice);
       }
       _buyCurrencyList.add(buyRangeList);
       _sellCurrencyList.add(sellRangeList);
     }
+    return isNullItem;
   }
 
-  void _addAmount(int currency, int rate, double? amount, PriceType type) {
+  void _addAmount(int currency, int rate, String? amount, PriceType type) {
     if (type == PriceType.sell) {
       setSellCurrencyList(currency, rate, amount);
     } else {
       setBuyCurrencyList(currency, rate, amount);
     }
+    notifyListeners();
   }
 
-  bool addRate(int currency, int rate, String value, PriceType type) {
+  String? addRate(int currency, int rate, String value, PriceType type) {
     try {
-      if (value.isEmpty) {
-        _addAmount(currency, rate, null, type);
-        throw CalculateException('Number is Empty');
+      _addAmount(currency, rate, value, type);
+      final buyCheck = _checkEachList(PriceType.buy);
+      final sellCheck = _checkEachList(PriceType.sell);
+      if (buyCheck == null && sellCheck == null) {
+        return null;
       }
-      final amount = double.parse(value);
-      if (amount.isNegative) {
-        _addAmount(currency, rate, null, type);
-        throw CalculateException('Number is negative');
-      }
-      _addAmount(currency, rate, amount, type);
-      if (_checkIsFieldEmpty(PriceType.buy) &&
-          _checkIsFieldEmpty(PriceType.sell)) {
-        return true;
-      }
+      return buyCheck ?? sellCheck;
     } on CalculateException catch (_) {
-      return false;
+      return 'Error on add';
     }
-    return false;
   }
 
-  bool _checkIsFieldEmpty(PriceType type) {
-    final checkList =
-        type == PriceType.buy ? _buyCurrencyList : _sellCurrencyList;
-    for (var list in checkList) {
-      for (var currency in list) {
-        if (currency == null) {
-          return false;
+  String? _checkEachList(PriceType type) {
+    final list = type == PriceType.buy ? _buyCurrencyList : _sellCurrencyList;
+
+    for (var currency in list) {
+      for (var value in currency) {
+        if (value == null || value.isEmpty) {
+          return AppStrings.errorFillAll;
+        }
+        final amount = double.parse(value);
+        if (amount.isNegative) {
+          return AppStrings.errorNegative;
         }
       }
     }
-    return true;
+
+    return null;
   }
 }

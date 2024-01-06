@@ -34,6 +34,8 @@ class AppStrings {
   static const String selling = 'อัตราขาย';
   static const String save = 'บันทึก';
   static const String edit = 'แก้ไข';
+  static const String errorFillAll = 'เติมให้ครบช่อง';
+  static const String errorNegative = 'ตัวเลขติดลบ';
 
   //history-screen
   static const String date = 'วันที่';
