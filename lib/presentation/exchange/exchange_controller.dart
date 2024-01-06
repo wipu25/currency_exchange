@@ -17,15 +17,16 @@ class ExchangeController with ChangeNotifier {
   bool _isEdit = false;
   bool _isCurrencyLoading = false;
   bool _isCurrencySet = false;
-  String _editText = '';
-  List<int> _currentEdit = [0, 0, 0];
 
   bool get isCurrencyLoading => _isCurrencyLoading;
   bool get isSaveEnable => _isSave;
   bool get isEdit => _isEdit;
   bool get isCurrencySet => _isCurrencySet;
-  String get editText => _editText;
   List<Country> get currencyList => _currencyListService.currencyList;
+  List<List<String?>> get buyCurrencyList =>
+      _currencyListService.buyCurrencyList;
+  List<List<String?>> get sellCurrencyList =>
+      _currencyListService.sellCurrencyList;
 
   Future<void> getCurrency() async {
     _isCurrencyLoading = true;
@@ -34,10 +35,8 @@ class ExchangeController with ChangeNotifier {
     _currencyListService.setCurrencyList(List<Country>.from(json
         .decode(utf8.decode(currencyFile!))['country']
         .map((item) => Country.fromJson(item))));
-    _currencyListService.generateBuySellList();
-    final initPriceEditText =
-        _currencyListService.currencyList.first.buyPriceRange.first.price;
-    _editText = initPriceEditText != null ? initPriceEditText.toString() : '';
+    _isEdit = true;
+    _isSave = !_currencyListService.generateBuySellList();
     _isCurrencyLoading = false;
     notifyListeners();
   }
@@ -67,20 +66,13 @@ class ExchangeController with ChangeNotifier {
   }
 
   void addRate(int currency, int rate, String value, PriceType type) {
-    _currentEdit = [currency, rate, type.index];
-    _editText = value;
-    _isSave = _currencyListService.addRate(currency, rate, value, type);
-    notifyListeners();
-  }
-
-  bool checkCurrentEdit(int currency, int rate, PriceType type) {
-    final currentPos = [currency, rate, type.index];
-    for (var i = 0; i < currentPos.length; i++) {
-      if (currentPos[i] != _currentEdit[i]) {
-        return false;
-      }
+    final result = _currencyListService.addRate(currency, rate, value, type);
+    if (result == null) {
+      _updateSave(true);
+      return;
     }
-    return true;
+    _updateSave(false);
+    throw CalculateException(result);
   }
 
   void onSave() {
@@ -105,6 +97,11 @@ class ExchangeController with ChangeNotifier {
   void onEdit() {
     _isEdit = true;
     _isSave = true;
+    notifyListeners();
+  }
+
+  void _updateSave(bool value) {
+    _isSave = value;
     notifyListeners();
   }
 }
