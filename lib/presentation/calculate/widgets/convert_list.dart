@@ -15,7 +15,7 @@ class ConvertList extends StatelessWidget {
               children: List.generate(
                   calculateControllers.selectedPriceRange.length, (index) {
                 final inputTextController = TextEditingController(
-                    text: calculateControllers.checkCurrentInsert(index));
+                    text: calculateControllers.inputPrice[index]);
                 inputTextController.selection = TextSelection.fromPosition(
                     TextPosition(offset: inputTextController.text.length));
                 return Row(
@@ -48,20 +48,11 @@ class ConvertList extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(hintText: '0.00'),
                         onChanged: (value) {
-                          calculateControllers.updateTempText(value);
-                          var amount = 0.0;
+                          // calculateControllers.updateTempText(value);
                           try {
-                            if (value.isEmpty) {
-                              throw CalculateException(AppStrings.emptyAlert);
-                            }
-                            amount = double.parse(value);
-                            if (amount.isNegative) {
-                              throw CalculateException(
-                                  AppStrings.negativeAlert);
-                            }
+                            calculateControllers.calculateAmount(index, value);
                             ScaffoldMessenger.of(context).clearSnackBars();
                           } catch (e) {
-                            amount = 0.0;
                             calculateControllers.disableAdd();
                             ScaffoldMessenger.of(context)
                                 .removeCurrentSnackBar();
@@ -72,7 +63,6 @@ class ConvertList extends StatelessWidget {
                               duration: const Duration(seconds: 3),
                             ));
                           }
-                          calculateControllers.calculateAmount(index, amount);
                         },
                       ),
                     ),
@@ -86,7 +76,7 @@ class ConvertList extends StatelessWidget {
                     const SizedBox(
                       width: 8,
                     ),
-                    Text(calculateControllers.inputPrice[index].price
+                    Text(calculateControllers.calculatedItem[index].price
                         .toString()),
                     const SizedBox(
                       width: 8,

@@ -18,8 +18,4 @@ class Country with _$Country {
 
   @override
   bool operator ==(Object other) => other is Country && identical(other, this);
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => currency.hashCode;
 }
