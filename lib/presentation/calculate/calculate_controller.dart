@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/calculated_item.dart';
 import 'package:currency_exchange/models/country.dart';
+import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/services/receipt_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
-import 'package:currency_exchange/services/print_receipt_service.dart';
+import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
@@ -21,8 +23,8 @@ class CalculateController with ChangeNotifier {
   Country? _selectedCurrency;
   bool _isAddEnable = false;
   List<PriceRange> _selectedPriceRange = [];
-  List<CalculatedItem> _inputPrice = [];
-  String _tempText = '';
+  List<String> _inputPrice = [];
+  List<CalculatedItem> _calculatedItem = [];
   int _currentInsert = 0;
   bool _isSaving = false;
 
@@ -37,7 +39,8 @@ class CalculateController with ChangeNotifier {
   List<PriceRange> get selectedPriceRange => _selectedPriceRange;
   bool get isAddEnable => _isAddEnable;
   bool get isSaving => _isSaving;
-  List<CalculatedItem> get inputPrice => _inputPrice;
+  List<String> get inputPrice => _inputPrice;
+  List<CalculatedItem> get calculatedItem => _calculatedItem;
 
   void init(Country country) {
     setSelectedCurrency(country);
@@ -46,11 +49,11 @@ class CalculateController with ChangeNotifier {
   void removeSplitItem(int position) {
     _selectedPriceRange.removeAt(position);
     _inputPrice.removeAt(position);
+    _calculatedItem.removeAt(position);
     if (position == _currentInsert) {
       _currentInsert = 0;
-      _tempText = _inputPrice[0].amount.toString();
     }
-    calculateTotal();
+    notifyListeners();
   }
 
   void addSplitItem() {
@@ -58,13 +61,14 @@ class CalculateController with ChangeNotifier {
     _selectedPriceRange.add(_receiptService.isTransactionBuy
         ? _selectedCurrency!.buyPriceRange.first
         : _selectedCurrency!.sellPriceRange.first);
-    _inputPrice.add(const CalculatedItem(amount: 0.0, price: 0.0));
+    _inputPrice.add('0.0');
+    _calculatedItem.add(const CalculatedItem(amount: 0.0, price: 0.0));
     notifyListeners();
   }
 
   void updateSelectedPriceRange(int position, PriceRange value) {
     _selectedPriceRange[position] = value;
-    calculateAmount(position, _inputPrice[position].amount);
+    calculateAmount(position, _inputPrice[position]);
     notifyListeners();
   }
 
@@ -73,7 +77,6 @@ class CalculateController with ChangeNotifier {
     _clearCurrentBill();
     _setSelectedPriceRange();
     addSplitItem();
-    _tempText = '';
   }
 
   void updatePayment(PaymentMethod? value) {
@@ -100,15 +103,23 @@ class CalculateController with ChangeNotifier {
   void _clearCurrentBill() {
     _selectedPriceRange = [];
     _inputPrice = [];
+    _calculatedItem = [];
     _clearTotalValue();
     notifyListeners();
   }
 
-  void calculateAmount(int position, double value) {
-    _currentInsert = position;
-    _inputPrice[position] = CalculatedItem(
-        amount: value,
-        price: (_selectedPriceRange[position].price ?? 0) * value);
+  void calculateAmount(int position, String value) {
+    _inputPrice[position] = value;
+    if (value.isEmpty) {
+      throw CalculateException(AppStrings.emptyAlert);
+    }
+    final amount = double.parse(value);
+    if (amount.isNegative) {
+      throw CalculateException(AppStrings.negativeAlert);
+    }
+    _calculatedItem[position] = CalculatedItem(
+        amount: amount,
+        price: (_selectedPriceRange[position].price ?? 0) * amount);
     _isAddEnable = true;
     calculateTotal();
   }
@@ -116,8 +127,8 @@ class CalculateController with ChangeNotifier {
   void calculateTotal() {
     bool shouldEnableAdd = true;
     _clearTotalValue();
-    for (var calculatedItem in _inputPrice) {
-      if (calculatedItem.amount == 0.0) {
+    for (var calculatedItem in _calculatedItem) {
+      if (calculatedItem.price == 0.0) {
         shouldEnableAdd = false;
       }
       _receiptService.addTotal(calculatedItem.amount, calculatedItem.price);
@@ -138,9 +149,8 @@ class CalculateController with ChangeNotifier {
 
   void addToReceipt() {
     _receiptService.addCurrencyItem(
-        _selectedPriceRange, _inputPrice, _selectedCurrency!.currency);
+        _selectedPriceRange, _calculatedItem, _selectedCurrency!.currency);
     _clearCurrentBill();
-    _tempText = '';
     addSplitItem();
   }
 
@@ -214,15 +224,5 @@ class CalculateController with ChangeNotifier {
     }
     return await PrintReceiptService()
         .printThermal(_receiptService.currentTransaction);
-  }
-
-  checkCurrentInsert(int index) {
-    return _currentInsert == index
-        ? _tempText
-        : inputPrice[index].amount.toString();
-  }
-
-  updateTempText(String value) {
-    _tempText = value;
   }
 }

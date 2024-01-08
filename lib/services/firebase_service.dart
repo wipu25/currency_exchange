@@ -49,22 +49,19 @@ class FirebaseService {
   Future<void> saveCurrencyFile(Map<String, dynamic> map, String date) async {
     final saveRef =
         storage?.ref().child('$path/exchange_rate/ex_rate_$date.json');
-    saveRef
-        ?.putData(base64Decode(base64.encode(utf8.encode(json.encode(map)))));
+    saveRef?.putData(utf8.encode(json.encode(map)));
   }
 
   Future<void> saveTemplateFile(Map<String, dynamic> map) async {
     final saveRef =
         storage?.ref().child('$path/exchange_rate/currency_template.json');
-    saveRef
-        ?.putData(base64Decode(base64.encode(utf8.encode(json.encode(map)))));
+    saveRef?.putData(utf8.encode(json.encode(map)));
   }
 
   Future<void> saveTransactionFile(
       Map<String, dynamic> map, String date) async {
     final saveRef =
         storage?.ref().child('$path/transaction/transaction_$date.json');
-    saveRef
-        ?.putData(base64Decode(base64.encode(utf8.encode(json.encode(map)))));
+    saveRef?.putData(utf8.encode(json.encode(map)));
   }
 }
