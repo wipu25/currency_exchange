@@ -15,15 +15,20 @@ class PriceRange with _$PriceRange {
       _$PriceRangeFromJson(json);
 
   String getRange() {
-    var minStr = min.toString();
-    var maxStr = max.toString();
+    var minStr = (min ?? 0.0).toString();
+    var maxStr = (max ?? 0.0).toString();
+    var hyphen = '-';
     if (min == null) {
       minStr = '0.0';
+      if (max != null) {
+        minStr = '';
+        hyphen = '';
+      }
     }
     if (max == null) {
       maxStr = '~';
     }
-    return '$minStr - $maxStr';
+    return '$minStr $hyphen $maxStr';
   }
 }
 

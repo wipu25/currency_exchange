@@ -120,7 +120,7 @@ class ExchangeScreen extends StatelessWidget {
                   .map((price) => Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          '${price.min ?? '0'} - ${price.max ?? '~'}',
+                          price.getRange(),
                           style: const TextStyle(fontSize: 20),
                         ),
                       ))

@@ -6,7 +6,7 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class PrintReceiptService {
-  Future<void> receipt(
+  Future<void> _receipt(
       NetworkPrinter pw, TransactionItem? transactionItem) async {
     final dateTimeSplit = transactionItem?.dateTime.toString().split('_');
     final receiptId =
@@ -75,7 +75,7 @@ class PrintReceiptService {
       final PosPrintResult res =
           await printer.connect('192.168.1.149', port: 9100);
       if (res == PosPrintResult.success) {
-        await receipt(printer, transactionItem);
+        await _receipt(printer, transactionItem);
         printer.disconnect();
         return true;
       }
