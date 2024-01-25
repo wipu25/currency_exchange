@@ -14,6 +14,23 @@ import 'package:currency_exchange/presentation/calculate/services/print_receipt_
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+enum BillOperation {
+  save,
+  print,
+  none;
+
+  String getString() {
+    switch (this) {
+      case BillOperation.save:
+        return AppStrings.save;
+      case BillOperation.print:
+        return AppStrings.print;
+      case BillOperation.none:
+        return '';
+    }
+  }
+}
+
 class CalculateController with ChangeNotifier {
   final FirebaseService _firebaseService;
 
@@ -26,7 +43,7 @@ class CalculateController with ChangeNotifier {
   List<String> _inputPrice = [];
   List<CalculatedItem> _calculatedItem = [];
   int _currentInsert = 0;
-  bool _isSaving = false;
+  BillOperation _billOperation = BillOperation.none;
 
   Transaction get transaction => _receiptService.transaction;
   PaymentMethod get payment => _receiptService.payment;
@@ -38,7 +55,7 @@ class CalculateController with ChangeNotifier {
   Country? get selectedCountry => _selectedCurrency;
   List<PriceRange> get selectedPriceRange => _selectedPriceRange;
   bool get isAddEnable => _isAddEnable;
-  bool get isSaving => _isSaving;
+  BillOperation get billOperation => _billOperation;
   List<String> get inputPrice => _inputPrice;
   List<CalculatedItem> get calculatedItem => _calculatedItem;
 
@@ -61,14 +78,16 @@ class CalculateController with ChangeNotifier {
     _selectedPriceRange.add(_receiptService.isTransactionBuy
         ? _selectedCurrency!.buyPriceRange.first
         : _selectedCurrency!.sellPriceRange.first);
-    _inputPrice.add('0.0');
+    _inputPrice.add('');
     _calculatedItem.add(const CalculatedItem(amount: 0.0, price: 0.0));
     notifyListeners();
   }
 
   void updateSelectedPriceRange(int position, PriceRange value) {
     _selectedPriceRange[position] = value;
-    calculateAmount(position, _inputPrice[position]);
+    try {
+      calculateAmount(position, _inputPrice[position]);
+    } catch (_) {}
     notifyListeners();
   }
 
@@ -117,9 +136,12 @@ class CalculateController with ChangeNotifier {
     if (amount.isNegative) {
       throw CalculateException(AppStrings.negativeAlert);
     }
+    final priceRange = _selectedPriceRange[position].price ?? 0;
+    final price = _receiptService.transaction == Transaction.buy
+        ? priceRange * amount
+        : amount / priceRange;
     _calculatedItem[position] = CalculatedItem(
-        amount: amount,
-        price: (_selectedPriceRange[position].price ?? 0) * amount);
+        amount: amount, price: double.parse(price.toStringAsFixed(2)));
     _isAddEnable = true;
     calculateTotal();
   }
@@ -163,19 +185,20 @@ class CalculateController with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearAllCurrencyItem() {
+  void _clearAllCurrencyItem() {
     _receiptService.clearItem();
     notifyListeners();
   }
 
-  void _setCurrentTransaction() {
+  void setCurrentTransaction() {
     _receiptService.setCurrentTransaction();
     notifyListeners();
   }
 
   Future<void> save() async {
     final currentTransaction = _receiptService.currentTransaction;
-    _isSaving = true;
+    _billOperation = BillOperation.save;
+    notifyListeners();
     final transactionFile = await _getTransactionFile();
     final timeNow = DateTime.now();
     final currentDate = DateFormat('yyyy-MM-dd').format(timeNow);
@@ -184,7 +207,9 @@ class CalculateController with ChangeNotifier {
         'transaction': [currentTransaction!.toJson()]
       };
       try {
-        _firebaseService.saveTransactionFile(map, currentDate);
+        await _firebaseService.saveTransactionFile(map, currentDate);
+        _clearAllCurrencyItem();
+        _billOperation = BillOperation.none;
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -192,13 +217,14 @@ class CalculateController with ChangeNotifier {
       final oldTransaction = List<TransactionItem>.from(json
           .decode(utf8.decode(transactionFile))['transaction']
           .map((item) => TransactionItem.fromJson(item)));
-      oldTransaction.add(currentTransaction!);
+      final saveTransaction = [currentTransaction!] + oldTransaction;
       final map = {
-        'transaction': List.from(oldTransaction.map((e) => e.toJson()))
+        'transaction': List.from(saveTransaction.map((e) => e.toJson()))
       };
       try {
         await _firebaseService.saveTransactionFile(map, currentDate);
-        _isSaving = false;
+        _clearAllCurrencyItem();
+        _billOperation = BillOperation.none;
         notifyListeners();
       } catch (e) {
         debugPrint(e.toString());
@@ -218,11 +244,16 @@ class CalculateController with ChangeNotifier {
   }
 
   Future<bool> createPdf() async {
-    _setCurrentTransaction();
+    _billOperation = BillOperation.print;
+    notifyListeners();
     if (!kReleaseMode) {
       return true;
     }
-    return await PrintReceiptService()
+    final result = await PrintReceiptService()
         .printThermal(_receiptService.currentTransaction);
+    if (!result) {
+      _billOperation = BillOperation.none;
+    }
+    return result;
   }
 }

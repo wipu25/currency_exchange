@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class CustomTable extends StatelessWidget {
   final List<TableRow> children;
   final int column;
-  const CustomTable({super.key, required this.children, required this.column});
+  final Map<int, FlexColumnWidth>? customColumn;
+  const CustomTable(
+      {super.key,
+      required this.children,
+      required this.column,
+      this.customColumn});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,11 @@ class CustomTable extends StatelessWidget {
   Map<int, TableColumnWidth> columnWidth() {
     final a = <int, TableColumnWidth>{};
     for (int i = 0; i < column; i++) {
-      a[i] = const FlexColumnWidth();
+      if (customColumn != null && customColumn!.containsKey(i)) {
+        a[i] = customColumn![i]!;
+      } else {
+        a[i] = const FlexColumnWidth();
+      }
     }
     return a;
   }

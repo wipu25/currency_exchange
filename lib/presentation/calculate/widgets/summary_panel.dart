@@ -2,6 +2,8 @@ import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
+import 'package:currency_exchange/presentation/widgets/display_summary_dialog.dart';
+import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +13,7 @@ class SummaryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CalculateController>(
-      builder: (_, calculateController, __) => calculateController
+      builder: (consumerContext, calculateController, __) => calculateController
               .currencyItem.isNotEmpty
           ? SizedBox(
               width: 280,
@@ -70,12 +72,12 @@ class SummaryPanel extends StatelessWidget {
                                                 height: 4,
                                               ),
                                               flexibleText(
-                                                  '${AppStrings.price} ${item.priceRange[index].price} X ${AppStrings.amount} ${item.calculatedItem[index].amount}'),
+                                                  '${AppStrings.price} ${item.priceRange[index].price} X ${item.calculatedItem[index].amount}'),
                                               const SizedBox(
                                                 height: 4,
                                               ),
                                               flexibleText(
-                                                  '${AppStrings.range} ${item.priceRange[index].min ?? 0.0} - ${item.priceRange[index].max ?? '~'}'),
+                                                  '= ${item.calculatedItem[index].price}'),
                                               const SizedBox(
                                                 height: 4,
                                               ),
@@ -117,6 +119,8 @@ class SummaryPanel extends StatelessWidget {
                                 value: e,
                                 child: Text(e.getString()),
                               ))
+                          .where((element) =>
+                              element.value != PaymentMethod.cancel)
                           .toList(),
                       onChanged: (PaymentMethod? value) {
                         context
@@ -127,9 +131,12 @@ class SummaryPanel extends StatelessWidget {
                     );
                   }),
                   CustomButton(
-                    onPressed: () => _dialogBuilder(context),
+                    onPressed: () {
+                      calculateController.setCurrentTransaction();
+                      _dialogBuilder(consumerContext);
+                    },
                     bgColor: Colors.lightBlueAccent,
-                    text: AppStrings.print,
+                    text: AppStrings.confirm,
                   )
                 ],
               ),
@@ -143,39 +150,79 @@ class SummaryPanel extends StatelessWidget {
       barrierDismissible: false,
       context: pageContext,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(AppStrings.print),
-          content: const Text(AppStrings.saveComplete),
-          actions: <Widget>[
-            CustomButton(
-              text: AppStrings.print,
-              onPressed: () {
-                final calculateController =
-                    pageContext.read<CalculateController>();
-                calculateController.createPdf().then((value) {
-                  var snackBar =
-                      const SnackBar(content: Text(AppStrings.successPrint));
-                  Navigator.of(pageContext).pop();
-                  if (!value) {
-                    snackBar = const SnackBar(
-                      content: Text(AppStrings.alertPrint),
-                    );
-                    return;
-                  }
-                  ScaffoldMessenger.of(pageContext).showSnackBar(snackBar);
-                  calculateController.save();
-                });
-              },
-              bgColor: Colors.lightGreen,
-            ),
-            CustomButton(
-              text: AppStrings.back,
-              onPressed: () {
-                Navigator.of(pageContext).pop();
-              },
-              bgColor: Colors.redAccent,
-            ),
-          ],
+        return ChangeNotifierProvider.value(
+          value: pageContext.read<CalculateController>(),
+          child: Consumer<CalculateController>(
+              builder: (_, calculateController, __) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text(AppStrings.print),
+              content: calculateController.billOperation != BillOperation.none
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          calculateController.billOperation.getString(),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Loading(),
+                      ],
+                    )
+                  : DisplaySummaryDialog(
+                      currencyItem: calculateController.currencyItem),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    CustomButton(
+                      text: AppStrings.print,
+                      onPressed: () {
+                        calculateController.createPdf().then((value) {
+                          var snackBar = const SnackBar(
+                              content: Text(AppStrings.successPrint));
+                          Navigator.of(pageContext).pop();
+                          if (!value) {
+                            snackBar = const SnackBar(
+                              content: Text(AppStrings.alertPrint),
+                            );
+                            return;
+                          }
+                          ScaffoldMessenger.of(pageContext)
+                              .showSnackBar(snackBar);
+                          calculateController.save();
+                        });
+                      },
+                      bgColor: Colors.lightGreen,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    CustomButton(
+                      text: AppStrings.save,
+                      onPressed: () async {
+                        await calculateController
+                            .save()
+                            .then((value) => Navigator.of(pageContext).pop());
+                      },
+                      bgColor: Colors.blueAccent,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    CustomButton(
+                      text: AppStrings.back,
+                      onPressed: () {
+                        Navigator.of(pageContext).pop();
+                      },
+                      bgColor: Colors.redAccent,
+                    ),
+                  ],
+                )
+              ],
+            );
+          }),
         );
       },
     );

@@ -1,8 +1,10 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/history/history_controller.dart';
+import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
+import 'package:currency_exchange/presentation/widgets/display_cancel_dialog.dart';
 import 'package:currency_exchange/presentation/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
@@ -60,7 +62,8 @@ class HistoryScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Consumer<HistoryController>(builder: (_, historyController, child) {
+            Consumer<HistoryController>(
+                builder: (consumerContext, historyController, child) {
               return historyController.isLoading
                   ? const Center(child: Loading())
                   : historyController.historyList.isEmpty
@@ -74,13 +77,22 @@ class HistoryScreen extends StatelessWidget {
                                 const BorderRadius.all(Radius.circular(16)),
                           ),
                           child: CustomTable(
-                            column: 9,
+                            customColumn: const <int, FlexColumnWidth>{
+                              0: FlexColumnWidth(1.15),
+                              2: FlexColumnWidth(0.5),
+                              3: FlexColumnWidth(0.9),
+                              4: FlexColumnWidth(1.3),
+                              8: FlexColumnWidth(0.75),
+                              9: FlexColumnWidth(0.75),
+                              10: FlexColumnWidth(0.75)
+                            },
+                            column: 11,
                             children: [
                               TableRow(
                                   children: historyController.headerTitle
                                       .map((e) => HeaderCell(
                                             text: e,
-                                            fontSize: 18,
+                                            fontSize: 16,
                                           ))
                                       .toList()),
                               ...List.generate(
@@ -222,9 +234,47 @@ class HistoryScreen extends StatelessWidget {
                                   Center(
                                     child: Text(
                                       item.paymentMethod.name,
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: item.paymentMethod ==
+                                                  PaymentMethod.cancel
+                                              ? Colors.red
+                                              : Colors.black),
                                     ),
                                   ),
+                                  Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: item.paymentMethod !=
+                                            PaymentMethod.cancel
+                                        ? CustomButton(
+                                            onPressed: () async =>
+                                                historyController
+                                                    .printTransaction(index),
+                                            text: AppStrings.print,
+                                            bgColor: Colors.blueAccent,
+                                            fontSize: 8,
+                                          )
+                                        : const SizedBox(
+                                            height: 20,
+                                          ),
+                                  )),
+                                  Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: item.paymentMethod !=
+                                            PaymentMethod.cancel
+                                        ? CustomButton(
+                                            onPressed: () =>
+                                                _dialogBuilder(context, index),
+                                            text: AppStrings.cancel,
+                                            bgColor: Colors.redAccent,
+                                            fontSize: 8,
+                                          )
+                                        : const SizedBox(
+                                            height: 20,
+                                          ),
+                                  )),
                                 ]);
                               }).toList()
                             ],
@@ -235,6 +285,62 @@ class HistoryScreen extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Future<void> _dialogBuilder(BuildContext pageContext, int index) {
+    return showDialog<void>(
+      barrierDismissible: false,
+      context: pageContext,
+      builder: (BuildContext context) {
+        return ChangeNotifierProvider.value(
+          value: pageContext.read<HistoryController>(),
+          child:
+              Consumer<HistoryController>(builder: (_, historyController, __) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text(AppStrings.cancel),
+              content: historyController.isCancel
+                  ? const Column(
+                      children: [
+                        Text(AppStrings.cancelling),
+                        Loading(),
+                      ],
+                    )
+                  : DisplayCancelDialog(
+                      item: historyController.historyList[index],
+                    ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    CustomButton(
+                      text: AppStrings.cancel,
+                      onPressed: () async {
+                        await historyController
+                            .cancelTransaction(index)
+                            .then((value) {
+                          Navigator.of(pageContext).pop();
+                        });
+                      },
+                      bgColor: Colors.red,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    CustomButton(
+                      text: AppStrings.back,
+                      onPressed: () {
+                        Navigator.of(pageContext).pop();
+                      },
+                      bgColor: Colors.blueAccent,
+                    ),
+                  ],
+                )
+              ],
+            );
+          }),
+        );
+      },
+    );
   }
 
   Widget flexibleColumn(int length, String text, bool isLast) {

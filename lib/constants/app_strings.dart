@@ -33,6 +33,7 @@ class AppStrings {
   static const String buying = 'อัตราซื้อ';
   static const String selling = 'อัตราขาย';
   static const String save = 'บันทึก';
+  static const String confirm = 'ยืนยัน';
   static const String edit = 'แก้ไข';
   static const String errorFillAll = 'เติมให้ครบช่อง';
   static const String errorNegative = 'ตัวเลขติดลบ';
@@ -40,4 +41,7 @@ class AppStrings {
   //history-screen
   static const String date = 'วันที่';
   static const String noTransaction = 'ไม่มีธุรกรรม';
+  static const String cancel = 'ยกเลิก';
+  static const String cancelling = 'กำลังยกเลิก';
+  static const String cancellingTime = 'เวลาธุรกรรม';
 }

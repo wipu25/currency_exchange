@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,27 +16,35 @@ class HistoryController with ChangeNotifier {
 
   List<TransactionItem> _historyList = <TransactionItem>[];
   bool _isLoading = false;
+  bool _isCancel = false;
   DateTime _dateTimeDisplay = DateTime.now();
   // final _paymentMethodFilter = null;
   final _headerTitle = [
     'วันที่',
     'เวลาธุรกรรม',
-    'ซื้อ - ขาย',
+    'ซื้อ/ขาย',
     'สกุลเงิน',
     'ธนบัตรที่รับ',
     'ราคา',
     'จำนวน',
     'ราคารวม',
-    'จ่ายผ่าน'
+    'จ่ายผ่าน',
+    'ปริ้นท์',
+    'ยกเลิก'
   ];
 
   bool get isLoading => _isLoading;
+  bool get isCancel => _isCancel;
   List<TransactionItem> get historyList => _historyList;
   DateTime get dateTimeDisplay => _dateTimeDisplay;
   List<String> get headerTitle => _headerTitle;
 
   Future<void> init() async {
+    _isLoading = true;
+    notifyListeners();
     await getTransaction(DateTime.now());
+    _isLoading = false;
+    notifyListeners();
   }
 
   String formatDateTime(DateTime dateTime) =>
@@ -67,5 +77,33 @@ class HistoryController with ChangeNotifier {
     notifyListeners();
     await getTransaction(pickedDate);
     _isLoading = false;
+  }
+
+  Future<void> printTransaction(int index) async {
+    PrintReceiptService().printThermal(_historyList[index]);
+  }
+
+  setCancel(bool value) {
+    _isCancel = value;
+    notifyListeners();
+  }
+
+  Future<void> cancelTransaction(int index) async {
+    setCancel(true);
+    final oldItem = _historyList[index];
+    final cancelItem = TransactionItem(
+        calculatedItem: oldItem.calculatedItem,
+        dateTime: oldItem.dateTime,
+        paymentMethod: PaymentMethod.cancel);
+    final historyDate = DateFormat('yyyy-MM-dd').format(_dateTimeDisplay);
+    _historyList[index] = cancelItem;
+    final map = {'transaction': List.from(_historyList.map((e) => e.toJson()))};
+    try {
+      await _firebaseService.saveTransactionFile(map, historyDate);
+      setCancel(false);
+    } catch (e) {
+      debugPrint(e.toString());
+      setCancel(false);
+    }
   }
 }

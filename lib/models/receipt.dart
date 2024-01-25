@@ -15,7 +15,8 @@ enum Transaction {
 enum PaymentMethod {
   cash,
   weChatMom,
-  weChatDad;
+  weChatDad,
+  cancel;
 
   String getString() {
     switch (this) {
@@ -25,6 +26,8 @@ enum PaymentMethod {
         return 'WeChat Mom';
       case PaymentMethod.weChatDad:
         return 'WeChat Dad';
+      case PaymentMethod.cancel:
+        return 'Cancel';
     }
   }
 }
