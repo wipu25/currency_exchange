@@ -298,7 +298,7 @@ class HistoryScreen extends StatelessWidget {
               Consumer<HistoryController>(builder: (_, historyController, __) {
             return AlertDialog(
               scrollable: true,
-              title: const Text(AppStrings.cancel),
+              title: const Center(child: Text(AppStrings.cancel, style: TextStyle(fontSize: 32, color: Colors.redAccent),)),
               content: historyController.isCancel
                   ? const Column(
                       children: [
