@@ -16,6 +16,8 @@ enum PaymentMethod {
   cash,
   weChatMom,
   weChatDad,
+  binanceTee,
+  aliPay,
   cancel;
 
   String getString() {
@@ -28,6 +30,10 @@ enum PaymentMethod {
         return 'WeChat Dad';
       case PaymentMethod.cancel:
         return 'Cancel';
+      case PaymentMethod.binanceTee:
+        return 'Binance Tee';
+      case PaymentMethod.aliPay:
+        return 'Alipay';
     }
   }
 }
