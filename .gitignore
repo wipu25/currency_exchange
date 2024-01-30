@@ -49,4 +49,4 @@ app.*.map.json
 /lib/firebase_options.dart
 
 .fvm/
-./private_keys
+private_keys/
