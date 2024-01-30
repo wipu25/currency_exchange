@@ -233,7 +233,7 @@ class HistoryScreen extends StatelessWidget {
                                   ),
                                   Center(
                                     child: Text(
-                                      item.paymentMethod.name,
+                                      item.paymentMethod.getString(),
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: item.paymentMethod ==
@@ -298,7 +298,11 @@ class HistoryScreen extends StatelessWidget {
               Consumer<HistoryController>(builder: (_, historyController, __) {
             return AlertDialog(
               scrollable: true,
-              title: const Center(child: Text(AppStrings.cancel, style: TextStyle(fontSize: 32, color: Colors.redAccent),)),
+              title: const Center(
+                  child: Text(
+                AppStrings.cancel,
+                style: TextStyle(fontSize: 32, color: Colors.redAccent),
+              )),
               content: historyController.isCancel
                   ? const Column(
                       children: [

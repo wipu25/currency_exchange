@@ -26,5 +26,7 @@ const _$PaymentMethodEnumMap = {
   PaymentMethod.cash: 'cash',
   PaymentMethod.weChatMom: 'weChatMom',
   PaymentMethod.weChatDad: 'weChatDad',
+  PaymentMethod.binanceTee: 'binanceTee',
+  PaymentMethod.aliPay: 'aliPay',
   PaymentMethod.cancel: 'cancel',
 };

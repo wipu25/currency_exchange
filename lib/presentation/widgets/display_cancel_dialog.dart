@@ -12,14 +12,19 @@ class DisplayCancelDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-            '${AppStrings.cancellingTime} ${item.dateTime.split('_')[0]} ${item.dateTime.split('_')[1]}', style: const TextStyle(fontSize: 24),),
+          '${AppStrings.cancellingTime} ${item.dateTime.split('_')[0]} ${item.dateTime.split('_')[1]}',
+          style: const TextStyle(fontSize: 24),
+        ),
         const SizedBox(
           height: 4,
         ),
         const Divider(
           height: 2,
         ),
-        const Text(AppStrings.totalItem, style: TextStyle(fontSize: 24),),
+        const Text(
+          AppStrings.totalItem,
+          style: TextStyle(fontSize: 24),
+        ),
         const Divider(
           height: 2,
         ),
@@ -39,41 +44,48 @@ class DisplayCancelDialog extends StatelessWidget {
         ...List.generate(
             item.calculatedItem.length,
             (index) => Column(
-              children: [
-                Padding(
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          flexibleText(item.calculatedItem[index].transaction.toUpperCase()),
+                          flexibleText(item.calculatedItem[index].transaction
+                              .toUpperCase()),
                           flexibleText(item.calculatedItem[index].currency),
                           Expanded(
                               child: Column(
                             children: item.calculatedItem[index].priceRange
-                                .map((e) => Text(e.getRange(), style: const TextStyle(fontSize: 16),))
+                                .map((e) => Text(
+                                      e.getRange(),
+                                      style: const TextStyle(fontSize: 16),
+                                    ))
                                 .toList(),
                           )),
                           Expanded(
                               child: Column(
                             children: item.calculatedItem[index].priceRange
-                                .map((e) => Text(e.price.toString(), style: const TextStyle(fontSize: 16),))
+                                .map((e) => Text(
+                                      e.price.toString(),
+                                      style: const TextStyle(fontSize: 16),
+                                    ))
                                 .toList(),
                           )),
                           flexibleText(item.calculatedItem[index].amountExchange
                               .toString()),
-                          flexibleText(item.calculatedItem[index].totalPrice
-                              .toString()),
+                          flexibleText(
+                              item.calculatedItem[index].totalPrice.toString()),
                         ],
                       ),
                     ),
-                const SizedBox(
-                  height: 4,
-                ),
-                const Divider(
-                  height: 2,
-                ),
-              ],
-            )).toList(),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    const Divider(
+                      height: 2,
+                    ),
+                  ],
+                )).toList(),
         Text(
           '${AppStrings.paymentMethod} ${item.paymentMethod.name}',
           style: const TextStyle(fontSize: 24),
@@ -83,10 +95,12 @@ class DisplayCancelDialog extends StatelessWidget {
   }
 
   Widget flexibleText(String text) {
-    return  Expanded(
+    return Expanded(
         child: Center(
-          child: Text(text
-              .toString(), style: const TextStyle(fontSize: 16),),
-        ));
+      child: Text(
+        text.toString(),
+        style: const TextStyle(fontSize: 16),
+      ),
+    ));
   }
 }
