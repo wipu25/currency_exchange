@@ -29,8 +29,7 @@ class HistoryController with ChangeNotifier {
     'จำนวน',
     'ราคารวม',
     'จ่ายผ่าน',
-    'ปริ้นท์',
-    'ยกเลิก'
+    'เพิ่มเติม'
   ];
 
   bool get isLoading => _isLoading;
@@ -57,6 +56,10 @@ class HistoryController with ChangeNotifier {
       _historyList = List<TransactionItem>.from(json
           .decode(utf8.decode(todayFile!))['transaction']
           .map((item) => TransactionItem.fromJson(item)));
+      if (_historyList.any((element) =>
+          element.totalSellPrice == null && element.totalBuyPrice == null)) {
+        _calculateTotal();
+      }
     } catch (e) {
       if (e is PlatformException) {
         if (e.code == 'object-not-found' ||
@@ -69,6 +72,32 @@ class HistoryController with ChangeNotifier {
       debugPrint(e.toString());
     }
     notifyListeners();
+  }
+
+  void _calculateTotal() {
+    for (var index = 0; index < _historyList.length; index++) {
+      final item = _historyList[index];
+      if (item.totalSellPrice == null && item.totalBuyPrice == null) {
+        _historyList[index] = TransactionItem(
+            calculatedItem: item.calculatedItem,
+            dateTime: item.dateTime,
+            paymentMethod: item.paymentMethod,
+            totalBuyPrice: item.calculatedItem
+                .where((element) => element.transaction == Transaction.buy.name)
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue! + element.totalPrice),
+            totalSellPrice: item.calculatedItem
+                .where(
+                    (element) => element.transaction == Transaction.sell.name)
+                .fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue! + element.totalPrice));
+      }
+    }
+    _saveTransaction();
   }
 
   Future<void> selectDateTime(DateTime pickedDate) async {
@@ -91,19 +120,26 @@ class HistoryController with ChangeNotifier {
   Future<void> cancelTransaction(int index) async {
     setCancel(true);
     final oldItem = _historyList[index];
+
+    //TODO: please add cancelling function
     final cancelItem = TransactionItem(
+        totalSellPrice: oldItem.totalSellPrice,
+        totalBuyPrice: oldItem.totalBuyPrice,
         calculatedItem: oldItem.calculatedItem,
         dateTime: oldItem.dateTime,
         paymentMethod: PaymentMethod.cancel);
-    final historyDate = DateFormat('yyyy-MM-dd').format(_dateTimeDisplay);
     _historyList[index] = cancelItem;
+    await _saveTransaction();
+    setCancel(false);
+  }
+
+  Future<void> _saveTransaction() async {
+    final historyDate = DateFormat('yyyy-MM-dd').format(_dateTimeDisplay);
     final map = {'transaction': List.from(_historyList.map((e) => e.toJson()))};
     try {
       await _firebaseService.saveTransactionFile(map, historyDate);
-      setCancel(false);
     } catch (e) {
       debugPrint(e.toString());
-      setCancel(false);
     }
   }
 }

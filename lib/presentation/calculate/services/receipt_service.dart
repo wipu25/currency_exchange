@@ -8,15 +8,19 @@ import 'package:intl/intl.dart';
 
 class ReceiptService extends ChangeNotifier {
   TransactionItem? _currentTransaction;
-  double _totalAmount = 0.0;
-  double _totalPrice = 0.0;
+  double _totalItemAmount = 0.0;
+  double _totalItemPrice = 0.0;
+  double _totalBuyPrice = 0.0;
+  double _totalSellPrice = 0.0;
   final List<ExchangeItem> _currencyItem = [];
   Transaction _transaction = Transaction.buy;
   PaymentMethod _payment = PaymentMethod.cash;
 
   TransactionItem? get currentTransaction => _currentTransaction;
-  double get totalAmount => _totalAmount;
-  double get totalPrice => _totalPrice;
+  double get totalItemAmount => _totalItemAmount;
+  double get totalItemPrice => _totalItemPrice;
+  double get totalBuyPrice => _totalBuyPrice;
+  double get totalSellPrice => _totalSellPrice;
   List<ExchangeItem> get currencyItem => _currencyItem;
   PaymentMethod get payment => _payment;
   Transaction get transaction => _transaction;
@@ -38,19 +42,24 @@ class ReceiptService extends ChangeNotifier {
   }
 
   addTotal(double addAmount, double addPrice) {
-    _totalAmount += addAmount;
-    _totalPrice += addPrice;
+    _totalItemAmount += addAmount;
+    _totalItemPrice += addPrice;
     notifyListeners();
   }
 
   clearTotal() {
-    _totalPrice = 0.0;
-    _totalAmount = 0.0;
+    _totalItemPrice = 0.0;
+    _totalItemAmount = 0.0;
     notifyListeners();
   }
 
   addCurrencyItem(List<PriceRange> priceRange,
       List<CalculatedItem> calculatedItem, String currency) {
+    if (_transaction == Transaction.buy) {
+      _totalBuyPrice += _totalItemPrice;
+    } else {
+      _totalSellPrice += _totalItemAmount;
+    }
     for (var i = 0; i < _currencyItem.length; i++) {
       final index = _currencyItem[i];
       if (index.currency == currency &&
@@ -61,18 +70,19 @@ class ReceiptService extends ChangeNotifier {
             ExchangeItem(
                 priceRange: index.priceRange + priceRange,
                 calculatedItem: index.calculatedItem + calculatedItem,
-                amountExchange: index.amountExchange + _totalAmount,
-                totalPrice: _totalPrice + index.totalPrice,
+                amountExchange: index.amountExchange + _totalItemAmount,
+                totalPrice: _totalItemPrice + index.totalPrice,
                 currency: index.currency,
                 transaction: index.transaction));
+        notifyListeners();
         return;
       }
     }
     _currencyItem.add(ExchangeItem(
         priceRange: priceRange,
         calculatedItem: calculatedItem,
-        amountExchange: _totalAmount,
-        totalPrice: _totalPrice,
+        amountExchange: _totalItemAmount,
+        totalPrice: _totalItemPrice,
         currency: currency,
         transaction: _transaction.name));
     notifyListeners();
@@ -84,6 +94,7 @@ class ReceiptService extends ChangeNotifier {
   }
 
   clearItem() {
+    _totalBuyPrice = 0.0;
     _currencyItem.clear();
     notifyListeners();
   }
@@ -91,6 +102,8 @@ class ReceiptService extends ChangeNotifier {
   setCurrentTransaction() {
     final timeNow = DateTime.now();
     _currentTransaction = TransactionItem(
+        totalSellPrice: _totalSellPrice,
+        totalBuyPrice: _totalBuyPrice,
         calculatedItem: _currencyItem,
         dateTime: DateFormat('yyyy-MM-dd_HH:mm:ss').format(timeNow),
         paymentMethod: _payment);

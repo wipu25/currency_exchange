@@ -9,6 +9,9 @@ part 'transaction_item.g.dart';
 class TransactionItem with _$TransactionItem {
   const factory TransactionItem(
       {required List<ExchangeItem> calculatedItem,
+      //due to order transaction is not yet implemented total value
+      double? totalBuyPrice,
+      double? totalSellPrice,
       required String dateTime,
       required PaymentMethod paymentMethod}) = _TransactionItem;
 

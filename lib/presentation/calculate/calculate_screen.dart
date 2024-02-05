@@ -53,9 +53,10 @@ class CalculateScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        calculateControllers.totalAmount == 0.0
+                                        calculateControllers.totalItemAmount ==
+                                                0.0
                                             ? ''
-                                            : '${AppStrings.totalAmount} ${calculateControllers.totalAmount}',
+                                            : '${AppStrings.totalAmount} ${calculateControllers.totalItemAmount}',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
@@ -64,9 +65,10 @@ class CalculateScreen extends StatelessWidget {
                                         width: 12,
                                       ),
                                       Text(
-                                        calculateControllers.totalPrice == 0.0
+                                        calculateControllers.totalItemPrice ==
+                                                0.0
                                             ? ''
-                                            : '${AppStrings.totalPrice} ${calculateControllers.totalPrice}',
+                                            : '${AppStrings.totalPrice} ${calculateControllers.totalItemPrice}',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),

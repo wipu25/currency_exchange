@@ -1,3 +1,4 @@
+import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
@@ -61,6 +62,17 @@ class PrintReceiptService {
           styles: const PosStyles(align: PosAlign.right));
       pw.hr(ch: '=', linesAfter: 1);
     }
+    if (transactionItem.totalBuyPrice != null &&
+        transactionItem.totalBuyPrice! > 0.0) {
+      pw.text('Total BUY ${transactionItem.totalBuyPrice} ${AppStrings.thb}',
+          styles: const PosStyles(align: PosAlign.left));
+    }
+    if (transactionItem.totalSellPrice != null &&
+        transactionItem.totalSellPrice! > 0.0) {
+      pw.text('Total SELL ${transactionItem.totalSellPrice} ${AppStrings.thb}',
+          styles: const PosStyles(align: PosAlign.left));
+    }
+    pw.hr(ch: '=', linesAfter: 1);
     pw.text('Thank you',
         styles: const PosStyles(bold: true, align: PosAlign.center));
     pw.feed(3);

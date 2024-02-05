@@ -21,6 +21,8 @@ TransactionItem _$TransactionItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TransactionItem {
   List<ExchangeItem> get calculatedItem => throw _privateConstructorUsedError;
+  double? get totalBuyPrice => throw _privateConstructorUsedError;
+  double? get totalSellPrice => throw _privateConstructorUsedError;
   String get dateTime => throw _privateConstructorUsedError;
   PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
 
@@ -38,6 +40,8 @@ abstract class $TransactionItemCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ExchangeItem> calculatedItem,
+      double? totalBuyPrice,
+      double? totalSellPrice,
       String dateTime,
       PaymentMethod paymentMethod});
 }
@@ -56,6 +60,8 @@ class _$TransactionItemCopyWithImpl<$Res, $Val extends TransactionItem>
   @override
   $Res call({
     Object? calculatedItem = null,
+    Object? totalBuyPrice = freezed,
+    Object? totalSellPrice = freezed,
     Object? dateTime = null,
     Object? paymentMethod = null,
   }) {
@@ -64,6 +70,14 @@ class _$TransactionItemCopyWithImpl<$Res, $Val extends TransactionItem>
           ? _value.calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
               as List<ExchangeItem>,
+      totalBuyPrice: freezed == totalBuyPrice
+          ? _value.totalBuyPrice
+          : totalBuyPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      totalSellPrice: freezed == totalSellPrice
+          ? _value.totalSellPrice
+          : totalSellPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
@@ -86,6 +100,8 @@ abstract class _$$_TransactionItemCopyWith<$Res>
   @useResult
   $Res call(
       {List<ExchangeItem> calculatedItem,
+      double? totalBuyPrice,
+      double? totalSellPrice,
       String dateTime,
       PaymentMethod paymentMethod});
 }
@@ -102,6 +118,8 @@ class __$$_TransactionItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? calculatedItem = null,
+    Object? totalBuyPrice = freezed,
+    Object? totalSellPrice = freezed,
     Object? dateTime = null,
     Object? paymentMethod = null,
   }) {
@@ -110,6 +128,14 @@ class __$$_TransactionItemCopyWithImpl<$Res>
           ? _value._calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
               as List<ExchangeItem>,
+      totalBuyPrice: freezed == totalBuyPrice
+          ? _value.totalBuyPrice
+          : totalBuyPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      totalSellPrice: freezed == totalSellPrice
+          ? _value.totalSellPrice
+          : totalSellPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
@@ -127,6 +153,8 @@ class __$$_TransactionItemCopyWithImpl<$Res>
 class _$_TransactionItem implements _TransactionItem {
   const _$_TransactionItem(
       {required final List<ExchangeItem> calculatedItem,
+      this.totalBuyPrice,
+      this.totalSellPrice,
       required this.dateTime,
       required this.paymentMethod})
       : _calculatedItem = calculatedItem;
@@ -143,13 +171,17 @@ class _$_TransactionItem implements _TransactionItem {
   }
 
   @override
+  final double? totalBuyPrice;
+  @override
+  final double? totalSellPrice;
+  @override
   final String dateTime;
   @override
   final PaymentMethod paymentMethod;
 
   @override
   String toString() {
-    return 'TransactionItem(calculatedItem: $calculatedItem, dateTime: $dateTime, paymentMethod: $paymentMethod)';
+    return 'TransactionItem(calculatedItem: $calculatedItem, totalBuyPrice: $totalBuyPrice, totalSellPrice: $totalSellPrice, dateTime: $dateTime, paymentMethod: $paymentMethod)';
   }
 
   @override
@@ -159,6 +191,10 @@ class _$_TransactionItem implements _TransactionItem {
             other is _$_TransactionItem &&
             const DeepCollectionEquality()
                 .equals(other._calculatedItem, _calculatedItem) &&
+            (identical(other.totalBuyPrice, totalBuyPrice) ||
+                other.totalBuyPrice == totalBuyPrice) &&
+            (identical(other.totalSellPrice, totalSellPrice) ||
+                other.totalSellPrice == totalSellPrice) &&
             (identical(other.dateTime, dateTime) ||
                 other.dateTime == dateTime) &&
             (identical(other.paymentMethod, paymentMethod) ||
@@ -170,6 +206,8 @@ class _$_TransactionItem implements _TransactionItem {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_calculatedItem),
+      totalBuyPrice,
+      totalSellPrice,
       dateTime,
       paymentMethod);
 
@@ -190,6 +228,8 @@ class _$_TransactionItem implements _TransactionItem {
 abstract class _TransactionItem implements TransactionItem {
   const factory _TransactionItem(
       {required final List<ExchangeItem> calculatedItem,
+      final double? totalBuyPrice,
+      final double? totalSellPrice,
       required final String dateTime,
       required final PaymentMethod paymentMethod}) = _$_TransactionItem;
 
@@ -198,6 +238,10 @@ abstract class _TransactionItem implements TransactionItem {
 
   @override
   List<ExchangeItem> get calculatedItem;
+  @override
+  double? get totalBuyPrice;
+  @override
+  double? get totalSellPrice;
   @override
   String get dateTime;
   @override
