@@ -11,6 +11,8 @@ _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
       calculatedItem: (json['calculatedItem'] as List<dynamic>)
           .map((e) => ExchangeItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      totalBuyPrice: (json['totalBuyPrice'] as num?)?.toDouble(),
+      totalSellPrice: (json['totalSellPrice'] as num?)?.toDouble(),
       dateTime: json['dateTime'] as String,
       paymentMethod: $enumDecode(_$PaymentMethodEnumMap, json['paymentMethod']),
     );
@@ -18,6 +20,8 @@ _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_TransactionItemToJson(_$_TransactionItem instance) =>
     <String, dynamic>{
       'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),
+      'totalBuyPrice': instance.totalBuyPrice,
+      'totalSellPrice': instance.totalSellPrice,
       'dateTime': instance.dateTime,
       'paymentMethod': _$PaymentMethodEnumMap[instance.paymentMethod]!,
     };

@@ -4,7 +4,7 @@ import 'package:currency_exchange/presentation/history/history_controller.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
-import 'package:currency_exchange/presentation/widgets/display_cancel_dialog.dart';
+import 'package:currency_exchange/presentation/widgets/display_more_info_dialog.dart';
 import 'package:currency_exchange/presentation/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
@@ -245,35 +245,13 @@ class HistoryScreen extends StatelessWidget {
                                   Center(
                                       child: Padding(
                                     padding: const EdgeInsets.all(6.0),
-                                    child: item.paymentMethod !=
-                                            PaymentMethod.cancel
-                                        ? CustomButton(
-                                            onPressed: () async =>
-                                                historyController
-                                                    .printTransaction(index),
-                                            text: AppStrings.print,
-                                            bgColor: Colors.blueAccent,
-                                            fontSize: 8,
-                                          )
-                                        : const SizedBox(
-                                            height: 20,
-                                          ),
-                                  )),
-                                  Center(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: item.paymentMethod !=
-                                            PaymentMethod.cancel
-                                        ? CustomButton(
-                                            onPressed: () =>
-                                                _dialogBuilder(context, index),
-                                            text: AppStrings.cancel,
-                                            bgColor: Colors.redAccent,
-                                            fontSize: 8,
-                                          )
-                                        : const SizedBox(
-                                            height: 20,
-                                          ),
+                                    child: CustomButton(
+                                      onPressed: () =>
+                                          _dialogBuilder(context, index),
+                                      text: AppStrings.moreInfo,
+                                      bgColor: Colors.blueAccent,
+                                      fontSize: 8,
+                                    ),
                                   )),
                                 ]);
                               }).toList()
@@ -300,8 +278,8 @@ class HistoryScreen extends StatelessWidget {
               scrollable: true,
               title: const Center(
                   child: Text(
-                AppStrings.cancel,
-                style: TextStyle(fontSize: 32, color: Colors.redAccent),
+                AppStrings.moreInfo,
+                style: TextStyle(fontSize: 32),
               )),
               content: historyController.isCancel
                   ? const Column(
@@ -310,26 +288,36 @@ class HistoryScreen extends StatelessWidget {
                         Loading(),
                       ],
                     )
-                  : DisplayCancelDialog(
+                  : DisplayMoreInfoDialog(
                       item: historyController.historyList[index],
                     ),
               actions: <Widget>[
                 Row(
                   children: [
-                    CustomButton(
-                      text: AppStrings.cancel,
-                      onPressed: () async {
-                        await historyController
-                            .cancelTransaction(index)
-                            .then((value) {
-                          Navigator.of(pageContext).pop();
-                        });
-                      },
-                      bgColor: Colors.red,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
+                    if (historyController.historyList[index].paymentMethod !=
+                        PaymentMethod.cancel) ...[
+                      CustomButton(
+                        onPressed: () async =>
+                            historyController.printTransaction(index),
+                        text: AppStrings.print,
+                        bgColor: Colors.blueAccent,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      CustomButton(
+                        text: AppStrings.cancel,
+                        onPressed: () async {
+                          await historyController
+                              .cancelTransaction(index)
+                              .then((value) {
+                            Navigator.of(pageContext).pop();
+                          });
+                        },
+                        bgColor: Colors.red,
+                      ),
+                    ],
+                    const Spacer(),
                     CustomButton(
                       text: AppStrings.back,
                       onPressed: () {

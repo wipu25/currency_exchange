@@ -1,10 +1,11 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:flutter/material.dart';
 
-class DisplayCancelDialog extends StatelessWidget {
+class DisplayMoreInfoDialog extends StatelessWidget {
   final TransactionItem item;
-  const DisplayCancelDialog({super.key, required this.item});
+  const DisplayMoreInfoDialog({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +87,26 @@ class DisplayCancelDialog extends StatelessWidget {
                     ),
                   ],
                 )).toList(),
+        const SizedBox(
+          height: 8,
+        ),
+        if (item.totalBuyPrice != null && item.totalBuyPrice! > 0.0)
+          Text(
+            "${AppStrings.totalBuy} ${item.totalBuyPrice} ${AppStrings.thb}",
+            style: const TextStyle(fontSize: 24),
+          ),
+        if (item.totalSellPrice != null && item.totalSellPrice! > 0.0)
+          Text(
+            "${AppStrings.totalSell} ${item.totalSellPrice} ${AppStrings.thb}",
+            style: const TextStyle(fontSize: 24),
+          ),
         Text(
-          '${AppStrings.paymentMethod} ${item.paymentMethod.name}',
-          style: const TextStyle(fontSize: 24),
+          '${item.paymentMethod == PaymentMethod.cancel ? '' : AppStrings.paymentMethod} ${item.paymentMethod.name}',
+          style: TextStyle(
+              fontSize: 24,
+              color: item.paymentMethod == PaymentMethod.cancel
+                  ? Colors.redAccent
+                  : Colors.black),
         ),
       ],
     );

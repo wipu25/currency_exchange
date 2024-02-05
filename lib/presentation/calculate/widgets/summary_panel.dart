@@ -2,7 +2,7 @@ import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
-import 'package:currency_exchange/presentation/widgets/display_summary_dialog.dart';
+import 'package:currency_exchange/presentation/widgets/display_transaction_dialog.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -107,29 +107,48 @@ class SummaryPanel extends StatelessWidget {
                       ),
                     );
                   }),
+                  if (calculateController.totalBuyPrice > 0.0) ...[
+                    const Text(
+                      AppStrings.totalBuy,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                    Text(
+                      "${calculateController.totalBuyPrice} ${AppStrings.thb}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ],
+                  if (calculateController.totalSellPrice > 0.0) ...[
+                    const Text(
+                      AppStrings.totalSell,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                    Text(
+                      "${calculateController.totalSellPrice} ${AppStrings.thb}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ],
                   const Text(
                     AppStrings.paymentMethod,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
-                  Consumer<CalculateController>(
-                      builder: (_, calculateController, __) {
-                    return DropdownButton<PaymentMethod>(
-                      items: PaymentMethod.values
-                          .map((e) => DropdownMenuItem<PaymentMethod>(
-                                value: e,
-                                child: Text(e.getString()),
-                              ))
-                          .where((element) =>
-                              element.value != PaymentMethod.cancel)
-                          .toList(),
-                      onChanged: (PaymentMethod? value) {
-                        context
-                            .read<CalculateController>()
-                            .updatePayment(value);
-                      },
-                      value: calculateController.payment,
-                    );
-                  }),
+                  DropdownButton<PaymentMethod>(
+                    items: PaymentMethod.values
+                        .map((e) => DropdownMenuItem<PaymentMethod>(
+                              value: e,
+                              child: Text(e.getString()),
+                            ))
+                        .where(
+                            (element) => element.value != PaymentMethod.cancel)
+                        .toList(),
+                    onChanged: (PaymentMethod? value) {
+                      context.read<CalculateController>().updatePayment(value);
+                    },
+                    value: calculateController.payment,
+                  ),
                   CustomButton(
                     onPressed: () {
                       calculateController.setCurrentTransaction();
@@ -171,8 +190,9 @@ class SummaryPanel extends StatelessWidget {
                         const Loading(),
                       ],
                     )
-                  : DisplaySummaryDialog(
-                      currencyItem: calculateController.currencyItem),
+                  : DisplayTransactionDialog(
+                      currentTransaction:
+                          calculateController.currentTransaction),
               actions: <Widget>[
                 Row(
                   children: [

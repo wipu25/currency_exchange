@@ -48,8 +48,11 @@ class CalculateController with ChangeNotifier {
   Transaction get transaction => _receiptService.transaction;
   PaymentMethod get payment => _receiptService.payment;
   List<ExchangeItem> get currencyItem => _receiptService.currencyItem;
-  double get totalAmount => _receiptService.totalAmount;
-  double get totalPrice => _receiptService.totalPrice;
+  TransactionItem? get currentTransaction => _receiptService.currentTransaction;
+  double get totalItemAmount => _receiptService.totalItemAmount;
+  double get totalItemPrice => _receiptService.totalItemPrice;
+  double get totalBuyPrice => _receiptService.totalBuyPrice;
+  double get totalSellPrice => _receiptService.totalSellPrice;
   bool get isTransactionBuy => _receiptService.isTransactionBuy;
 
   Country? get selectedCountry => _selectedCurrency;
@@ -156,8 +159,8 @@ class CalculateController with ChangeNotifier {
       _receiptService.addTotal(calculatedItem.amount, calculatedItem.price);
     }
     _isAddEnable = shouldEnableAdd;
-    if (_receiptService.totalAmount == 0.0 ||
-        _receiptService.totalPrice == 0.0) {
+    if (_receiptService.totalItemAmount == 0.0 ||
+        _receiptService.totalItemPrice == 0.0) {
       _isAddEnable = false;
     }
     notifyListeners();

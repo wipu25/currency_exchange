@@ -23,9 +23,15 @@ class AppStrings {
   static const String totalItem = 'รายการทั้งหมด';
   static const String range = 'ช่วงเงิน';
   static const String price = 'ราคา';
+  static const String totalBuy = 'ราคาซื้อรวม';
+  static const String totalSell = 'ราคาขายรวม';
   static const String totalPrice = 'ราคารวม';
   static const String paymentMethod = 'ช่องทางชำระเงิน';
   static const String amount = 'จำนวน';
+
+  static const String enTotalSell = 'Total Sell';
+  static const String enTotalBuy = 'Total Buy';
+  static const String enPaymentMethod = 'Payment Method';
 
   //exchange_screen
   static const String currency = 'สกุลเงิน';
@@ -44,4 +50,5 @@ class AppStrings {
   static const String cancel = 'ยกเลิก';
   static const String cancelling = 'กำลังยกเลิก';
   static const String cancellingTime = 'เวลาธุรกรรม';
+  static const String moreInfo = 'เพิ่มเติม';
 }
