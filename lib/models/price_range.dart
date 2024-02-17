@@ -1,3 +1,4 @@
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'price_range.freezed.dart';
@@ -15,8 +16,8 @@ class PriceRange with _$PriceRange {
       _$PriceRangeFromJson(json);
 
   String getRange() {
-    var minStr = (min ?? 0.0).toString();
-    var maxStr = (max ?? 0.0).toString();
+    var minStr = CustomNumberFormat.commaFormat(min ?? 0.0);
+    var maxStr = CustomNumberFormat.commaFormat(max ?? 0.0);
     var hyphen = '-';
     if (min == null) {
       minStr = '0.0';
@@ -29,6 +30,10 @@ class PriceRange with _$PriceRange {
       maxStr = '~';
     }
     return '$minStr $hyphen $maxStr';
+  }
+
+  String getPrice() {
+    return CustomNumberFormat.commaFormat(price);
   }
 }
 

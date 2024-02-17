@@ -67,17 +67,17 @@ class SummaryPanel extends StatelessWidget {
                                                 height: 4,
                                               ),
                                               flexibleText(
-                                                  '${AppStrings.range} ${item.priceRange[index].min ?? 0.0} - ${item.priceRange[index].max ?? '~'}'),
+                                                  '${AppStrings.range} ${item.priceRange[index].getRange()}'),
                                               const SizedBox(
                                                 height: 4,
                                               ),
                                               flexibleText(
-                                                  '${AppStrings.price} ${item.priceRange[index].price} X ${item.calculatedItem[index].amount}'),
+                                                  '${AppStrings.price} ${item.priceRange[index].getPrice()} X ${item.calculatedItem[index].getAmount()}'),
                                               const SizedBox(
                                                 height: 4,
                                               ),
                                               flexibleText(
-                                                  '= ${item.calculatedItem[index].price}'),
+                                                  '= ${item.calculatedItem[index].getPrice()}'),
                                               const SizedBox(
                                                 height: 4,
                                               ),
@@ -114,7 +114,7 @@ class SummaryPanel extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     ),
                     Text(
-                      "${calculateController.totalBuyPrice} ${AppStrings.thb}",
+                      "${calculateController.totalBuyPriceComma} ${AppStrings.thb}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),
@@ -126,7 +126,7 @@ class SummaryPanel extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     ),
                     Text(
-                      "${calculateController.totalSellPrice} ${AppStrings.thb}",
+                      "${calculateController.totalSellPriceComma} ${AppStrings.thb}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),

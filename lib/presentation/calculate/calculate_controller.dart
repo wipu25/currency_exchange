@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/calculated_item.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
@@ -53,8 +54,13 @@ class CalculateController with ChangeNotifier {
   double get totalItemPrice => _receiptService.totalItemPrice;
   double get totalBuyPrice => _receiptService.totalBuyPrice;
   double get totalSellPrice => _receiptService.totalSellPrice;
-  bool get isTransactionBuy => _receiptService.isTransactionBuy;
 
+  String get totalBuyPriceComma =>
+      CustomNumberFormat.commaFormat(_receiptService.totalBuyPrice);
+  String get totalSellPriceComma =>
+      CustomNumberFormat.commaFormat(_receiptService.totalSellPrice);
+
+  bool get isTransactionBuy => _receiptService.isTransactionBuy;
   Country? get selectedCountry => _selectedCurrency;
   List<PriceRange> get selectedPriceRange => _selectedPriceRange;
   bool get isAddEnable => _isAddEnable;
@@ -69,10 +75,19 @@ class CalculateController with ChangeNotifier {
   void removeSplitItem(int position) {
     _selectedPriceRange.removeAt(position);
     _inputPrice.removeAt(position);
+    _receiptService.removeTotal(
+        _calculatedItem[position].amount, _calculatedItem[position].price);
     _calculatedItem.removeAt(position);
     if (position == _currentInsert) {
       _currentInsert = 0;
     }
+    var shouldEnableAdd = true;
+    for (var calculatedItem in _calculatedItem) {
+      if (calculatedItem.price == 0.0) {
+        shouldEnableAdd = false;
+      }
+    }
+    _isAddEnable = shouldEnableAdd;
     notifyListeners();
   }
 
@@ -131,11 +146,16 @@ class CalculateController with ChangeNotifier {
   }
 
   void calculateAmount(int position, String value) {
-    _inputPrice[position] = value;
+    final numValue = value.replaceAll(',', '');
+    final splitDecimal = numValue.split('.');
     if (value.isEmpty) {
+      _inputPrice[position] = '';
+      _calculatedItem[position] = const CalculatedItem(amount: 0.0, price: 0.0);
       throw CalculateException(AppStrings.emptyAlert);
     }
-    final amount = double.parse(value);
+    _inputPrice[position] = CustomNumberFormat.fieldFormat(splitDecimal[0]) +
+        (splitDecimal.length > 1 ? '.${splitDecimal[1]}' : '');
+    final amount = double.parse(numValue);
     if (amount.isNegative) {
       throw CalculateException(AppStrings.negativeAlert);
     }

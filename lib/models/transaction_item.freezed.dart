@@ -20,7 +20,8 @@ TransactionItem _$TransactionItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TransactionItem {
-  List<ExchangeItem> get calculatedItem => throw _privateConstructorUsedError;
+  List<ExchangeItem> get calculatedItem =>
+      throw _privateConstructorUsedError; //due to order transaction is not yet implemented total value
   double? get totalBuyPrice => throw _privateConstructorUsedError;
   double? get totalSellPrice => throw _privateConstructorUsedError;
   String get dateTime => throw _privateConstructorUsedError;
@@ -150,14 +151,15 @@ class __$$_TransactionItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TransactionItem implements _TransactionItem {
+class _$_TransactionItem extends _TransactionItem {
   const _$_TransactionItem(
       {required final List<ExchangeItem> calculatedItem,
       this.totalBuyPrice,
       this.totalSellPrice,
       required this.dateTime,
       required this.paymentMethod})
-      : _calculatedItem = calculatedItem;
+      : _calculatedItem = calculatedItem,
+        super._();
 
   factory _$_TransactionItem.fromJson(Map<String, dynamic> json) =>
       _$$_TransactionItemFromJson(json);
@@ -170,6 +172,7 @@ class _$_TransactionItem implements _TransactionItem {
     return EqualUnmodifiableListView(_calculatedItem);
   }
 
+//due to order transaction is not yet implemented total value
   @override
   final double? totalBuyPrice;
   @override
@@ -225,20 +228,21 @@ class _$_TransactionItem implements _TransactionItem {
   }
 }
 
-abstract class _TransactionItem implements TransactionItem {
+abstract class _TransactionItem extends TransactionItem {
   const factory _TransactionItem(
       {required final List<ExchangeItem> calculatedItem,
       final double? totalBuyPrice,
       final double? totalSellPrice,
       required final String dateTime,
       required final PaymentMethod paymentMethod}) = _$_TransactionItem;
+  const _TransactionItem._() : super._();
 
   factory _TransactionItem.fromJson(Map<String, dynamic> json) =
       _$_TransactionItem.fromJson;
 
   @override
   List<ExchangeItem> get calculatedItem;
-  @override
+  @override //due to order transaction is not yet implemented total value
   double? get totalBuyPrice;
   @override
   double? get totalSellPrice;

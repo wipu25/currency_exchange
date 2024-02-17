@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/convert_list.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/select_country.dart';
@@ -56,7 +57,7 @@ class CalculateScreen extends StatelessWidget {
                                         calculateControllers.totalItemAmount ==
                                                 0.0
                                             ? ''
-                                            : '${AppStrings.totalAmount} ${calculateControllers.totalItemAmount}',
+                                            : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemAmount)}',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
@@ -68,7 +69,7 @@ class CalculateScreen extends StatelessWidget {
                                         calculateControllers.totalItemPrice ==
                                                 0.0
                                             ? ''
-                                            : '${AppStrings.totalPrice} ${calculateControllers.totalItemPrice}',
+                                            : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemPrice)}',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),

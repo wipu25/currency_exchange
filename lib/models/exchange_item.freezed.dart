@@ -163,7 +163,7 @@ class __$$_ExchangeItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExchangeItem implements _ExchangeItem {
+class _$_ExchangeItem extends _ExchangeItem {
   const _$_ExchangeItem(
       {required final List<PriceRange> priceRange,
       required final List<CalculatedItem> calculatedItem,
@@ -172,7 +172,8 @@ class _$_ExchangeItem implements _ExchangeItem {
       required this.currency,
       required this.transaction})
       : _priceRange = priceRange,
-        _calculatedItem = calculatedItem;
+        _calculatedItem = calculatedItem,
+        super._();
 
   factory _$_ExchangeItem.fromJson(Map<String, dynamic> json) =>
       _$$_ExchangeItemFromJson(json);
@@ -251,7 +252,7 @@ class _$_ExchangeItem implements _ExchangeItem {
   }
 }
 
-abstract class _ExchangeItem implements ExchangeItem {
+abstract class _ExchangeItem extends ExchangeItem {
   const factory _ExchangeItem(
       {required final List<PriceRange> priceRange,
       required final List<CalculatedItem> calculatedItem,
@@ -259,6 +260,7 @@ abstract class _ExchangeItem implements ExchangeItem {
       required final double totalPrice,
       required final String currency,
       required final String transaction}) = _$_ExchangeItem;
+  const _ExchangeItem._() : super._();
 
   factory _ExchangeItem.fromJson(Map<String, dynamic> json) =
       _$_ExchangeItem.fromJson;

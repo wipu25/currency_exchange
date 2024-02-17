@@ -189,7 +189,12 @@ class HistoryScreen extends StatelessWidget {
                                                             .priceRange
                                                             .length,
                                                         (price) => Text(
-                                                              '${item.calculatedItem[index].priceRange[price].price}',
+                                                              item
+                                                                  .calculatedItem[
+                                                                      index]
+                                                                  .priceRange[
+                                                                      price]
+                                                                  .getPrice(),
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -212,8 +217,7 @@ class HistoryScreen extends StatelessWidget {
                                             item.calculatedItem[index]
                                                 .priceRange.length,
                                             item.calculatedItem[index]
-                                                .amountExchange
-                                                .toString(),
+                                                .getAmountExchange(),
                                             index ==
                                                 item.calculatedItem.length -
                                                     1)).toList(),
@@ -225,8 +229,7 @@ class HistoryScreen extends StatelessWidget {
                                             item.calculatedItem[index]
                                                 .priceRange.length,
                                             item.calculatedItem[index]
-                                                .totalPrice
-                                                .toString(),
+                                                .getTotalPrice(),
                                             index ==
                                                 item.calculatedItem.length -
                                                     1)).toList(),

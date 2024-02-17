@@ -107,8 +107,9 @@ class __$$_CalculatedItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CalculatedItem implements _CalculatedItem {
-  const _$_CalculatedItem({required this.amount, required this.price});
+class _$_CalculatedItem extends _CalculatedItem {
+  const _$_CalculatedItem({required this.amount, required this.price})
+      : super._();
 
   factory _$_CalculatedItem.fromJson(Map<String, dynamic> json) =>
       _$$_CalculatedItemFromJson(json);
@@ -150,10 +151,11 @@ class _$_CalculatedItem implements _CalculatedItem {
   }
 }
 
-abstract class _CalculatedItem implements CalculatedItem {
+abstract class _CalculatedItem extends CalculatedItem {
   const factory _CalculatedItem(
       {required final double amount,
       required final double price}) = _$_CalculatedItem;
+  const _CalculatedItem._() : super._();
 
   factory _CalculatedItem.fromJson(Map<String, dynamic> json) =
       _$_CalculatedItem.fromJson;

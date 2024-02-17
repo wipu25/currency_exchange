@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
@@ -66,7 +67,11 @@ class ExchangeController with ChangeNotifier {
   }
 
   void addRate(int currency, int rate, String value, PriceType type) {
-    final result = _currencyListService.addRate(currency, rate, value, type);
+    final numValue = value.replaceAll(',', '');
+    final splitDecimal = numValue.split('.');
+    final newValue = CustomNumberFormat.fieldFormat(splitDecimal[0]) +
+        (splitDecimal.length > 1 ? '.${splitDecimal[1]}' : '');
+    final result = _currencyListService.addRate(currency, rate, newValue, type);
     if (result == null) {
       _updateSave(true);
       return;
