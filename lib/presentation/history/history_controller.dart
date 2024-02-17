@@ -109,7 +109,7 @@ class HistoryController with ChangeNotifier {
   }
 
   Future<void> printTransaction(int index) async {
-    PrintReceiptService().printThermal(_historyList[index]);
+    PrintReceiptService().initPrint(_historyList[index]);
   }
 
   setCancel(bool value) {
