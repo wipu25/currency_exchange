@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
@@ -17,7 +18,8 @@ class ConvertList extends StatelessWidget {
                 final inputTextController = TextEditingController(
                     text: calculateControllers.inputPrice[index]);
                 inputTextController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: inputTextController.text.length));
+                    TextPosition(
+                        offset: calculateControllers.inputPrice[index].length));
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +50,6 @@ class ConvertList extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(hintText: '0.00'),
                         onChanged: (value) {
-                          // calculateControllers.updateTempText(value);
                           try {
                             calculateControllers.calculateAmount(index, value);
                             ScaffoldMessenger.of(context).clearSnackBars();
@@ -76,8 +77,8 @@ class ConvertList extends StatelessWidget {
                     const SizedBox(
                       width: 8,
                     ),
-                    Text(calculateControllers.calculatedItem[index].price
-                        .toString()),
+                    Text(CustomNumberFormat.commaFormat(
+                        calculateControllers.calculatedItem[index].price)),
                     const SizedBox(
                       width: 8,
                     ),

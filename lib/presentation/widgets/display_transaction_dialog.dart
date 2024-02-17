@@ -37,20 +37,20 @@ class DisplayTransactionDialog extends StatelessWidget {
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: Text(
-                                                '${index.priceRange[item].min ?? 0.0} - ${index.priceRange[item].max ?? '~'}')),
+                                            child: Text(index.priceRange[item]
+                                                .getRange())),
                                         Expanded(
                                             flex: 2,
                                             child: Text(
-                                                '${index.calculatedItem[item].amount} X ${index.priceRange[item].price}')),
+                                                '${index.calculatedItem[item].getAmount()} X ${index.priceRange[item].getPrice()}')),
                                         Expanded(
                                             child: Text(
-                                                '= ${index.calculatedItem[item].price}'))
+                                                '= ${index.calculatedItem[item].getPrice()}'))
                                       ],
                                     )),
                             // Text('Amount ${index.amountExchange} ${index.transaction == 'buy' ? index.currency : 'THB'}',style: const TextStyle(fontSize: 30),),
                             Text(
-                              'Total ${index.totalPrice} ${index.transaction != 'buy' ? index.currency : 'THB'}',
+                              'Total ${index.getTotalPrice()} ${index.transaction != 'buy' ? index.currency : 'THB'}',
                               style: const TextStyle(fontSize: 30),
                             )
                           ],
@@ -69,14 +69,14 @@ class DisplayTransactionDialog extends StatelessWidget {
                         style: TextStyle(fontSize: 30),
                       ),
                       Text(
-                        "${currentTransaction!.totalBuyPrice} ${AppStrings.thb}",
+                        "${currentTransaction!.getTotalBuyPrice()} ${AppStrings.thb}",
                         style: const TextStyle(fontSize: 30),
                       ),
                     ],
                   ),
-                const Spacer(),
                 if (currentTransaction?.totalBuyPrice != null &&
-                    currentTransaction!.totalSellPrice! > 0.0)
+                    currentTransaction!.totalSellPrice! > 0.0) ...[
+                  const SizedBox(width: 40),
                   Column(
                     children: [
                       const Text(
@@ -84,11 +84,12 @@ class DisplayTransactionDialog extends StatelessWidget {
                         style: TextStyle(fontSize: 30),
                       ),
                       Text(
-                        "${currentTransaction!.totalSellPrice} ${AppStrings.thb}",
+                        "${currentTransaction!.getTotalSellPrice()} ${AppStrings.thb}",
                         style: const TextStyle(fontSize: 30),
                       ),
                     ],
                   ),
+                ]
               ],
             ),
             const Text(

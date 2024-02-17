@@ -47,6 +47,12 @@ class ReceiptService extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeTotal(double removeAmount, double removePrice) {
+    _totalItemAmount -= removeAmount;
+    _totalItemPrice -= removePrice;
+    notifyListeners();
+  }
+
   clearTotal() {
     _totalItemPrice = 0.0;
     _totalItemAmount = 0.0;
@@ -89,6 +95,11 @@ class ReceiptService extends ChangeNotifier {
   }
 
   removeItem(int index) {
+    if (_currencyItem[index].transaction == Transaction.buy.name) {
+      _totalBuyPrice -= _currencyItem[index].totalPrice;
+    } else {
+      _totalSellPrice -= _currencyItem[index].amountExchange;
+    }
     _currencyItem.removeAt(index);
     notifyListeners();
   }

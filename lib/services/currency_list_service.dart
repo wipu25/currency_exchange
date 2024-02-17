@@ -36,7 +36,8 @@ class CurrencyListService extends ChangeNotifier {
     final List<PriceRange> priceRange = [];
     for (var j = 0; j < currentPriceRange.length; j++) {
       final currentRange = currentPriceRange[j];
-      final priceToDouble = double.parse(currencyList[index][j] ?? '0.0');
+      final priceToDouble =
+          double.parse(currencyList[index][j]?.replaceAll(',', '') ?? '0.0');
       currencyList[index][j] = priceToDouble.toString();
       priceRange.add(PriceRange(
           min: currentRange.min, max: currentRange.max, price: priceToDouble));
@@ -64,7 +65,7 @@ class CurrencyListService extends ChangeNotifier {
       final List<String?> buyRangeList = [];
       final List<String?> sellRangeList = [];
       for (var buyPriceRange in currency.buyPriceRange) {
-        var buyPrice = buyPriceRange.price.toString();
+        var buyPrice = buyPriceRange.getPrice();
         if (buyPriceRange.price == null) {
           isNullItem = true;
           buyPrice = '';
@@ -72,7 +73,7 @@ class CurrencyListService extends ChangeNotifier {
         buyRangeList.add(buyPrice);
       }
       for (var sellPriceRange in currency.sellPriceRange) {
-        var sellPrice = sellPriceRange.price.toString();
+        var sellPrice = sellPriceRange.getPrice();
         if (sellPriceRange.price == null) {
           isNullItem = true;
           sellPrice = '';
@@ -116,7 +117,7 @@ class CurrencyListService extends ChangeNotifier {
         if (value == null || value.isEmpty) {
           return AppStrings.errorFillAll;
         }
-        final amount = double.parse(value);
+        final amount = double.parse(value.replaceAll(',', ''));
         if (amount.isNegative) {
           return AppStrings.errorNegative;
         }

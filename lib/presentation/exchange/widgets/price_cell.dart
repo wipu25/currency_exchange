@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
@@ -34,12 +35,14 @@ class PriceCell extends StatelessWidget {
                     ? Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          currencyList[currencyIndex][index] ?? '',
+                          CustomNumberFormat.fieldDoubleFormat(
+                              currencyList[currencyIndex][index] ?? '0.0'),
                           style: const TextStyle(fontSize: 20),
                         ),
                       )
                     : CustomTextField(
-                        value: currencyList[currencyIndex][index],
+                        value: CustomNumberFormat.fieldDoubleFormat(
+                            currencyList[currencyIndex][index]),
                         onChanged: (value) {
                           try {
                             exchangeController.addRate(

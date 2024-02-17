@@ -1,6 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
@@ -54,14 +53,39 @@ class PrintReceiptService {
         ]);
       }
       pw.hr(ch: '-', linesAfter: 0);
-      pw.text(
-          'Amount Exchange ${calculatedItem.amountExchange} ${calculatedItem.transaction == Transaction.buy.name ? calculatedItem.currency : 'THB'}',
-          styles: const PosStyles(align: PosAlign.right));
-      pw.text(
-          'Total ${calculatedItem.totalPrice} ${calculatedItem.transaction != Transaction.buy.name ? calculatedItem.currency : 'THB'}',
-          styles: const PosStyles(align: PosAlign.right));
-      pw.hr(ch: '=', linesAfter: 1);
     }
+    // for (var index = 0;
+    //     index < transactionItem!.calculatedItem.length;
+    //     index++) {
+    //   final calculatedItem = transactionItem.calculatedItem[index];
+    //   pw.text(
+    //       '${calculatedItem.transaction.toUpperCase()} ${calculatedItem.currency}');
+    //   for (var calculateItem = 0;
+    //       calculateItem < calculatedItem.calculatedItem.length;
+    //       calculateItem++) {
+    //     pw.row([
+    //       PosColumn(
+    //         text: calculatedItem.priceRange[calculateItem].getRange(),
+    //         width: 6,
+    //         styles: const PosStyles(align: PosAlign.center),
+    //       ),
+    //       PosColumn(
+    //         text:
+    //             '${calculatedItem.calculatedItem[calculateItem].amount} x ${calculatedItem.priceRange[calculateItem].price} = ${calculatedItem.calculatedItem[calculateItem].price}',
+    //         width: 6,
+    //         styles: const PosStyles(align: PosAlign.center),
+    //       ),
+    //     ]);
+    //   }
+    //   pw.hr(ch: '-', linesAfter: 0);
+    //   pw.text(
+    //       'Amount Exchange ${calculatedItem.amountExchange} ${calculatedItem.transaction == Transaction.buy.name ? calculatedItem.currency : 'THB'}',
+    //       styles: const PosStyles(align: PosAlign.right));
+    //   pw.text(
+    //       'Total ${calculatedItem.totalPrice} ${calculatedItem.transaction != Transaction.buy.name ? calculatedItem.currency : 'THB'}',
+    //       styles: const PosStyles(align: PosAlign.right));
+    //   pw.hr(ch: '=', linesAfter: 1);
+    // }
     if (transactionItem.totalBuyPrice != null &&
         transactionItem.totalBuyPrice! > 0.0) {
       pw.text('Total BUY ${transactionItem.totalBuyPrice} ${AppStrings.thb}',

@@ -67,15 +67,15 @@ class DisplayMoreInfoDialog extends StatelessWidget {
                               child: Column(
                             children: item.calculatedItem[index].priceRange
                                 .map((e) => Text(
-                                      e.price.toString(),
+                                      e.getPrice(),
                                       style: const TextStyle(fontSize: 16),
                                     ))
                                 .toList(),
                           )),
-                          flexibleText(item.calculatedItem[index].amountExchange
-                              .toString()),
                           flexibleText(
-                              item.calculatedItem[index].totalPrice.toString()),
+                              item.calculatedItem[index].getAmountExchange()),
+                          flexibleText(
+                              item.calculatedItem[index].getTotalPrice()),
                         ],
                       ),
                     ),
@@ -92,12 +92,12 @@ class DisplayMoreInfoDialog extends StatelessWidget {
         ),
         if (item.totalBuyPrice != null && item.totalBuyPrice! > 0.0)
           Text(
-            "${AppStrings.totalBuy} ${item.totalBuyPrice} ${AppStrings.thb}",
+            "${AppStrings.totalBuy} ${item.getTotalBuyPrice()} ${AppStrings.thb}",
             style: const TextStyle(fontSize: 24),
           ),
         if (item.totalSellPrice != null && item.totalSellPrice! > 0.0)
           Text(
-            "${AppStrings.totalSell} ${item.totalSellPrice} ${AppStrings.thb}",
+            "${AppStrings.totalSell} ${item.getTotalSellPrice()} ${AppStrings.thb}",
             style: const TextStyle(fontSize: 24),
           ),
         Text(
