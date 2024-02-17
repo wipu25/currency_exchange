@@ -13,6 +13,7 @@ class ConvertList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CalculateController>(
         builder: (_, calculateControllers, __) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: List.generate(
                   calculateControllers.selectedPriceRange.length, (index) {
                 final inputTextController = TextEditingController(
@@ -21,12 +22,15 @@ class ConvertList extends StatelessWidget {
                     TextPosition(
                         offset: calculateControllers.inputPrice[index].length));
                 return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(!calculateControllers.isTransactionBuy
-                        ? AppStrings.thb
-                        : calculateControllers.selectedCountry?.currency ?? ''),
+                    Text(
+                      !calculateControllers.isTransactionBuy
+                          ? AppStrings.thb
+                          : calculateControllers.selectedCountry?.currency ??
+                              '',
+                      style: const TextStyle(fontSize: 12),
+                    ),
                     const SizedBox(
                       width: 8,
                     ),
@@ -37,18 +41,37 @@ class ConvertList extends StatelessWidget {
                         (value) => calculateControllers
                             .updateSelectedPriceRange(index, value)),
                     const SizedBox(
-                      width: 16,
+                      width: 8,
                     ),
-                    const Text(AppStrings.amount),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 7.0),
+                      child: Text(
+                        AppStrings.amount,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                     const SizedBox(
                       width: 8,
                     ),
                     SizedBox(
-                      width: 200,
+                      width: 140,
                       child: TextField(
+                        style: const TextStyle(fontSize: 18),
                         controller: inputTextController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(hintText: '0.00'),
+                        cursorColor: Colors.blueAccent,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(12.0),
+                          hintText: '0.00',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.blueAccent, width: 2.0),
+                          ),
+                        ),
                         onChanged: (value) {
                           try {
                             calculateControllers.calculateAmount(index, value);
@@ -67,24 +90,42 @@ class ConvertList extends StatelessWidget {
                         },
                       ),
                     ),
-                    Text(!calculateControllers.isTransactionBuy
-                        ? AppStrings.thb
-                        : calculateControllers.selectedCountry?.currency ?? ''),
-                    const SizedBox(
-                      width: 24,
-                    ),
-                    const Text(AppStrings.convert),
                     const SizedBox(
                       width: 8,
                     ),
-                    Text(CustomNumberFormat.commaFormat(
-                        calculateControllers.calculatedItem[index].price)),
+                    Text(
+                      !calculateControllers.isTransactionBuy
+                          ? AppStrings.thb
+                          : calculateControllers.selectedCountry?.currency ??
+                              '',
+                      style: const TextStyle(fontSize: 12),
+                    ),
                     const SizedBox(
                       width: 8,
                     ),
-                    Text(calculateControllers.isTransactionBuy
-                        ? AppStrings.thb
-                        : calculateControllers.selectedCountry?.currency ?? ''),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 7.0),
+                      child: Text(AppStrings.convert,
+                          style: TextStyle(fontSize: 12)),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      CustomNumberFormat.commaFormat(
+                          calculateControllers.calculatedItem[index].price),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      calculateControllers.isTransactionBuy
+                          ? AppStrings.thb
+                          : calculateControllers.selectedCountry?.currency ??
+                              '',
+                      style: const TextStyle(fontSize: 12),
+                    ),
                     const SizedBox(
                       width: 8,
                     ),
@@ -106,13 +147,20 @@ class ConvertList extends StatelessWidget {
       return const SizedBox.shrink();
     }
     if (buyRange.length < 2) {
-      return Text('${buyRange.first.min ?? 0} - ${buyRange.first.max ?? '~'}');
+      return Text(
+        '${buyRange.first.min ?? 0} - ${buyRange.first.max ?? '~'}',
+        style: const TextStyle(fontSize: 18),
+      );
     }
     return DropdownButton<PriceRange>(
       value: selectRange,
       items: buyRange
-          .map<DropdownMenuItem<PriceRange>>((price) =>
-              DropdownMenuItem(value: price, child: Text(price.getRange())))
+          .map<DropdownMenuItem<PriceRange>>((price) => DropdownMenuItem(
+              value: price,
+              child: Text(
+                price.getRange(),
+                style: const TextStyle(fontSize: 18),
+              )))
           .toList(),
       onChanged: (value) {
         if (value != null) {
