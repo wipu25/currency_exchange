@@ -32,102 +32,99 @@ class CalculateScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SelectTransaction(),
-                          const SizedBox(
-                            height: 48,
-                          ),
-                          const SelectCountry(),
-                          const SizedBox(
-                            height: 48,
-                          ),
-                          const ConvertList(),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Consumer<CalculateController>(
-                              builder: (_, calculateControllers, __) => Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        calculateControllers.totalItemAmount ==
-                                                0.0
-                                            ? ''
-                                            : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemAmount)}',
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        calculateControllers.totalItemPrice ==
-                                                0.0
-                                            ? ''
-                                            : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemPrice)}',
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  )),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Consumer<CalculateController>(
-                                  builder: (_, calculateControllers, __) =>
-                                      calculateControllers.isTransactionBuy &&
+                    const Spacer(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SelectTransaction(),
+                        const SizedBox(
+                          height: 48,
+                        ),
+                        const SelectCountry(),
+                        const SizedBox(
+                          height: 48,
+                        ),
+                        const ConvertList(),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Consumer<CalculateController>(
+                            builder: (_, calculateControllers, __) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      calculateControllers.totalItemAmount ==
+                                              0.0
+                                          ? ''
+                                          : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemAmount)}',
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Text(
+                                      calculateControllers.totalItemPrice == 0.0
+                                          ? ''
+                                          : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemPrice)}',
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Consumer<CalculateController>(
+                                builder: (_, calculateControllers, __) =>
+                                    calculateControllers.isTransactionBuy &&
+                                            calculateControllers
+                                                    .selectedCountry!
+                                                    .buyPriceRange
+                                                    .length >
+                                                1
+                                        ? CustomButton(
+                                            onPressed: () {
                                               calculateControllers
-                                                      .selectedCountry!
-                                                      .buyPriceRange
-                                                      .length >
-                                                  1
-                                          ? CustomButton(
-                                              onPressed: () {
-                                                calculateControllers
-                                                    .addSplitItem();
-                                                FocusManager
-                                                    .instance.primaryFocus
-                                                    ?.unfocus();
-                                              },
-                                              text: AppStrings.addBill,
-                                              bgColor: Colors.orange,
-                                            )
-                                          : const SizedBox.shrink()),
-                              const SizedBox(
-                                width: 12,
-                              ),
-                              Consumer<CalculateController>(
-                                  builder:
-                                      (context, calculateControllers, child) =>
-                                          CustomButton(
-                                            onPressed:
-                                                calculateControllers.isAddEnable
-                                                    ? () => calculateControllers
-                                                        .addToReceipt()
-                                                    : null,
-                                            text: AppStrings.addReceipt,
-                                            bgColor:
-                                                calculateControllers.isAddEnable
-                                                    ? Colors.green
-                                                    : Colors.grey,
-                                          )),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                        ],
-                      ),
+                                                  .addSplitItem();
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                            },
+                                            text: AppStrings.addBill,
+                                            bgColor: Colors.orange,
+                                          )
+                                        : const SizedBox.shrink()),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Consumer<CalculateController>(
+                                builder: (context, calculateControllers,
+                                        child) =>
+                                    CustomButton(
+                                      onPressed:
+                                          calculateControllers.isAddEnable
+                                              ? () => calculateControllers
+                                                  .addToReceipt()
+                                              : null,
+                                      text: AppStrings.addReceipt,
+                                      bgColor: calculateControllers.isAddEnable
+                                          ? Colors.green
+                                          : Colors.grey,
+                                    )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
                     ),
+                    const Spacer(),
                     const SummaryPanel(),
                   ],
                 ),

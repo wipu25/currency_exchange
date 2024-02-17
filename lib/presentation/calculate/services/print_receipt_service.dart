@@ -1,6 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
@@ -51,7 +50,7 @@ class PrintReceiptService {
         styles: const PosStyles(align: PosAlign.center), linesAfter: 1);
     pw.feed(1);
 
-    pw.text('DateTime: ${dateTimeSplit![0]} ${dateTimeSplit[1]}');
+    pw.text('DateTime: ${dateTimeSplit[0]} ${dateTimeSplit[1]}');
     pw.text('NO: $receiptId', linesAfter: 1);
 
     pw.hr(ch: '=', linesAfter: 0);
