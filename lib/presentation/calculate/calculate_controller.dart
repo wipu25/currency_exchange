@@ -273,7 +273,7 @@ class CalculateController with ChangeNotifier {
       return true;
     }
     final result = await PrintReceiptService()
-        .printThermal(_receiptService.currentTransaction);
+        .initPrint(_receiptService.currentTransaction);
     if (!result) {
       _billOperation = BillOperation.none;
     }
