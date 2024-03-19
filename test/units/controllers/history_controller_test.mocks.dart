@@ -5,7 +5,11 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
 import 'dart:typed_data' as _i6;
+import 'dart:ui' as _i10;
 
+import 'package:currency_exchange/models/country.dart' as _i8;
+import 'package:currency_exchange/models/price_range.dart' as _i9;
+import 'package:currency_exchange/services/currency_list_service.dart' as _i7;
 import 'package:currency_exchange/services/firebase_service.dart' as _i2;
 import 'package:firebase_storage/firebase_storage.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
@@ -128,4 +132,145 @@ class MockFirebaseService extends _i1.Mock implements _i2.FirebaseService {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+}
+
+/// A class which mocks [CurrencyListService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCurrencyListService extends _i1.Mock
+    implements _i7.CurrencyListService {
+  @override
+  List<_i8.Country> get currencyList => (super.noSuchMethod(
+        Invocation.getter(#currencyList),
+        returnValue: <_i8.Country>[],
+        returnValueForMissingStub: <_i8.Country>[],
+      ) as List<_i8.Country>);
+  @override
+  List<List<String?>> get buyCurrencyList => (super.noSuchMethod(
+        Invocation.getter(#buyCurrencyList),
+        returnValue: <List<String?>>[],
+        returnValueForMissingStub: <List<String?>>[],
+      ) as List<List<String?>>);
+  @override
+  List<List<String?>> get sellCurrencyList => (super.noSuchMethod(
+        Invocation.getter(#sellCurrencyList),
+        returnValue: <List<String?>>[],
+        returnValueForMissingStub: <List<String?>>[],
+      ) as List<List<String?>>);
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+  @override
+  void setCurrencyList(List<_i8.Country>? value) => super.noSuchMethod(
+        Invocation.method(
+          #setCurrencyList,
+          [value],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void setBuyCurrencyList(
+    int? currency,
+    int? rate,
+    String? amount,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setBuyCurrencyList,
+          [
+            currency,
+            rate,
+            amount,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void setSellCurrencyList(
+    int? currency,
+    int? rate,
+    String? amount,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setSellCurrencyList,
+          [
+            currency,
+            rate,
+            amount,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void updateNewCurrencyList() => super.noSuchMethod(
+        Invocation.method(
+          #updateNewCurrencyList,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  bool generateBuySellList() => (super.noSuchMethod(
+        Invocation.method(
+          #generateBuySellList,
+          [],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+  @override
+  String? addRate(
+    int? currency,
+    int? rate,
+    String? value,
+    _i9.PriceType? type,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addRate,
+          [
+            currency,
+            rate,
+            value,
+            type,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      ) as String?);
+  @override
+  void addListener(_i10.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void removeListener(_i10.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

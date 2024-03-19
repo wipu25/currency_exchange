@@ -199,20 +199,27 @@ class SummaryPanel extends StatelessWidget {
                     CustomButton(
                       text: AppStrings.print,
                       onPressed: () {
-                        calculateController.createPdf().then((value) {
-                          var snackBar = const SnackBar(
-                              content: Text(AppStrings.successPrint));
-                          Navigator.of(pageContext).pop();
-                          if (!value) {
-                            snackBar = const SnackBar(
-                              content: Text(AppStrings.alertPrint),
-                            );
-                            return;
-                          }
+                        try {
+                          calculateController.createPdf().then((value) {
+                            var snackBar = const SnackBar(
+                                content: Text(AppStrings.successPrint));
+                            Navigator.of(pageContext).pop();
+                            if (!value) {
+                              snackBar = const SnackBar(
+                                content: Text(AppStrings.alertPrint),
+                              );
+                              return;
+                            }
+                            ScaffoldMessenger.of(pageContext)
+                                .showSnackBar(snackBar);
+                            calculateController.save();
+                          });
+                        } catch (e) {
+                          final snackBar =
+                              SnackBar(content: Text(e.toString()));
                           ScaffoldMessenger.of(pageContext)
                               .showSnackBar(snackBar);
-                          calculateController.save();
-                        });
+                        }
                       },
                       bgColor: Colors.lightGreen,
                     ),

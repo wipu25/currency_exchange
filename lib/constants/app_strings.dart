@@ -39,6 +39,8 @@ class AppStrings {
   static const String buying = 'อัตราซื้อ';
   static const String selling = 'อัตราขาย';
   static const String save = 'บันทึก';
+  static const String selectAll = 'เลือกทั้งหมด';
+  static const String deselectAll = 'เอาออกทั้งหมด';
   static const String confirm = 'ยืนยัน';
   static const String edit = 'แก้ไข';
   static const String errorFillAll = 'เติมให้ครบช่อง';
@@ -51,4 +53,5 @@ class AppStrings {
   static const String cancelling = 'กำลังยกเลิก';
   static const String cancellingTime = 'เวลาธุรกรรม';
   static const String moreInfo = 'เพิ่มเติม';
+  static const String filter = 'กรอง';
 }

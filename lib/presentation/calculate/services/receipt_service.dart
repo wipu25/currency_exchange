@@ -106,6 +106,7 @@ class ReceiptService extends ChangeNotifier {
 
   clearItem() {
     _totalBuyPrice = 0.0;
+    _totalSellPrice = 0.0;
     _currencyItem.clear();
     notifyListeners();
   }

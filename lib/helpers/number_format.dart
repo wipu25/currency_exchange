@@ -14,7 +14,10 @@ class CustomNumberFormat {
   static String fieldDoubleFormat(String? value) {
     final split = value?.replaceAll(',', '').split('.');
     var pattern = NumberFormat("###,###", "en_US");
-    return pattern.format(int.parse(split?[0] ?? '0')) +
-        (split!.length > 1 ? '.${split[1]}' : '');
+    if (split == null) {
+      return '0';
+    }
+    return pattern.format(int.parse(split[0].isEmpty ? '0' : split[0])) +
+        (split.length > 1 ? '.${split[1]}' : '');
   }
 }

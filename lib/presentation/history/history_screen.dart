@@ -1,12 +1,14 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/history/history_controller.dart';
+import 'package:currency_exchange/presentation/history/widgets/filter.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:currency_exchange/presentation/widgets/display_more_info_dialog.dart';
 import 'package:currency_exchange/presentation/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
+import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,8 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HistoryController>(create: (_) {
-      final historyControllers =
-          HistoryController(context.read<FirebaseService>());
+      final historyControllers = HistoryController(
+          context.read<FirebaseService>(), context.read<CurrencyListService>());
       historyControllers.init();
       return historyControllers;
     }, builder: (context, snapshot) {
@@ -30,6 +32,7 @@ class HistoryScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(AppStrings.date),
                   const SizedBox(
@@ -56,6 +59,20 @@ class HistoryScreen extends StatelessWidget {
                       );
                     }),
                   ),
+                  const Spacer(),
+                  CustomButton(
+                    padding: const EdgeInsets.all(4.0),
+                    text: AppStrings.filter,
+                    bgColor: Colors.blueAccent,
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext dialogContext) => Filter(
+                            historyController:
+                                context.read<HistoryController>()),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
@@ -274,66 +291,8 @@ class HistoryScreen extends StatelessWidget {
       context: pageContext,
       builder: (BuildContext context) {
         return ChangeNotifierProvider.value(
-          value: pageContext.read<HistoryController>(),
-          child:
-              Consumer<HistoryController>(builder: (_, historyController, __) {
-            return AlertDialog(
-              scrollable: true,
-              title: const Center(
-                  child: Text(
-                AppStrings.moreInfo,
-                style: TextStyle(fontSize: 32),
-              )),
-              content: historyController.isCancel
-                  ? const Column(
-                      children: [
-                        Text(AppStrings.cancelling),
-                        Loading(),
-                      ],
-                    )
-                  : DisplayMoreInfoDialog(
-                      item: historyController.historyList[index],
-                    ),
-              actions: <Widget>[
-                Row(
-                  children: [
-                    if (historyController.historyList[index].paymentMethod !=
-                        PaymentMethod.cancel) ...[
-                      CustomButton(
-                        onPressed: () async =>
-                            historyController.printTransaction(index),
-                        text: AppStrings.print,
-                        bgColor: Colors.blueAccent,
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      CustomButton(
-                        text: AppStrings.cancel,
-                        onPressed: () async {
-                          await historyController
-                              .cancelTransaction(index)
-                              .then((value) {
-                            Navigator.of(pageContext).pop();
-                          });
-                        },
-                        bgColor: Colors.red,
-                      ),
-                    ],
-                    const Spacer(),
-                    CustomButton(
-                      text: AppStrings.back,
-                      onPressed: () {
-                        Navigator.of(pageContext).pop();
-                      },
-                      bgColor: Colors.blueAccent,
-                    ),
-                  ],
-                )
-              ],
-            );
-          }),
-        );
+            value: pageContext.read<HistoryController>(),
+            child: DisplayMoreInfoDialog(index: index));
       },
     );
   }

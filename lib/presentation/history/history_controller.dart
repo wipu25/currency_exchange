@@ -3,22 +3,31 @@ import 'dart:convert';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
+import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+enum FilterType { currency, payment, transaction }
+
 class HistoryController with ChangeNotifier {
   final FirebaseService _firebaseService;
+  final CurrencyListService _currencyListService;
 
-  HistoryController(this._firebaseService);
+  HistoryController(this._firebaseService, this._currencyListService);
 
+  List<TransactionItem> _savedHistoryList = <TransactionItem>[];
   List<TransactionItem> _historyList = <TransactionItem>[];
+  bool _isFilterUpdate = false;
   bool _isLoading = false;
   bool _isCancel = false;
   DateTime _dateTimeDisplay = DateTime.now();
-  // final _paymentMethodFilter = null;
+  final Map<String, bool> _currencyFilter = {};
+  final Map<String, bool> _paymentFilter = {};
+  final Map<String, bool> _transactionFilter = {};
+
   final _headerTitle = [
     'วันที่',
     'เวลาธุรกรรม',
@@ -37,11 +46,84 @@ class HistoryController with ChangeNotifier {
   List<TransactionItem> get historyList => _historyList;
   DateTime get dateTimeDisplay => _dateTimeDisplay;
   List<String> get headerTitle => _headerTitle;
+  Map<String, bool> get currencyFilter => _currencyFilter;
+  Map<String, bool> get paymentFilter => _paymentFilter;
+  Map<String, bool> get transactionFilter => _transactionFilter;
 
   Future<void> init() async {
     _isLoading = true;
     notifyListeners();
     await getTransaction(DateTime.now());
+    for (var i = 0; i < _currencyListService.currencyList.length; i++) {
+      _currencyFilter[_currencyListService.currencyList[i].currency] = true;
+    }
+    for (var i in PaymentMethod.values) {
+      _paymentFilter[i.getString()] = true;
+    }
+    for (var i in Transaction.values) {
+      _transactionFilter[i.name] = true;
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  updateFilter(String name, bool? value, FilterType filterType) {
+    var filterList = _currencyFilter;
+    switch (filterType) {
+      case FilterType.payment:
+        filterList = _paymentFilter;
+      case FilterType.transaction:
+        filterList = _transactionFilter;
+      default:
+        break;
+    }
+    filterList[name] = value ?? filterList[name]!;
+    notifyListeners();
+    _isFilterUpdate = true;
+  }
+
+  selectAllFilter(bool newValue) {
+    _currencyFilter.updateAll((key, value) => value = newValue);
+    notifyListeners();
+    _isFilterUpdate = true;
+  }
+
+  filterItem() {
+    if (_isFilterUpdate = false) {
+      return;
+    }
+    _isFilterUpdate = false;
+    _isLoading = true;
+    notifyListeners();
+    _historyList = List.from(_savedHistoryList);
+    final removeCurrency = _currencyFilter.keys
+        .where((element) => _currencyFilter[element] == false)
+        .toList();
+    final removePayment = _paymentFilter.keys
+        .where((element) => _paymentFilter[element] == false)
+        .toList();
+    final removeTransaction = _transactionFilter.keys
+        .where((element) => _transactionFilter[element] == false)
+        .toList();
+    for (var i = 0; i < _historyList.length; i++) {
+      if (removePayment.contains(_historyList[i].paymentMethod.getString())) {
+        _historyList.removeAt(i);
+        i--;
+        continue;
+      }
+      final removeList = _historyList[i].calculatedItem.toList();
+      removeList.removeWhere((element) {
+        final isCurrency = removeCurrency.contains(element.currency);
+        final isTransaction = removeTransaction.contains(element.transaction);
+        return isCurrency || isTransaction;
+      });
+      if (removeList.isEmpty) {
+        _historyList.removeAt(i);
+        i--;
+        continue;
+      }
+      _historyList[i] = _historyList[i].copyWith(calculatedItem: removeList);
+    }
     _isLoading = false;
     notifyListeners();
   }
@@ -53,10 +135,10 @@ class HistoryController with ChangeNotifier {
     try {
       final currentDate = DateFormat('yyyy-MM-dd').format(dateTime);
       final todayFile = await _firebaseService.getTransactionFile(currentDate);
-      _historyList = List<TransactionItem>.from(json
+      _savedHistoryList = List<TransactionItem>.from(json
           .decode(utf8.decode(todayFile!))['transaction']
           .map((item) => TransactionItem.fromJson(item)));
-      if (_historyList.any((element) =>
+      if (_savedHistoryList.any((element) =>
           element.totalSellPrice == null && element.totalBuyPrice == null)) {
         _calculateTotal();
       }
@@ -66,19 +148,20 @@ class HistoryController with ChangeNotifier {
             (e.code == 'firebase_storage' &&
                 (e.details as Map<dynamic, dynamic>)['code'] ==
                     'object-not-found')) {
-          _historyList = [];
+          _savedHistoryList = [];
         }
       }
       debugPrint(e.toString());
     }
+    _historyList = _savedHistoryList;
     notifyListeners();
   }
 
   void _calculateTotal() {
-    for (var index = 0; index < _historyList.length; index++) {
-      final item = _historyList[index];
+    for (var index = 0; index < _savedHistoryList.length; index++) {
+      final item = _savedHistoryList[index];
       if (item.totalSellPrice == null && item.totalBuyPrice == null) {
-        _historyList[index] = TransactionItem(
+        _savedHistoryList[index] = TransactionItem(
             calculatedItem: item.calculatedItem,
             dateTime: item.dateTime,
             paymentMethod: item.paymentMethod,
@@ -105,7 +188,15 @@ class HistoryController with ChangeNotifier {
     _dateTimeDisplay = pickedDate;
     notifyListeners();
     await getTransaction(pickedDate);
+    _isFilterUpdate = true;
+    filterItem();
     _isLoading = false;
+  }
+
+  TransactionItem getSavedHistory(int index) {
+    final posSavedHistory = _savedHistoryList.indexWhere(
+        (element) => element.dateTime == _historyList[index].dateTime);
+    return _savedHistoryList[posSavedHistory];
   }
 
   Future<void> printTransaction(int index) async {
@@ -119,23 +210,20 @@ class HistoryController with ChangeNotifier {
 
   Future<void> cancelTransaction(int index) async {
     setCancel(true);
-    final oldItem = _historyList[index];
-
-    //TODO: please add cancelling function
-    final cancelItem = TransactionItem(
-        totalSellPrice: oldItem.totalSellPrice,
-        totalBuyPrice: oldItem.totalBuyPrice,
-        calculatedItem: oldItem.calculatedItem,
-        dateTime: oldItem.dateTime,
-        paymentMethod: PaymentMethod.cancel);
-    _historyList[index] = cancelItem;
+    final posSavedHistory = _savedHistoryList.indexWhere(
+        (element) => element.dateTime == _historyList[index].dateTime);
+    _savedHistoryList[posSavedHistory] = _savedHistoryList[posSavedHistory]
+        .copyWith(paymentMethod: PaymentMethod.cancel);
+    _historyList[index] = _savedHistoryList[posSavedHistory];
     await _saveTransaction();
     setCancel(false);
   }
 
   Future<void> _saveTransaction() async {
     final historyDate = DateFormat('yyyy-MM-dd').format(_dateTimeDisplay);
-    final map = {'transaction': List.from(_historyList.map((e) => e.toJson()))};
+    final map = {
+      'transaction': List.from(_savedHistoryList.map((e) => e.toJson()))
+    };
     try {
       await _firebaseService.saveTransactionFile(map, historyDate);
     } catch (e) {
