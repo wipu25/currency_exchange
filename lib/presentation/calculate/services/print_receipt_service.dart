@@ -1,10 +1,8 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:flutter/cupertino.dart';
 
 class PrintReceiptService {
   late NetworkPrinter pw;
@@ -24,8 +22,7 @@ class PrintReceiptService {
       }
       throw PrintingException('Print Unsuccessful');
     } catch (e) {
-      debugPrint(e.toString());
-      return false;
+      throw PrintingException(e.toString());
     }
   }
 
@@ -55,8 +52,7 @@ class PrintReceiptService {
 
     pw.hr(ch: '=', linesAfter: 0);
 
-    getTransactionList(Transaction.buy);
-    getTransactionList(Transaction.sell);
+    getTransactionList();
 
     if (transactionItem!.totalBuyPrice != null &&
         transactionItem!.totalBuyPrice! > 0.0) {
@@ -77,10 +73,9 @@ class PrintReceiptService {
     pw.cut();
   }
 
-  void getTransactionList(Transaction transaction) {
-    transactionItem!.calculatedItem
-        .where((element) => element.transaction == transaction.name)
-        .map((calculatedItem) {
+  void getTransactionList() {
+    for (var item = 0; item < transactionItem!.calculatedItem.length; item++) {
+      final calculatedItem = transactionItem!.calculatedItem[item];
       for (var calculateItem = 0;
           calculateItem < calculatedItem.calculatedItem.length;
           calculateItem++) {
@@ -88,23 +83,23 @@ class PrintReceiptService {
           PosColumn(
             text:
                 '${calculatedItem.transaction.toUpperCase()} ${calculatedItem.currency}',
-            width: 4,
+            width: 3,
             styles: const PosStyles(align: PosAlign.left),
           ),
           PosColumn(
             text: calculatedItem.priceRange[calculateItem].getRange(),
-            width: 4,
+            width: 3,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
             text:
                 '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.priceRange[calculateItem].getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
-            width: 4,
+            width: 6,
             styles: const PosStyles(align: PosAlign.right),
           ),
         ]);
       }
-    });
+    }
     pw.hr(ch: '-', linesAfter: 0);
   }
 }

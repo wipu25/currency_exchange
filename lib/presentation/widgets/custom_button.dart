@@ -5,9 +5,11 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color bgColor;
   final double? fontSize;
+  final EdgeInsets padding;
   const CustomButton(
       {super.key,
       this.onPressed,
+      this.padding = const EdgeInsets.all(8.0),
       required this.text,
       required this.bgColor,
       this.fontSize = 20});
@@ -22,7 +24,7 @@ class CustomButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
             ),
-            padding: const EdgeInsets.all(8.0),
+            padding: padding,
             child: Text(
               text,
               style: TextStyle(

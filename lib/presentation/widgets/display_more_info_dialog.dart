@@ -1,14 +1,79 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:currency_exchange/presentation/history/history_controller.dart';
+import 'package:currency_exchange/presentation/widgets/custom_button.dart';
+import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DisplayMoreInfoDialog extends StatelessWidget {
-  final TransactionItem item;
-  const DisplayMoreInfoDialog({super.key, required this.item});
+  final int index;
+  const DisplayMoreInfoDialog({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<HistoryController>(builder: (_, historyController, __) {
+      final item = historyController.getSavedHistory(index);
+      return AlertDialog(
+        scrollable: true,
+        title: const Center(
+            child: Text(
+          AppStrings.moreInfo,
+          style: TextStyle(fontSize: 32),
+        )),
+        content: historyController.isCancel
+            ? const Column(
+                children: [
+                  Text(AppStrings.cancelling),
+                  Loading(),
+                ],
+              )
+            : itemInfo(item),
+        actions: <Widget>[
+          if (historyController.historyList[index].paymentMethod !=
+              PaymentMethod.cancel) ...[
+            CustomButton(
+              onPressed: () async => historyController.printTransaction(index),
+              text: AppStrings.print,
+              bgColor: Colors.blueAccent,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            CustomButton(
+              text: AppStrings.cancel,
+              onPressed: () async {
+                await historyController.cancelTransaction(index).then((value) {
+                  Navigator.of(context).pop();
+                });
+              },
+              bgColor: Colors.red,
+            ),
+          ],
+          CustomButton(
+            text: AppStrings.back,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            bgColor: Colors.blueAccent,
+          )
+        ],
+      );
+    });
+  }
+
+  Widget flexibleText(String text) {
+    return Expanded(
+        child: Center(
+      child: Text(
+        text.toString(),
+        style: const TextStyle(fontSize: 16),
+      ),
+    ));
+  }
+
+  Widget itemInfo(TransactionItem item) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -110,15 +175,5 @@ class DisplayMoreInfoDialog extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget flexibleText(String text) {
-    return Expanded(
-        child: Center(
-      child: Text(
-        text.toString(),
-        style: const TextStyle(fontSize: 16),
-      ),
-    ));
   }
 }

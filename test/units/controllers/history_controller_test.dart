@@ -1,5 +1,6 @@
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/history/history_controller.dart';
+import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,10 +10,12 @@ import 'package:mockito/mockito.dart';
 
 import 'history_controller_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<FirebaseService>()])
+@GenerateNiceMocks(
+    [MockSpec<FirebaseService>(), MockSpec<CurrencyListService>()])
 void main() {
   late HistoryController historyController;
   final mockFirebaseService = MockFirebaseService();
+  final mockCurrencyListService = MockCurrencyListService();
 
   void mockGetTransactionFile(DateTime datetime, String result) {
     final formatDateTime = DateFormat('yyyy-MM-dd').format(datetime);
@@ -23,7 +26,8 @@ void main() {
   }
 
   setUpAll(() {
-    historyController = HistoryController(mockFirebaseService);
+    historyController =
+        HistoryController(mockFirebaseService, mockCurrencyListService);
     const data =
         '{"transaction":[{"calculatedItem":[{"priceRange":[{"min":50.0,"max":100.0,"price":24.0}],"calculatedItem":[{"amount":1.0,"price":24.0}],"amountExchange":1.0,"totalPrice":24.0,"currency":"USD","transaction":"buy"}],"dateTime":"2023-12-30_23:54:58","paymentMethod":"cash"}]}';
     mockGetTransactionFile(DateTime.now(), data);

@@ -33,7 +33,7 @@ class FirebaseService {
     final file = await storage
         ?.ref()
         .child(
-            '$path/exchange_rate/${date != null ? 'ex_rate_$date' : 'currency_template'}.json')
+            '$path/exchange_rate/${date != null ? 'ex_rate_$date' : 'currency_template(1)'}.json')
         .getData();
     return file;
   }
@@ -54,7 +54,7 @@ class FirebaseService {
 
   Future<void> saveTemplateFile(Map<String, dynamic> map) async {
     final saveRef =
-        storage?.ref().child('$path/exchange_rate/currency_template.json');
+        storage?.ref().child('$path/exchange_rate/currency_template(1).json');
     saveRef?.putData(utf8.encode(json.encode(map)));
   }
 
