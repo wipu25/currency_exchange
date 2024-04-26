@@ -15,6 +15,9 @@ _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
       totalSellPrice: (json['totalSellPrice'] as num?)?.toDouble(),
       dateTime: json['dateTime'] as String,
       paymentMethod: $enumDecode(_$PaymentMethodEnumMap, json['paymentMethod']),
+      clientInfo: json['clientInfo'] == null
+          ? null
+          : ClientInfo.fromJson(json['clientInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_TransactionItemToJson(_$_TransactionItem instance) =>
@@ -24,6 +27,7 @@ Map<String, dynamic> _$$_TransactionItemToJson(_$_TransactionItem instance) =>
       'totalSellPrice': instance.totalSellPrice,
       'dateTime': instance.dateTime,
       'paymentMethod': _$PaymentMethodEnumMap[instance.paymentMethod]!,
+      'clientInfo': instance.clientInfo?.toJson(),
     };
 
 const _$PaymentMethodEnumMap = {

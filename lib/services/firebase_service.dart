@@ -29,11 +29,12 @@ class FirebaseService {
   }
 
   Future<Uint8List?> getCurrencyFile({String? date}) async {
+    //todo please determine template by release debug
     await _checkStorage();
     final file = await storage
         ?.ref()
         .child(
-            '$path/exchange_rate/${date != null ? 'ex_rate_$date' : 'currency_template(1)'}.json')
+            '$path/exchange_rate/${date != null ? 'ex_rate_$date' : 'currency_template'}.json')
         .getData();
     return file;
   }
@@ -53,8 +54,9 @@ class FirebaseService {
   }
 
   Future<void> saveTemplateFile(Map<String, dynamic> map) async {
+    //todo please determine template by release debug
     final saveRef =
-        storage?.ref().child('$path/exchange_rate/currency_template(1).json');
+        storage?.ref().child('$path/exchange_rate/currency_template.json');
     saveRef?.putData(utf8.encode(json.encode(map)));
   }
 

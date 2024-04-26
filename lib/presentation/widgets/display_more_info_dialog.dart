@@ -3,6 +3,7 @@ import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/history_controller.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
+import 'package:currency_exchange/presentation/widgets/info_text_field.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class DisplayMoreInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //todo: will item refetch when rebuild?
     return Consumer<HistoryController>(builder: (_, historyController, __) {
       final item = historyController.getSavedHistory(index);
       return AlertDialog(
@@ -29,15 +31,44 @@ class DisplayMoreInfoDialog extends StatelessWidget {
                   Loading(),
                 ],
               )
-            : itemInfo(item),
+            : Column(
+                children: [
+                  itemInfo(item),
+                  if (item.clientInfo != null) ...[
+                    InfoTextField(
+                        controller: historyController.nameTextField,
+                        enabled: item.paymentMethod != PaymentMethod.cancel,
+                        onChanged: (string) =>
+                            historyController.checkClientInfo(),
+                        header: AppStrings.name),
+                    InfoTextField(
+                      controller: historyController.addressTextField,
+                      enabled: item.paymentMethod != PaymentMethod.cancel,
+                      onChanged: (string) =>
+                          historyController.checkClientInfo(),
+                      header: AppStrings.address,
+                    ),
+                    InfoTextField(
+                      controller: historyController.idTextField,
+                      enabled: item.paymentMethod != PaymentMethod.cancel,
+                      onChanged: (string) =>
+                          historyController.checkClientInfo(),
+                      header: AppStrings.id,
+                    )
+                  ],
+                ],
+              ),
         actions: <Widget>[
           if (historyController.historyList[index].paymentMethod !=
               PaymentMethod.cancel) ...[
-            CustomButton(
-              onPressed: () async => historyController.printTransaction(index),
-              text: AppStrings.print,
-              bgColor: Colors.blueAccent,
-            ),
+            if (historyController.isClientInfoComplete ||
+                item.clientInfo == null)
+              CustomButton(
+                onPressed: () async =>
+                    historyController.printTransaction(index),
+                text: AppStrings.print,
+                bgColor: Colors.blueAccent,
+              ),
             const SizedBox(
               width: 8,
             ),

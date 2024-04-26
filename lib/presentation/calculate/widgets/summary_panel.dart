@@ -3,6 +3,7 @@ import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/display_transaction_dialog.dart';
+import 'package:currency_exchange/presentation/widgets/info_text_field.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -190,51 +191,103 @@ class SummaryPanel extends StatelessWidget {
                         const Loading(),
                       ],
                     )
-                  : DisplayTransactionDialog(
-                      currentTransaction:
-                          calculateController.currentTransaction),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        if (calculateController.isContainSell)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(
+                                      color: Colors.blueAccent, width: 1)),
+                              padding: const EdgeInsets.all(8.0),
+                              width: 300,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  InfoTextField(
+                                    header: AppStrings.name,
+                                    controller:
+                                        calculateController.nameTextField,
+                                    onChanged: (string) =>
+                                        calculateController.checkClientInfo(),
+                                    hintText: AppStrings.hintName,
+                                  ),
+                                  InfoTextField(
+                                    header: AppStrings.id,
+                                    controller: calculateController.idTextField,
+                                    onChanged: (string) =>
+                                        calculateController.checkClientInfo(),
+                                    hintText: AppStrings.hintID,
+                                  ),
+                                  InfoTextField(
+                                    header: AppStrings.address,
+                                    controller:
+                                        calculateController.addressTextField,
+                                    onChanged: (string) =>
+                                        calculateController.checkClientInfo(),
+                                    hintText: AppStrings.hintAddress,
+                                    maxLines: 3,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        DisplayTransactionDialog(
+                            currentTransaction:
+                                calculateController.currentTransaction),
+                      ],
+                    ),
               actions: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomButton(
-                      text: AppStrings.print,
-                      onPressed: () {
-                        try {
-                          calculateController.createPdf().then((value) {
-                            var snackBar = const SnackBar(
-                                content: Text(AppStrings.successPrint));
-                            Navigator.of(pageContext).pop();
-                            if (!value) {
-                              snackBar = const SnackBar(
-                                content: Text(AppStrings.alertPrint),
-                              );
-                              return;
-                            }
+                    if (calculateController.isClientInfoComplete ||
+                        !calculateController.isContainSell) ...[
+                      CustomButton(
+                        text: AppStrings.print,
+                        onPressed: () {
+                          try {
+                            calculateController.saveClientInfo();
+                            calculateController.createPdf().then((value) {
+                              var snackBar = const SnackBar(
+                                  content: Text(AppStrings.successPrint));
+                              Navigator.of(pageContext).pop();
+                              if (!value) {
+                                snackBar = const SnackBar(
+                                  content: Text(AppStrings.alertPrint),
+                                );
+                                return;
+                              }
+                              ScaffoldMessenger.of(pageContext)
+                                  .showSnackBar(snackBar);
+                              calculateController.save();
+                            });
+                          } catch (e) {
+                            final snackBar =
+                                SnackBar(content: Text(e.toString()));
                             ScaffoldMessenger.of(pageContext)
                                 .showSnackBar(snackBar);
-                            calculateController.save();
-                          });
-                        } catch (e) {
-                          final snackBar =
-                              SnackBar(content: Text(e.toString()));
-                          ScaffoldMessenger.of(pageContext)
-                              .showSnackBar(snackBar);
-                        }
-                      },
-                      bgColor: Colors.lightGreen,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    CustomButton(
-                      text: AppStrings.save,
-                      onPressed: () async {
-                        await calculateController
-                            .save()
-                            .then((value) => Navigator.of(pageContext).pop());
-                      },
-                      bgColor: Colors.blueAccent,
-                    ),
+                          }
+                        },
+                        bgColor: Colors.lightGreen,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      CustomButton(
+                        text: AppStrings.save,
+                        onPressed: () async {
+                          calculateController.saveClientInfo();
+                          await calculateController
+                              .save()
+                              .then((value) => Navigator.of(pageContext).pop());
+                        },
+                        bgColor: Colors.blueAccent,
+                      ),
+                    ],
                     const SizedBox(
                       width: 8,
                     ),

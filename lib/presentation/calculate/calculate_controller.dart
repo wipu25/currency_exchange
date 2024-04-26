@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/calculated_item.dart';
+import 'package:currency_exchange/models/client_info.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
@@ -12,6 +13,7 @@ import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/services/receipt_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
@@ -38,8 +40,14 @@ class CalculateController with ChangeNotifier {
   CalculateController(this._firebaseService);
 
   final _receiptService = ReceiptService();
+
+  final nameTextField = TextEditingController();
+  final addressTextField = TextEditingController();
+  final idTextField = TextEditingController();
+
   Country? _selectedCurrency;
   bool _isAddEnable = false;
+  bool _isClientInfoComplete = false;
   List<PriceRange> _selectedPriceRange = [];
   List<String> _inputPrice = [];
   List<CalculatedItem> _calculatedItem = [];
@@ -54,6 +62,8 @@ class CalculateController with ChangeNotifier {
   double get totalItemPrice => _receiptService.totalItemPrice;
   double get totalBuyPrice => _receiptService.totalBuyPrice;
   double get totalSellPrice => _receiptService.totalSellPrice;
+  bool get isContainSell => _receiptService.isContainSell;
+  bool get isClientInfoComplete => _isClientInfoComplete;
 
   String get totalBuyPriceComma =>
       CustomNumberFormat.commaFormat(_receiptService.totalBuyPrice);
@@ -266,6 +276,21 @@ class CalculateController with ChangeNotifier {
     }
   }
 
+  void saveClientInfo() {
+    _receiptService.setClientInfo(
+        ClientInfo(name: nameTextField.text, address: addressTextField.text));
+  }
+
+  void checkClientInfo() {
+    final newStatus = nameTextField.text.isNotEmpty &&
+        addressTextField.text.isNotEmpty &&
+        idTextField.text.isNotEmpty;
+    if (_isClientInfoComplete != newStatus) {
+      _isClientInfoComplete = newStatus;
+      notifyListeners();
+    }
+  }
+
   Future<bool> createPdf() async {
     _billOperation = BillOperation.print;
     notifyListeners();
@@ -273,7 +298,7 @@ class CalculateController with ChangeNotifier {
       return true;
     }
     final result = await PrintReceiptService()
-        .initPrint(_receiptService.currentTransaction);
+        .initPrint(_receiptService.currentTransaction, idTextField.text);
     if (!result) {
       _billOperation = BillOperation.none;
     }
