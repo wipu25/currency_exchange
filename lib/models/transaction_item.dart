@@ -1,4 +1,5 @@
 import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:currency_exchange/models/client_info.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +17,8 @@ class TransactionItem with _$TransactionItem {
       double? totalBuyPrice,
       double? totalSellPrice,
       required String dateTime,
-      required PaymentMethod paymentMethod}) = _TransactionItem;
+      required PaymentMethod paymentMethod,
+      ClientInfo? clientInfo}) = _TransactionItem;
 
   factory TransactionItem.fromJson(Map<String, Object?> json) =>
       _$TransactionItemFromJson(json);

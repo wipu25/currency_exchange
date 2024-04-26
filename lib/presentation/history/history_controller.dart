@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:currency_exchange/models/client_info.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
@@ -27,6 +28,11 @@ class HistoryController with ChangeNotifier {
   final Map<String, bool> _currencyFilter = {};
   final Map<String, bool> _paymentFilter = {};
   final Map<String, bool> _transactionFilter = {};
+  final nameTextField = TextEditingController();
+  final addressTextField = TextEditingController();
+  final idTextField = TextEditingController();
+  bool _isClientInfoComplete = false;
+  bool get isClientInfoComplete => _isClientInfoComplete;
 
   final _headerTitle = [
     'วันที่',
@@ -196,11 +202,34 @@ class HistoryController with ChangeNotifier {
   TransactionItem getSavedHistory(int index) {
     final posSavedHistory = _savedHistoryList.indexWhere(
         (element) => element.dateTime == _historyList[index].dateTime);
-    return _savedHistoryList[posSavedHistory];
+    final item = _savedHistoryList[posSavedHistory];
+    nameTextField.text = item.clientInfo?.name ?? '';
+    idTextField.text = item.clientInfo?.id ?? '';
+    addressTextField.text = item.clientInfo?.address ?? '';
+    return item;
+  }
+
+  Future<void> _updateTransaction(int index,
+      {PaymentMethod? paymentMethod, ClientInfo? clientInfo}) async {
+    final posSavedHistory = _savedHistoryList.indexWhere(
+        (element) => element.dateTime == _historyList[index].dateTime);
+    var newTransaction = _savedHistoryList[posSavedHistory];
+    if (paymentMethod != null) {
+      newTransaction = newTransaction.copyWith(paymentMethod: paymentMethod);
+    }
+    if (clientInfo != null) {
+      newTransaction = newTransaction.copyWith(clientInfo: clientInfo);
+    }
+    _savedHistoryList[posSavedHistory] = newTransaction;
+    _historyList[index] = _savedHistoryList[posSavedHistory];
+    await _saveTransaction();
   }
 
   Future<void> printTransaction(int index) async {
-    PrintReceiptService().initPrint(_historyList[index]);
+    final newClientInfo =
+        ClientInfo(name: nameTextField.text, address: addressTextField.text);
+    _updateTransaction(index, clientInfo: newClientInfo);
+    PrintReceiptService().initPrint(_historyList[index], idTextField.text);
   }
 
   setCancel(bool value) {
@@ -210,12 +239,7 @@ class HistoryController with ChangeNotifier {
 
   Future<void> cancelTransaction(int index) async {
     setCancel(true);
-    final posSavedHistory = _savedHistoryList.indexWhere(
-        (element) => element.dateTime == _historyList[index].dateTime);
-    _savedHistoryList[posSavedHistory] = _savedHistoryList[posSavedHistory]
-        .copyWith(paymentMethod: PaymentMethod.cancel);
-    _historyList[index] = _savedHistoryList[posSavedHistory];
-    await _saveTransaction();
+    await _updateTransaction(index, paymentMethod: PaymentMethod.cancel);
     setCancel(false);
   }
 
@@ -228,6 +252,16 @@ class HistoryController with ChangeNotifier {
       await _firebaseService.saveTransactionFile(map, historyDate);
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  void checkClientInfo() {
+    final newStatus = nameTextField.text.isNotEmpty &&
+        addressTextField.text.isNotEmpty &&
+        idTextField.text.isNotEmpty;
+    if (_isClientInfoComplete != newStatus) {
+      _isClientInfoComplete = newStatus;
+      notifyListeners();
     }
   }
 }

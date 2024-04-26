@@ -54,4 +54,12 @@ class AppStrings {
   static const String cancellingTime = 'เวลาธุรกรรม';
   static const String moreInfo = 'เพิ่มเติม';
   static const String filter = 'กรอง';
+
+  //client-info
+  static const String name = 'ชื่อ';
+  static const String address = 'ที่อยู่';
+  static const String id = 'ID/Passport';
+  static const String hintName = 'ชื่อ นามสกุล';
+  static const String hintAddress = 'ที่อยู่';
+  static const String hintID = '123456789';
 }

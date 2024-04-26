@@ -6,18 +6,22 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 
 class PrintReceiptService {
   late NetworkPrinter pw;
+  String? id;
   TransactionItem? transactionItem;
 
-  Future<bool> initPrint(TransactionItem? transactionItem) async {
+  Future<bool> initPrint(TransactionItem? transactionItem, String? id) async {
     const PaperSize paper = PaperSize.mm80;
     final profile = await CapabilityProfile.load();
     pw = NetworkPrinter(paper, profile);
     this.transactionItem = transactionItem;
+    this.id = id;
     try {
       final PosPrintResult res = await pw.connect('192.168.1.149', port: 9100);
       if (res == PosPrintResult.success) {
         await _receipt();
         pw.disconnect();
+        this.transactionItem = null;
+        this.id = null;
         return true;
       }
       throw PrintingException('Print Unsuccessful');
@@ -49,6 +53,10 @@ class PrintReceiptService {
 
     pw.text('DateTime: ${dateTimeSplit[0]} ${dateTimeSplit[1]}');
     pw.text('NO: $receiptId', linesAfter: 1);
+
+    pw.text('Name: ${transactionItem!.clientInfo?.name ?? ''}');
+    pw.text('Address: ${transactionItem!.clientInfo?.address ?? ''}');
+    pw.text('ID/Passport: $id', linesAfter: 1);
 
     pw.hr(ch: '=', linesAfter: 0);
 

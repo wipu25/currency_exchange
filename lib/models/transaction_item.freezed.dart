@@ -26,6 +26,7 @@ mixin _$TransactionItem {
   double? get totalSellPrice => throw _privateConstructorUsedError;
   String get dateTime => throw _privateConstructorUsedError;
   PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
+  ClientInfo? get clientInfo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,10 @@ abstract class $TransactionItemCopyWith<$Res> {
       double? totalBuyPrice,
       double? totalSellPrice,
       String dateTime,
-      PaymentMethod paymentMethod});
+      PaymentMethod paymentMethod,
+      ClientInfo? clientInfo});
+
+  $ClientInfoCopyWith<$Res>? get clientInfo;
 }
 
 /// @nodoc
@@ -65,6 +69,7 @@ class _$TransactionItemCopyWithImpl<$Res, $Val extends TransactionItem>
     Object? totalSellPrice = freezed,
     Object? dateTime = null,
     Object? paymentMethod = null,
+    Object? clientInfo = freezed,
   }) {
     return _then(_value.copyWith(
       calculatedItem: null == calculatedItem
@@ -87,7 +92,23 @@ class _$TransactionItemCopyWithImpl<$Res, $Val extends TransactionItem>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as PaymentMethod,
+      clientInfo: freezed == clientInfo
+          ? _value.clientInfo
+          : clientInfo // ignore: cast_nullable_to_non_nullable
+              as ClientInfo?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClientInfoCopyWith<$Res>? get clientInfo {
+    if (_value.clientInfo == null) {
+      return null;
+    }
+
+    return $ClientInfoCopyWith<$Res>(_value.clientInfo!, (value) {
+      return _then(_value.copyWith(clientInfo: value) as $Val);
+    });
   }
 }
 
@@ -104,7 +125,11 @@ abstract class _$$_TransactionItemCopyWith<$Res>
       double? totalBuyPrice,
       double? totalSellPrice,
       String dateTime,
-      PaymentMethod paymentMethod});
+      PaymentMethod paymentMethod,
+      ClientInfo? clientInfo});
+
+  @override
+  $ClientInfoCopyWith<$Res>? get clientInfo;
 }
 
 /// @nodoc
@@ -123,6 +148,7 @@ class __$$_TransactionItemCopyWithImpl<$Res>
     Object? totalSellPrice = freezed,
     Object? dateTime = null,
     Object? paymentMethod = null,
+    Object? clientInfo = freezed,
   }) {
     return _then(_$_TransactionItem(
       calculatedItem: null == calculatedItem
@@ -145,6 +171,10 @@ class __$$_TransactionItemCopyWithImpl<$Res>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as PaymentMethod,
+      clientInfo: freezed == clientInfo
+          ? _value.clientInfo
+          : clientInfo // ignore: cast_nullable_to_non_nullable
+              as ClientInfo?,
     ));
   }
 }
@@ -157,7 +187,8 @@ class _$_TransactionItem extends _TransactionItem {
       this.totalBuyPrice,
       this.totalSellPrice,
       required this.dateTime,
-      required this.paymentMethod})
+      required this.paymentMethod,
+      this.clientInfo})
       : _calculatedItem = calculatedItem,
         super._();
 
@@ -181,10 +212,12 @@ class _$_TransactionItem extends _TransactionItem {
   final String dateTime;
   @override
   final PaymentMethod paymentMethod;
+  @override
+  final ClientInfo? clientInfo;
 
   @override
   String toString() {
-    return 'TransactionItem(calculatedItem: $calculatedItem, totalBuyPrice: $totalBuyPrice, totalSellPrice: $totalSellPrice, dateTime: $dateTime, paymentMethod: $paymentMethod)';
+    return 'TransactionItem(calculatedItem: $calculatedItem, totalBuyPrice: $totalBuyPrice, totalSellPrice: $totalSellPrice, dateTime: $dateTime, paymentMethod: $paymentMethod, clientInfo: $clientInfo)';
   }
 
   @override
@@ -201,7 +234,9 @@ class _$_TransactionItem extends _TransactionItem {
             (identical(other.dateTime, dateTime) ||
                 other.dateTime == dateTime) &&
             (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod));
+                other.paymentMethod == paymentMethod) &&
+            (identical(other.clientInfo, clientInfo) ||
+                other.clientInfo == clientInfo));
   }
 
   @JsonKey(ignore: true)
@@ -212,7 +247,8 @@ class _$_TransactionItem extends _TransactionItem {
       totalBuyPrice,
       totalSellPrice,
       dateTime,
-      paymentMethod);
+      paymentMethod,
+      clientInfo);
 
   @JsonKey(ignore: true)
   @override
@@ -234,7 +270,8 @@ abstract class _TransactionItem extends TransactionItem {
       final double? totalBuyPrice,
       final double? totalSellPrice,
       required final String dateTime,
-      required final PaymentMethod paymentMethod}) = _$_TransactionItem;
+      required final PaymentMethod paymentMethod,
+      final ClientInfo? clientInfo}) = _$_TransactionItem;
   const _TransactionItem._() : super._();
 
   factory _TransactionItem.fromJson(Map<String, dynamic> json) =
@@ -250,6 +287,8 @@ abstract class _TransactionItem extends TransactionItem {
   String get dateTime;
   @override
   PaymentMethod get paymentMethod;
+  @override
+  ClientInfo? get clientInfo;
   @override
   @JsonKey(ignore: true)
   _$$_TransactionItemCopyWith<_$_TransactionItem> get copyWith =>

@@ -1,4 +1,5 @@
 import 'package:currency_exchange/models/calculated_item.dart';
+import 'package:currency_exchange/models/client_info.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
@@ -12,6 +13,7 @@ class ReceiptService extends ChangeNotifier {
   double _totalItemPrice = 0.0;
   double _totalBuyPrice = 0.0;
   double _totalSellPrice = 0.0;
+  int _sellTransactionCount = 0;
   final List<ExchangeItem> _currencyItem = [];
   Transaction _transaction = Transaction.buy;
   PaymentMethod _payment = PaymentMethod.cash;
@@ -25,6 +27,7 @@ class ReceiptService extends ChangeNotifier {
   PaymentMethod get payment => _payment;
   Transaction get transaction => _transaction;
   bool get isTransactionBuy => _transaction == Transaction.buy;
+  bool get isContainSell => _sellTransactionCount > 0;
 
   setTransaction() {
     if (isTransactionBuy) {
@@ -64,6 +67,7 @@ class ReceiptService extends ChangeNotifier {
     if (_transaction == Transaction.buy) {
       _totalBuyPrice += _totalItemPrice;
     } else {
+      _sellTransactionCount++;
       _totalSellPrice += _totalItemAmount;
     }
     for (var i = 0; i < _currencyItem.length; i++) {
@@ -98,6 +102,7 @@ class ReceiptService extends ChangeNotifier {
     if (_currencyItem[index].transaction == Transaction.buy.name) {
       _totalBuyPrice -= _currencyItem[index].totalPrice;
     } else {
+      _sellTransactionCount--;
       _totalSellPrice -= _currencyItem[index].amountExchange;
     }
     _currencyItem.removeAt(index);
@@ -107,6 +112,7 @@ class ReceiptService extends ChangeNotifier {
   clearItem() {
     _totalBuyPrice = 0.0;
     _totalSellPrice = 0.0;
+    _sellTransactionCount = 0;
     _currencyItem.clear();
     notifyListeners();
   }
@@ -120,5 +126,12 @@ class ReceiptService extends ChangeNotifier {
         dateTime: DateFormat('yyyy-MM-dd_HH:mm:ss').format(timeNow),
         paymentMethod: _payment);
     notifyListeners();
+  }
+
+  setClientInfo(ClientInfo clientInfo) {
+    if (isContainSell) {
+      _currentTransaction =
+          _currentTransaction!.copyWith(clientInfo: clientInfo);
+    }
   }
 }
