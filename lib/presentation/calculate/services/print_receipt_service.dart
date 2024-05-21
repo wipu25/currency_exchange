@@ -90,7 +90,7 @@ class PrintReceiptService {
         pw.row([
           PosColumn(
             text:
-                '${calculatedItem.transaction.toUpperCase()} ${calculatedItem.currency}',
+                '${calculatedItem.transaction.name.toUpperCase()} ${calculatedItem.currency}',
             width: 3,
             styles: const PosStyles(align: PosAlign.left),
           ),

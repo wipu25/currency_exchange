@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class DisplayTransactionDialog extends StatelessWidget {
                                     ? Colors.lightGreen.withOpacity(0.5)
                                     : Colors.red.withOpacity(0.5),
                                 child: Text(
-                                  '${index.transaction.toUpperCase()} ${index.currency}',
+                                  '${index.transaction.name.toUpperCase()} ${index.currency.currency}',
                                   style: const TextStyle(fontSize: 22),
                                 )),
                             ...List.generate(
@@ -48,9 +49,12 @@ class DisplayTransactionDialog extends StatelessWidget {
                                                 '= ${index.calculatedItem[item].getPrice()}'))
                                       ],
                                     )),
-                            // Text('Amount ${index.amountExchange} ${index.transaction == 'buy' ? index.currency : 'THB'}',style: const TextStyle(fontSize: 30),),
                             Text(
-                              'Total ${index.getTotalPrice()} ${index.transaction != 'buy' ? index.currency : 'THB'}',
+                              'Amount ${index.amountExchange} ${index.transaction == Transaction.buy ? index.currency.currency : 'THB'}',
+                              style: const TextStyle(fontSize: 30),
+                            ),
+                            Text(
+                              'Total ${index.getTotalPrice()} ${index.transaction != Transaction.buy ? index.currency.currency : 'THB'}',
                               style: const TextStyle(fontSize: 30),
                             )
                           ],

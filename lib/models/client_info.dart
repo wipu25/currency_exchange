@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'client_info.freezed.dart';
-part 'client_info.g.dart';
+part 'freezed/client_info.freezed.dart';
+part 'freezed/client_info.g.dart';
 
 @freezed
 class ClientInfo with _$ClientInfo {

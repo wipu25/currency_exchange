@@ -1,13 +1,13 @@
 import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
+import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectTransaction extends StatelessWidget {
+class SelectTransaction extends ConsumerWidget {
   const SelectTransaction({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         const Text(
@@ -17,14 +17,15 @@ class SelectTransaction extends StatelessWidget {
         const SizedBox(
           width: 8,
         ),
-        Consumer<CalculateController>(
-            builder: (_, calculateControllers, __) => OutlinedButton(
-                onPressed: () => calculateControllers.updateTransaction(),
+        Consumer(
+            builder: (_, ref, __) => OutlinedButton(
+                onPressed: () =>
+                    ref.read(calculateNotifier.notifier).updateTransaction(),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      calculateControllers.transaction.getString(),
+                      ref.watch(calculateNotifier).transaction.getString(),
                       style: const TextStyle(fontSize: 24),
                     ),
                     const SizedBox(

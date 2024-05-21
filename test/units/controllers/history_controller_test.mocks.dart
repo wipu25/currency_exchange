@@ -140,6 +140,12 @@ class MockFirebaseService extends _i1.Mock implements _i2.FirebaseService {
 class MockCurrencyListService extends _i1.Mock
     implements _i7.CurrencyListService {
   @override
+  bool get isCurrencySet => (super.noSuchMethod(
+        Invocation.getter(#isCurrencySet),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+  @override
   List<_i8.Country> get currencyList => (super.noSuchMethod(
         Invocation.getter(#currencyList),
         returnValue: <_i8.Country>[],
@@ -164,9 +170,9 @@ class MockCurrencyListService extends _i1.Mock
         returnValueForMissingStub: false,
       ) as bool);
   @override
-  void setCurrencyList(List<_i8.Country>? value) => super.noSuchMethod(
+  void setCurrencyDone(bool? value) => super.noSuchMethod(
         Invocation.method(
-          #setCurrencyList,
+          #setCurrencyDone,
           [value],
         ),
         returnValueForMissingStub: null,
@@ -214,10 +220,10 @@ class MockCurrencyListService extends _i1.Mock
         returnValueForMissingStub: null,
       );
   @override
-  bool generateBuySellList() => (super.noSuchMethod(
+  bool generateBuySellList(List<_i8.Country>? value) => (super.noSuchMethod(
         Invocation.method(
           #generateBuySellList,
-          [],
+          [value],
         ),
         returnValue: false,
         returnValueForMissingStub: false,

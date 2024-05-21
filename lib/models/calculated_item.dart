@@ -1,8 +1,8 @@
 import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'calculated_item.freezed.dart';
-part 'calculated_item.g.dart';
+part 'freezed/calculated_item.freezed.dart';
+part 'freezed/calculated_item.g.dart';
 
 @freezed
 class CalculatedItem with _$CalculatedItem {

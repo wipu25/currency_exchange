@@ -3,24 +3,27 @@ import 'package:currency_exchange/presentation/exchange/exchange_screen.dart';
 import 'package:currency_exchange/presentation/history/history_screen.dart';
 import 'package:currency_exchange/presentation/sales/sales_screen.dart';
 import 'package:currency_exchange/presentation/widgets/menu_side_bar.dart';
+import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:currency_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+final firebaseProvider = Provider.autoDispose((ref) => FirebaseService());
+
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Consumer<GlobalWidgetService>(
-                builder: (_, globalWidgetService, __) => Text(
-                  globalWidgetService.menuSelect.name,
+              child: Consumer(
+                builder: (_, ref, __) => Text(
+                  ref.watch(menuSelectStateProvider).menuSelect.name,
                   style: const TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold),
                 ),
@@ -29,22 +32,24 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Consumer<GlobalWidgetService>(
-                    builder: (_, globalWidgetService, __) => MenuSideBar(
-                      menuSelect: globalWidgetService.menuSelect,
-                      isExpand: globalWidgetService.isExpand,
-                      expandMenu: () => globalWidgetService.expand(),
-                      selectedMenu: (MenuSelect itemMenu) =>
-                          globalWidgetService.switchScreen(itemMenu),
+                  Consumer(
+                    builder: (_, ref, __) => MenuSideBar(
+                      menuSelect: ref.watch(menuSelectStateProvider).menuSelect,
+                      isExpand: ref.watch(menuSelectStateProvider).isExpand,
+                      expandMenu: () =>
+                          ref.read(menuSelectStateProvider.notifier).expand(),
+                      selectedMenu: (MenuSelect itemMenu) => ref
+                          .read(menuSelectStateProvider.notifier)
+                          .switchScreen(itemMenu),
                     ),
                   ),
                   Expanded(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: SingleChildScrollView(
-                        child: Consumer<GlobalWidgetService>(
-                          builder: (_, globalWidgetService, __) =>
-                              screenSelect(globalWidgetService.menuSelect),
+                        child: Consumer(
+                          builder: (_, globalWidgetService, __) => screenSelect(
+                              ref.watch(menuSelectStateProvider).menuSelect),
                         ),
                       ),
                     ),

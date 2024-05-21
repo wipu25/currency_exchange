@@ -152,7 +152,8 @@ class HistoryScreen extends StatelessWidget {
                                         (index) => flexibleColumn(
                                             item.calculatedItem[index]
                                                 .priceRange.length,
-                                            item.calculatedItem[index].currency,
+                                            item.calculatedItem[index].currency
+                                                .countryName,
                                             index ==
                                                 item.calculatedItem.length -
                                                     1)).toList(),
