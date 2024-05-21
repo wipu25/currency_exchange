@@ -1,31 +1,28 @@
 import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
+import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/select_country_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectCountry extends StatelessWidget {
+class SelectCountry extends ConsumerWidget {
   const SelectCountry({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<CalculateController>(
-        builder: (consumerContext, calculateControllers, __) {
-      final selectedCountry = calculateControllers.selectedCountry;
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Consumer(builder: (_, ref, __) {
+      final selectedCountry = ref.watch(calculateNotifier).selectedCurrency;
       return GestureDetector(
         onTap: () {
           showDialog<void>(
-              context: consumerContext,
+              context: context,
               builder: (BuildContext dialogContext) {
-                return ChangeNotifierProvider.value(
-                  value: consumerContext.read<CalculateController>(),
-                  child: Consumer<CalculateController>(
-                    builder: (_, calculateControllers, __) =>
-                        SelectCountryDialog(
-                      selectedCountry: calculateControllers.selectedCountry,
-                      setSelectedCountry: (country) =>
-                          calculateControllers.setSelectedCurrency(country),
-                    ),
+                return Consumer(
+                  builder: (_, ref, __) => SelectCountryDialog(
+                    selectedCountry:
+                        ref.watch(calculateNotifier).selectedCurrency,
+                    setSelectedCountry: (country) => ref
+                        .read(calculateNotifier.notifier)
+                        .setSelectedCurrency(country),
                   ),
                 );
               });
@@ -36,7 +33,7 @@ class SelectCountry extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                !calculateControllers.isTransactionBuy
+                !ref.watch(calculateNotifier.notifier).isTransactionBuy
                     ? currencyIcon('', AppStrings.thb)
                     : currencyIcon(selectedCountry?.logo,
                         selectedCountry?.countryName ?? ''),
@@ -50,7 +47,7 @@ class SelectCountry extends StatelessWidget {
                 const SizedBox(
                   width: 32,
                 ),
-                calculateControllers.isTransactionBuy
+                ref.watch(calculateNotifier.notifier).isTransactionBuy
                     ? currencyIcon('', AppStrings.thb)
                     : currencyIcon(selectedCountry?.logo,
                         selectedCountry?.countryName ?? ''),

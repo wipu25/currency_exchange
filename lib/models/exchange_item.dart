@@ -1,10 +1,12 @@
 import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/calculated_item.dart';
+import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/price_range.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'exchange_item.freezed.dart';
-part 'exchange_item.g.dart';
+part 'freezed/exchange_item.freezed.dart';
+part 'freezed/exchange_item.g.dart';
 
 @freezed
 class ExchangeItem with _$ExchangeItem {
@@ -15,8 +17,8 @@ class ExchangeItem with _$ExchangeItem {
     required List<CalculatedItem> calculatedItem,
     required double amountExchange,
     required double totalPrice,
-    required String currency,
-    required String transaction,
+    required Country currency,
+    required Transaction transaction,
   }) = _ExchangeItem;
 
   factory ExchangeItem.fromJson(Map<String, Object?> json) =>

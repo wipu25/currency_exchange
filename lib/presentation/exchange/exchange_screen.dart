@@ -1,7 +1,7 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/main.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/price_range.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
 import 'package:currency_exchange/presentation/exchange/widgets/price_cell.dart';
 import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
@@ -9,19 +9,18 @@ import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExchangeScreen extends StatelessWidget {
+class ExchangeScreen extends ConsumerWidget {
   const ExchangeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final currency = context.read<ExchangeController>();
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Consumer<ExchangeController>(
-          builder: (_, exchangeController, child) =>
-              exchangeController.isCurrencyLoading
+      child: Consumer(
+          builder: (_, ref, child) =>
+              ref.watch(exchangeProvider).isCurrencyLoading
                   ? const Center(child: Loading())
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,22 +43,25 @@ class ExchangeScreen extends StatelessWidget {
                                 HeaderCell(text: AppStrings.selling),
                               ]),
                               ...List.generate(
-                                exchangeController.currencyList.length,
+                                ref.watch(exchangeProvider).currencyList.length,
                                 (currencyIndex) {
-                                  final item = exchangeController
+                                  final item = ref
+                                      .watch(exchangeProvider)
                                       .currencyList[currencyIndex];
                                   return TableRow(children: [
                                     currencyInfo(item),
                                     priceRange(item),
                                     PriceCell(
-                                      currencyList:
-                                          exchangeController.buyCurrencyList,
+                                      currencyList: ref
+                                          .watch(exchangeProvider)
+                                          .buyCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.buy,
                                     ),
                                     PriceCell(
-                                      currencyList:
-                                          exchangeController.sellCurrencyList,
+                                      currencyList: ref
+                                          .watch(exchangeProvider)
+                                          .sellCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.sell,
                                     ),
@@ -73,19 +75,19 @@ class ExchangeScreen extends StatelessWidget {
                           height: 16,
                         ),
                         CustomButton(
-                          onPressed: exchangeController.isSaveEnable
-                              ? () => currency.onSave()
-                              : !exchangeController.isEdit
-                                  ? () => currency.onEdit()
+                          onPressed: ref.watch(exchangeProvider).isSaveEnable
+                              ? () => ref.watch(exchangeProvider).onSave()
+                              : !ref.watch(exchangeProvider).isEdit
+                                  ? () => ref.watch(exchangeProvider).onEdit()
                                   : null,
-                          text: exchangeController.isSaveEnable
+                          text: ref.watch(exchangeProvider).isSaveEnable
                               ? AppStrings.save
-                              : exchangeController.isEdit
+                              : ref.watch(exchangeProvider).isEdit
                                   ? AppStrings.save
                                   : AppStrings.edit,
-                          bgColor: exchangeController.isSaveEnable
+                          bgColor: ref.watch(exchangeProvider).isSaveEnable
                               ? Colors.lightBlueAccent
-                              : !exchangeController.isEdit
+                              : !ref.watch(exchangeProvider).isEdit
                                   ? Colors.lightBlueAccent
                                   : Colors.grey,
                         )

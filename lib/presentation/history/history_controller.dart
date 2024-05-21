@@ -172,7 +172,7 @@ class HistoryController with ChangeNotifier {
             dateTime: item.dateTime,
             paymentMethod: item.paymentMethod,
             totalBuyPrice: item.calculatedItem
-                .where((element) => element.transaction == Transaction.buy.name)
+                .where((element) => element.transaction == Transaction.buy)
                 .fold(
                     0.0,
                     (previousValue, element) =>

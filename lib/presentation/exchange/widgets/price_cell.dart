@@ -1,13 +1,13 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
+import 'package:currency_exchange/main.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PriceCell extends StatelessWidget {
+class PriceCell extends ConsumerWidget {
   final List<List<String?>> currencyList;
   final int currencyIndex;
   final PriceType priceType;
@@ -18,9 +18,8 @@ class PriceCell extends StatelessWidget {
       required this.priceType});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<ExchangeController>(
-        builder: (_, exchangeController, child) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Consumer(builder: (_, exchangeController, child) {
       return TableCell(
         verticalAlignment: TableCellVerticalAlignment.middle,
         child: Padding(
@@ -31,7 +30,7 @@ class PriceCell extends StatelessWidget {
               currencyList[currencyIndex].length,
               (index) => Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: !exchangeController.isEdit
+                child: !ref.watch(exchangeProvider).isEdit
                     ? Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
@@ -45,7 +44,7 @@ class PriceCell extends StatelessWidget {
                             currencyList[currencyIndex][index]),
                         onChanged: (value) {
                           try {
-                            exchangeController.addRate(
+                            ref.watch(exchangeProvider).addRate(
                                 currencyIndex, index, value, priceType);
                             ScaffoldMessenger.of(context).clearSnackBars();
                           } catch (e) {

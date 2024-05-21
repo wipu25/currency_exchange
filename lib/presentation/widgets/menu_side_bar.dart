@@ -21,30 +21,36 @@ class MenuSideBar extends StatefulWidget {
 class _MenuSideBarState extends State<MenuSideBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueAccent,
-      width: widget.isExpand ? 220 : 80,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Column(
-          crossAxisAlignment: widget.isExpand
-              ? CrossAxisAlignment.start
-              : CrossAxisAlignment.center,
-          children: [
-            itemMenu(Icons.currency_exchange, MenuSelect.exchanges),
-            itemMenu(Icons.calculate_outlined, MenuSelect.calculate),
-            itemMenu(Icons.format_list_bulleted_outlined, MenuSelect.history),
-            //TODO: will continue later
-            // itemMenu(Icons.auto_graph, MenuSelect.sales),
-            const Spacer(),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: widget.isExpand ? 28 : 0),
-              child: GestureDetector(
-                  onTap: widget.expandMenu,
-                  child: const Icon(Icons.arrow_forward_ios_outlined)),
-            )
-          ],
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.blueAccent,
+        width: widget.isExpand ? 220 : 80,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: widget.isExpand
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
+            children: [
+              itemMenu(Icons.currency_exchange, MenuSelect.exchanges),
+              itemMenu(Icons.calculate_outlined, MenuSelect.calculate),
+              itemMenu(Icons.format_list_bulleted_outlined, MenuSelect.history),
+              //TODO: will continue later
+              // itemMenu(Icons.auto_graph, MenuSelect.sales),
+              // const Spacer(),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: widget.isExpand ? 28 : 0),
+                child: GestureDetector(
+                    onTap: widget.expandMenu,
+                    child: const Icon(Icons.arrow_forward_ios_outlined)),
+              )
+            ],
+          ),
         ),
       ),
     );
