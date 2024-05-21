@@ -1,6 +1,6 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_screen.dart';
+import 'package:currency_exchange/presentation/calculate/notifier/summary_panel_notifier.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/summary_dialog.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';

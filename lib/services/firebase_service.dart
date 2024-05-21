@@ -4,6 +4,9 @@ import 'package:currency_exchange/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final firebaseServiceProvider = Provider((ref) => FirebaseService());
 
 class FirebaseService {
   static const stagingPath = 'stag/';

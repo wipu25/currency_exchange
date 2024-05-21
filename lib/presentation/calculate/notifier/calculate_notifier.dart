@@ -7,7 +7,7 @@ import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_screen.dart';
+import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final calculateNotifier =

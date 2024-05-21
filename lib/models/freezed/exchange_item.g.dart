@@ -1,0 +1,36 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of '../exchange_item.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_ExchangeItem _$$_ExchangeItemFromJson(Map<String, dynamic> json) =>
+    _$_ExchangeItem(
+      priceRange: (json['priceRange'] as List<dynamic>)
+          .map((e) => PriceRange.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      calculatedItem: (json['calculatedItem'] as List<dynamic>)
+          .map((e) => CalculatedItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      amountExchange: (json['amountExchange'] as num).toDouble(),
+      totalPrice: (json['totalPrice'] as num).toDouble(),
+      currency: Country.fromJson(json['currency'] as Map<String, dynamic>),
+      transaction: $enumDecode(_$TransactionEnumMap, json['transaction']),
+    );
+
+Map<String, dynamic> _$$_ExchangeItemToJson(_$_ExchangeItem instance) =>
+    <String, dynamic>{
+      'priceRange': instance.priceRange.map((e) => e.toJson()).toList(),
+      'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),
+      'amountExchange': instance.amountExchange,
+      'totalPrice': instance.totalPrice,
+      'currency': instance.currency.toJson(),
+      'transaction': _$TransactionEnumMap[instance.transaction]!,
+    };
+
+const _$TransactionEnumMap = {
+  Transaction.buy: 'buy',
+  Transaction.sell: 'sell',
+};
