@@ -1,7 +1,5 @@
 import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
 import 'package:currency_exchange/presentation/home/home_screen.dart';
-import 'package:currency_exchange/services/currency_list_service.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,10 +11,6 @@ Future<void> main() async {
   runApp(const ProviderScope(child: CurrencyExchange()));
 }
 
-//TODO: can move into their own file it will lazily init anyway
-final currencyListProvider =
-    ChangeNotifierProvider((ref) => CurrencyListService());
-final firebaseServiceProvider = Provider((ref) => FirebaseService());
 final exchangeProvider =
     ChangeNotifierProvider((ref) => ExchangeController(ref));
 

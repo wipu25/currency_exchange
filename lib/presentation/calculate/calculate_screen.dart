@@ -1,22 +1,15 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/main.dart';
-import 'package:currency_exchange/models/summary_panel_state.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/summary_panel_notifier.dart';
-import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/convert_list.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/select_country.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/select_transaction.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/summary_panel.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
+import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final receiptProvider = Provider((ref) => ReceiptStateService());
-final summaryPanelNotifier =
-    StateNotifierProvider<SummaryPanelNotifier, SummaryPanelState>(
-        (ref) => SummaryPanelNotifier(ref));
 
 class CalculateScreen extends ConsumerStatefulWidget {
   const CalculateScreen({super.key});

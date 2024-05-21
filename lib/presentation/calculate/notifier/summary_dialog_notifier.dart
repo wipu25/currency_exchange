@@ -4,12 +4,16 @@ import 'package:currency_exchange/models/client_info.dart';
 import 'package:currency_exchange/models/summary_dialog_model.dart';
 import 'package:currency_exchange/models/summary_dialog_state.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_screen.dart';
 import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
+import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
 import 'package:currency_exchange/presentation/home/home_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+final summaryDialogStateProvider =
+StateNotifierProvider<SummaryDialogNotifier, SummaryDialogState>(
+        (ref) => SummaryDialogNotifier(ref));
 
 class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
   final Ref _ref;
