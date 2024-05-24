@@ -5,7 +5,8 @@ import 'package:currency_exchange/models/price_range.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final currencyListProvider = ChangeNotifierProvider((ref) => CurrencyListService());
+final currencyListProvider =
+    ChangeNotifierProvider((ref) => CurrencyListService());
 
 //TODO: convert to state notifier
 class CurrencyListService extends ChangeNotifier {

@@ -1,5 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/summary_dialog_model.dart';
+import 'package:currency_exchange/presentation/calculate/models/summary_dialog_model.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/summary_dialog_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/display_transaction_dialog.dart';
