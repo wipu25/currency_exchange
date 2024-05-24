@@ -1,5 +1,5 @@
 import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/summary_dialog_model.dart';
+import 'package:currency_exchange/presentation/calculate/models/summary_dialog_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed/summary_dialog_state.freezed.dart';

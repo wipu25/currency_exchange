@@ -1,10 +1,10 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/models/calculate_screen_state.dart';
-import 'package:currency_exchange/models/calculated_item.dart';
+import 'package:currency_exchange/presentation/calculate/models/calculate_screen_state.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/exchange_item.dart';
+import 'package:currency_exchange/presentation/calculate/models/calculated_item.dart';
+import 'package:currency_exchange/presentation/exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';

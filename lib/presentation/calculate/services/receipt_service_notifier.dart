@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/exchange_item.dart';
+import 'package:currency_exchange/presentation/exchange/models/exchange_item.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

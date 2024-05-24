@@ -2,9 +2,10 @@ import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
-class SelectCountryDialog extends StatelessWidget {
+class SelectCountryDialog extends ConsumerWidget {
   final Country? selectedCountry;
   final Function(Country) setSelectedCountry;
   const SelectCountryDialog(
@@ -14,15 +15,15 @@ class SelectCountryDialog extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,
       content: SingleChildScrollView(
         child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: context
-                .watch<CurrencyListService>()
+            children: ref
+                .watch(currencyListProvider)
                 .currencyList
                 .map((item) => GestureDetector(
                       onTap: () => setSelectedCountry.call(item),
