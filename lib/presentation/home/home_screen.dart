@@ -3,12 +3,9 @@ import 'package:currency_exchange/presentation/exchange/exchange_screen.dart';
 import 'package:currency_exchange/presentation/history/history_screen.dart';
 import 'package:currency_exchange/presentation/sales/sales_screen.dart';
 import 'package:currency_exchange/presentation/widgets/menu_side_bar.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:currency_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final firebaseProvider = Provider.autoDispose((ref) => FirebaseService());
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);

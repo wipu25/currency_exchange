@@ -176,7 +176,7 @@ class CalculateScreenNotifier extends StateNotifier<CalculateScreenState> {
         calculatedItem: state.calculatedItem,
         amountExchange: state.totalItemAmount,
         totalPrice: state.totalItemPrice,
-        currency: state.selectedCurrency!,
+        currency: state.selectedCurrency!.currency,
         transaction: state.transaction));
     _clearCurrentBill();
     addSplitItem();

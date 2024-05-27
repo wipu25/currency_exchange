@@ -150,8 +150,7 @@ class DisplayMoreInfoDialog extends StatelessWidget {
                           flexibleText(item
                               .calculatedItem[index].transaction.name
                               .toUpperCase()),
-                          flexibleText(
-                              item.calculatedItem[index].currency.countryName),
+                          flexibleText(item.calculatedItem[index].currency),
                           Expanded(
                               child: Column(
                             children: item.calculatedItem[index].priceRange

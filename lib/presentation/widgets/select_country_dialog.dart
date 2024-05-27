@@ -3,7 +3,6 @@ import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 
 class SelectCountryDialog extends ConsumerWidget {
   final Country? selectedCountry;
