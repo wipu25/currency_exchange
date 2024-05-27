@@ -54,7 +54,7 @@ class SummaryPanel extends ConsumerWidget {
                                         ? Colors.lightGreen.withOpacity(0.5)
                                         : Colors.red.withOpacity(0.5),
                                     child: Text(
-                                      '${item.transaction.name.toUpperCase()} ${item.currency.currency}',
+                                      '${item.transaction.name.toUpperCase()} ${item.currency}',
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),

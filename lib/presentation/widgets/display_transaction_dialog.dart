@@ -29,7 +29,7 @@ class DisplayTransactionDialog extends StatelessWidget {
                                     ? Colors.lightGreen.withOpacity(0.5)
                                     : Colors.red.withOpacity(0.5),
                                 child: Text(
-                                  '${index.transaction.name.toUpperCase()} ${index.currency.currency}',
+                                  '${index.transaction.name.toUpperCase()} ${index.currency}',
                                   style: const TextStyle(fontSize: 22),
                                 )),
                             ...List.generate(
@@ -50,11 +50,11 @@ class DisplayTransactionDialog extends StatelessWidget {
                                       ],
                                     )),
                             Text(
-                              'Amount ${index.amountExchange} ${index.transaction == Transaction.buy ? index.currency.currency : 'THB'}',
+                              'Amount ${index.amountExchange} ${index.transaction == Transaction.buy ? index.currency : 'THB'}',
                               style: const TextStyle(fontSize: 30),
                             ),
                             Text(
-                              'Total ${index.getTotalPrice()} ${index.transaction != Transaction.buy ? index.currency.currency : 'THB'}',
+                              'Total ${index.getTotalPrice()} ${index.transaction != Transaction.buy ? index.currency : 'THB'}',
                               style: const TextStyle(fontSize: 30),
                             )
                           ],

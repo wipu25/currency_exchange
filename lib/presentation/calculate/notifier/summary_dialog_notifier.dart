@@ -6,7 +6,7 @@ import 'package:currency_exchange/presentation/calculate/models/summary_dialog_m
 import 'package:currency_exchange/presentation/calculate/models/summary_dialog_state.dart';
 import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
 import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
-import 'package:currency_exchange/presentation/home/home_screen.dart';
+import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';

@@ -45,8 +45,7 @@ class ExchangeController with ChangeNotifier {
       //   final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
       //   final currencyFile =
       //       await _ref.watch(firebaseServiceProvider).getCurrencyFile(date: currentDate);
-      final currencyFile =
-          await _ref.watch(firebaseServiceProvider).getCurrencyFile();
+      final currencyFile = await _ref.read(firebaseProvider).getCurrencyFile();
       _ref.read(currencyListProvider).setCurrencyDone(true);
       // notifyListeners();
       return currencyFile;
@@ -90,7 +89,7 @@ class ExchangeController with ChangeNotifier {
     try {
       // final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
       // _ref.watch(firebaseServiceProvider).saveCurrencyFile(map, currentDate);
-      _ref.watch(firebaseServiceProvider).saveTemplateFile(map);
+      _ref.watch(firebaseProvider).saveTemplateFile(map);
       _isEdit = false;
       _isSave = false;
       _ref.read(currencyListProvider).setCurrencyDone(true);

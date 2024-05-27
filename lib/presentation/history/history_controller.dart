@@ -28,6 +28,8 @@ class HistoryController with ChangeNotifier {
   final Map<String, bool> _currencyFilter = {};
   final Map<String, bool> _paymentFilter = {};
   final Map<String, bool> _transactionFilter = {};
+
+  //move to individual state
   final nameTextField = TextEditingController();
   final addressTextField = TextEditingController();
   final idTextField = TextEditingController();
@@ -199,6 +201,7 @@ class HistoryController with ChangeNotifier {
     _isLoading = false;
   }
 
+  //TODO: move to individual state
   TransactionItem getSavedHistory(int index) {
     final posSavedHistory = _savedHistoryList.indexWhere(
         (element) => element.dateTime == _historyList[index].dateTime);
@@ -209,6 +212,21 @@ class HistoryController with ChangeNotifier {
     return item;
   }
 
+  //TODO: move to individual state
+  Future<void> printTransaction(int index) async {
+    final newClientInfo =
+        ClientInfo(name: nameTextField.text, address: addressTextField.text);
+    _updateTransaction(index, clientInfo: newClientInfo);
+    PrintReceiptService().initPrint(_historyList[index], idTextField.text);
+  }
+
+  //TODO: move to individual state
+  setCancel(bool value) {
+    _isCancel = value;
+    notifyListeners();
+  }
+
+  //TODO: move to individual state
   Future<void> _updateTransaction(int index,
       {PaymentMethod? paymentMethod, ClientInfo? clientInfo}) async {
     final posSavedHistory = _savedHistoryList.indexWhere(
@@ -225,24 +243,14 @@ class HistoryController with ChangeNotifier {
     await _saveTransaction();
   }
 
-  Future<void> printTransaction(int index) async {
-    final newClientInfo =
-        ClientInfo(name: nameTextField.text, address: addressTextField.text);
-    _updateTransaction(index, clientInfo: newClientInfo);
-    PrintReceiptService().initPrint(_historyList[index], idTextField.text);
-  }
-
-  setCancel(bool value) {
-    _isCancel = value;
-    notifyListeners();
-  }
-
+  //TODO: move to individual state
   Future<void> cancelTransaction(int index) async {
     setCancel(true);
     await _updateTransaction(index, paymentMethod: PaymentMethod.cancel);
     setCancel(false);
   }
 
+  //TODO: move to individual state
   Future<void> _saveTransaction() async {
     final historyDate = DateFormat('yyyy-MM-dd').format(_dateTimeDisplay);
     final map = {
@@ -255,6 +263,7 @@ class HistoryController with ChangeNotifier {
     }
   }
 
+  //TODO: move to individual state
   void checkClientInfo() {
     final newStatus = nameTextField.text.isNotEmpty &&
         addressTextField.text.isNotEmpty &&
