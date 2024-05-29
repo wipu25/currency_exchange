@@ -1,13 +1,14 @@
 import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/main.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/price_range.dart';
+import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
 import 'package:currency_exchange/presentation/exchange/widgets/price_cell.dart';
 import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
+import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,7 +21,7 @@ class ExchangeScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(20.0),
       child: Consumer(
           builder: (_, ref, child) =>
-              ref.watch(exchangeProvider).isCurrencyLoading
+              ref.watch(exchangeNotifier).isCurrencyLoading
                   ? const Center(child: Loading())
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -43,24 +44,24 @@ class ExchangeScreen extends ConsumerWidget {
                                 HeaderCell(text: AppStrings.selling),
                               ]),
                               ...List.generate(
-                                ref.watch(exchangeProvider).currencyList.length,
+                                ref.watch(currencyListProvider).currencyList.length,
                                 (currencyIndex) {
                                   final item = ref
-                                      .watch(exchangeProvider)
+                                      .watch(currencyListProvider)
                                       .currencyList[currencyIndex];
                                   return TableRow(children: [
                                     currencyInfo(item),
                                     priceRange(item),
                                     PriceCell(
                                       currencyList: ref
-                                          .watch(exchangeProvider)
+                                          .watch(currencyListProvider)
                                           .buyCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.buy,
                                     ),
                                     PriceCell(
                                       currencyList: ref
-                                          .watch(exchangeProvider)
+                                          .watch(currencyListProvider)
                                           .sellCurrencyList,
                                       currencyIndex: currencyIndex,
                                       priceType: PriceType.sell,
@@ -75,19 +76,19 @@ class ExchangeScreen extends ConsumerWidget {
                           height: 16,
                         ),
                         CustomButton(
-                          onPressed: ref.watch(exchangeProvider).isSaveEnable
-                              ? () => ref.watch(exchangeProvider).onSave()
-                              : !ref.watch(exchangeProvider).isEdit
-                                  ? () => ref.watch(exchangeProvider).onEdit()
+                          onPressed: ref.watch(exchangeNotifier).isSave
+                              ? () => ref.read(exchangeNotifier.notifier).onSave()
+                              : !ref.watch(exchangeNotifier).isEdit
+                                  ? () => ref.read(exchangeNotifier.notifier).onEdit()
                                   : null,
-                          text: ref.watch(exchangeProvider).isSaveEnable
+                          text: ref.watch(exchangeNotifier).isSave
                               ? AppStrings.save
-                              : ref.watch(exchangeProvider).isEdit
+                              : ref.watch(exchangeNotifier).isEdit
                                   ? AppStrings.save
                                   : AppStrings.edit,
-                          bgColor: ref.watch(exchangeProvider).isSaveEnable
+                          bgColor: ref.watch(exchangeNotifier).isSave
                               ? Colors.lightBlueAccent
-                              : !ref.watch(exchangeProvider).isEdit
+                              : !ref.watch(exchangeNotifier).isEdit
                                   ? Colors.lightBlueAccent
                                   : Colors.grey,
                         )

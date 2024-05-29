@@ -2,14 +2,11 @@ import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final currencyListProvider =
-    ChangeNotifierProvider((ref) => CurrencyListService());
+final currencyListProvider = Provider((ref) => CurrencyListService());
 
-//TODO: convert to state notifier
-class CurrencyListService extends ChangeNotifier {
+class CurrencyListService {
   final List<List<String?>> _buyCurrencyList = [];
   final List<List<String?>> _sellCurrencyList = [];
   List<Country> _currencyList = <Country>[];
@@ -65,7 +62,6 @@ class CurrencyListService extends ChangeNotifier {
 
   bool generateBuySellList(List<Country> value) {
     _currencyList = value;
-    notifyListeners();
     var isNullItem = false;
     for (var currency in _currencyList) {
       final List<String?> buyRangeList = [];

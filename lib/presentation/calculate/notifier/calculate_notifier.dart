@@ -11,15 +11,13 @@ import 'package:currency_exchange/presentation/calculate/services/receipt_servic
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final calculateNotifier =
-    StateNotifierProvider<CalculateScreenNotifier, CalculateScreenState>(
-        (ref) => CalculateScreenNotifier(ref));
+    NotifierProvider<CalculateScreenNotifier, CalculateScreenState>(
+        CalculateScreenNotifier.new);
 
-class CalculateScreenNotifier extends StateNotifier<CalculateScreenState> {
-  final Ref _ref;
-
-  CalculateScreenNotifier(this._ref)
-      : super(const CalculateScreenState(
-            null, false, Transaction.buy, [], [], [], 0, 0, 0));
+class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
+  @override
+  CalculateScreenState build() => const CalculateScreenState(
+      null, false, Transaction.buy, [], [], [], 0, 0, 0);
 
   bool get isTransactionBuy => state.transaction == Transaction.buy;
 
@@ -80,7 +78,7 @@ class CalculateScreenNotifier extends StateNotifier<CalculateScreenState> {
   }
 
   void updatePayment(PaymentMethod? value) {
-    _ref.read(receiptProvider).setPayment(value);
+    ref.read(receiptProvider).setPayment(value);
   }
 
   void setSelectedCurrency(Country country) {
@@ -171,7 +169,7 @@ class CalculateScreenNotifier extends StateNotifier<CalculateScreenState> {
   }
 
   void addToReceipt() {
-    _ref.read(receiptProvider).addCurrencyItem(ExchangeItem(
+    ref.read(receiptProvider).addCurrencyItem(ExchangeItem(
         priceRange: state.selectedPriceRange,
         calculatedItem: state.calculatedItem,
         amountExchange: state.totalItemAmount,
