@@ -11,14 +11,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 final historyNotifier =
-    StateNotifierProvider<HistoryScreenNotifier, HistoryScreenState>(
-        (ref) => HistoryScreenNotifier(ref));
+    NotifierProvider<HistoryScreenNotifier, HistoryScreenState>(
+        HistoryScreenNotifier.new);
 
-class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
-  final Ref _ref;
-  HistoryScreenNotifier(this._ref)
-      : super(const HistoryScreenState(
-            [], [], false, false, false, false, null, {}, {}, {}));
+enum FilterType { currency, payment, transaction }
+
+class HistoryScreenNotifier extends Notifier<HistoryScreenState> {
+  @override
+  HistoryScreenState build() => HistoryScreenState(
+      [], [], false, false, false, false, DateTime.now(), {}, {}, {});
 
   final _headerTitle = [
     'วันที่',
@@ -40,7 +41,7 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
   Future<void> init() async {
     state = state.copyWith(isLoading: true, dateTimeDisplay: DateTime.now());
     await _getTransaction(state.dateTimeDisplay!);
-    final currencyListService = _ref.read(currencyListProvider);
+    final currencyListService = ref.read(currencyListProvider);
     for (var i = 0; i < currencyListService.currencyList.length; i++) {
       final newFilter = Map<String, bool>.from(state.currencyFilter);
       newFilter[currencyListService.currencyList[i].currency] = true;
@@ -63,7 +64,7 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
     try {
       final currentDate = DateFormat('yyyy-MM-dd').format(dateTime);
       final todayFile =
-          await _ref.read(firebaseProvider).getTransactionFile(currentDate);
+          await ref.read(firebaseProvider).getTransactionFile(currentDate);
       state = state.copyWith(
           savedHistoryList: List<TransactionItem>.from(json
               .decode(utf8.decode(todayFile!))['transaction']
@@ -91,7 +92,7 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
     for (var index = 0; index < state.savedHistoryList.length; index++) {
       final item = state.savedHistoryList[index];
       if (item.totalSellPrice == null && item.totalBuyPrice == null) {
-        final newList = state.savedHistoryList;
+        final newList = List<TransactionItem>.from(state.savedHistoryList);
         newList[index] = TransactionItem(
             calculatedItem: item.calculatedItem,
             dateTime: item.dateTime,
@@ -115,13 +116,29 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
     _saveTransaction();
   }
 
+  Future<void> updateTransaction(
+      TransactionItem newTransaction, int index) async {
+    final posSavedHistory = state.savedHistoryList.indexWhere((element) =>
+        element.dateTime == state.savedHistoryList[index].dateTime);
+
+    final newSaved = List<TransactionItem>.from(state.savedHistoryList);
+    newSaved[posSavedHistory] = newTransaction;
+    state = state.copyWith(savedHistoryList: newSaved);
+
+    final newHistory = List<TransactionItem>.from(state.historyList);
+    newHistory[index] = state.savedHistoryList[posSavedHistory];
+    state = state.copyWith(historyList: newSaved);
+
+    await _saveTransaction();
+  }
+
   Future<void> _saveTransaction() async {
     final historyDate = DateFormat('yyyy-MM-dd').format(state.dateTimeDisplay!);
     final map = {
       'transaction': List.from(state.savedHistoryList.map((e) => e.toJson()))
     };
     try {
-      await _ref.read(firebaseProvider).saveTransactionFile(map, historyDate);
+      await ref.read(firebaseProvider).saveTransactionFile(map, historyDate);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -155,7 +172,7 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
     for (var i = 0; i < state.historyList.length; i++) {
       if (removePayment
           .contains(state.historyList[i].paymentMethod.getString())) {
-        final newList = state.historyList;
+        final newList = List<TransactionItem>.from(state.historyList);
         newList.removeAt(i);
         state = state.copyWith(historyList: newList);
         i--;
@@ -169,16 +186,40 @@ class HistoryScreenNotifier extends StateNotifier<HistoryScreenState> {
         return isCurrency || isTransaction;
       });
       if (removeList.isEmpty) {
-        final newList = state.historyList;
+        final newList = List<TransactionItem>.from(state.historyList);
         newList.removeAt(i);
         state = state.copyWith(historyList: newList);
         i--;
         continue;
       }
-      final newList = state.historyList;
+      final newList = List<TransactionItem>.from(state.historyList);
       newList[i] = newList[i].copyWith(calculatedItem: removeList);
       state = state.copyWith(historyList: newList);
     }
     state = state.copyWith(isLoading: false);
+  }
+
+  updateFilter(String name, bool? value, FilterType filterType) {
+    switch (filterType) {
+      case FilterType.payment:
+        final filterList = Map<String, bool>.from(state.paymentFilter);
+        filterList[name] = value ?? filterList[name]!;
+        state = state.copyWith(paymentFilter: filterList);
+      case FilterType.transaction:
+        final filterList = Map<String, bool>.from(state.transactionFilter);
+        filterList[name] = value ?? filterList[name]!;
+        state = state.copyWith(transactionFilter: filterList);
+      default:
+        final filterList = Map<String, bool>.from(state.currencyFilter);
+        filterList[name] = value ?? filterList[name]!;
+        state = state.copyWith(currencyFilter: filterList);
+    }
+    state = state.copyWith(isFilterUpdate: true);
+  }
+
+  selectAllFilter(bool newValue) {
+    final newFilter = Map<String, bool>.from(state.currencyFilter);
+    newFilter.updateAll((key, value) => value = newValue);
+    state = state.copyWith(currencyFilter: newFilter, isFilterUpdate: true);
   }
 }

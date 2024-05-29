@@ -1,6 +1,8 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
+import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/history_notifier.dart';
+import 'package:currency_exchange/presentation/history/widgets/filter.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
@@ -71,12 +73,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   text: AppStrings.filter,
                   bgColor: Colors.blueAccent,
                   onPressed: () async {
-                    //TODO: create notifier for dialog
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext dialogContext) => Filter(
-                    //       historyController: context.read<HistoryController>()),
-                    // );
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext dialogContext) =>
+                            const Filter());
                   },
                 )
               ],
@@ -285,14 +285,18 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext pageContext, int index) {
-    return showDialog<void>(
+  Future<void> _dialogBuilder(BuildContext pageContext, int index) async {
+    final result = await showDialog<TransactionItem>(
       barrierDismissible: false,
       context: pageContext,
       builder: (BuildContext context) {
-        return DisplayMoreInfoDialog(index: index);
+        return DisplayMoreInfoDialog(
+            transactionItem: ref.read(historyNotifier).historyList[index]);
       },
     );
+    if (result != null) {
+      ref.read(historyNotifier.notifier).updateTransaction(result, index);
+    }
   }
 
   Widget flexibleColumn(int length, String text, bool isLast) {

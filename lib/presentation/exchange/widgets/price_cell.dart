@@ -1,8 +1,8 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/main.dart';
 import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/price_range.dart';
+import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +19,7 @@ class PriceCell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Consumer(builder: (_, exchangeController, child) {
+    return Consumer(builder: (_, ref, child) {
       return TableCell(
         verticalAlignment: TableCellVerticalAlignment.middle,
         child: Padding(
@@ -30,7 +30,7 @@ class PriceCell extends ConsumerWidget {
               currencyList[currencyIndex].length,
               (index) => Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: !ref.watch(exchangeProvider).isEdit
+                child: !ref.watch(exchangeNotifier).isEdit
                     ? Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
@@ -44,7 +44,7 @@ class PriceCell extends ConsumerWidget {
                             currencyList[currencyIndex][index]),
                         onChanged: (value) {
                           try {
-                            ref.watch(exchangeProvider).addRate(
+                            ref.read(exchangeNotifier.notifier).addRate(
                                 currencyIndex, index, value, priceType);
                             ScaffoldMessenger.of(context).clearSnackBars();
                           } catch (e) {

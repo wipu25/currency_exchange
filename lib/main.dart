@@ -1,4 +1,4 @@
-import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
+import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
 import 'package:currency_exchange/presentation/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +11,6 @@ Future<void> main() async {
   runApp(const ProviderScope(child: CurrencyExchange()));
 }
 
-final exchangeProvider =
-    ChangeNotifierProvider((ref) => ExchangeController(ref));
-
 class CurrencyExchange extends ConsumerStatefulWidget {
   const CurrencyExchange({super.key});
 
@@ -25,7 +22,7 @@ class _CurrencyExchangeState extends ConsumerState<CurrencyExchange> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(exchangeProvider).getCurrency();
+      ref.read(exchangeNotifier.notifier).getCurrency();
     });
     super.initState();
   }

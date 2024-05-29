@@ -1,22 +1,20 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/history/history_controller.dart';
+import 'package:currency_exchange/presentation/history/history_item_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/info_text_field.dart';
-import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DisplayMoreInfoDialog extends StatelessWidget {
-  final int index;
-  const DisplayMoreInfoDialog({super.key, required this.index});
+class DisplayMoreInfoDialog extends ConsumerWidget {
+  final TransactionItem transactionItem;
+  const DisplayMoreInfoDialog({super.key, required this.transactionItem});
 
   @override
-  Widget build(BuildContext context) {
-    //todo: will item refetch when rebuild?
-    return Consumer<HistoryController>(builder: (_, historyController, __) {
-      final item = historyController.getSavedHistory(index);
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Consumer(builder: (_, ref, __) {
+      final historyItem = historyItemProvider(transactionItem);
       return AlertDialog(
         scrollable: true,
         title: const Center(
@@ -24,48 +22,42 @@ class DisplayMoreInfoDialog extends StatelessWidget {
           AppStrings.moreInfo,
           style: TextStyle(fontSize: 32),
         )),
-        content: historyController.isCancel
-            ? const Column(
-                children: [
-                  Text(AppStrings.cancelling),
-                  Loading(),
-                ],
-              )
-            : Column(
-                children: [
-                  itemInfo(item),
-                  if (item.clientInfo != null) ...[
-                    InfoTextField(
-                        controller: historyController.nameTextField,
-                        enabled: item.paymentMethod != PaymentMethod.cancel,
-                        onChanged: (string) =>
-                            historyController.checkClientInfo(),
-                        header: AppStrings.name),
-                    InfoTextField(
-                      controller: historyController.addressTextField,
-                      enabled: item.paymentMethod != PaymentMethod.cancel,
-                      onChanged: (string) =>
-                          historyController.checkClientInfo(),
-                      header: AppStrings.address,
-                    ),
-                    InfoTextField(
-                      controller: historyController.idTextField,
-                      enabled: item.paymentMethod != PaymentMethod.cancel,
-                      onChanged: (string) =>
-                          historyController.checkClientInfo(),
-                      header: AppStrings.id,
-                    )
-                  ],
-                ],
+        content: Column(
+          children: [
+            itemInfo(ref.watch(historyItem)),
+            if (ref.watch(historyItem).clientInfo != null) ...[
+              InfoTextField(
+                  controller: ref.watch(historyItem.notifier).nameTextField,
+                  enabled: ref.watch(historyItem).paymentMethod !=
+                      PaymentMethod.cancel,
+                  onChanged: (string) =>
+                      ref.read(historyItem.notifier).checkClientInfo(),
+                  header: AppStrings.name),
+              InfoTextField(
+                controller: ref.watch(historyItem.notifier).addressTextField,
+                enabled: ref.watch(historyItem).paymentMethod !=
+                    PaymentMethod.cancel,
+                onChanged: (string) =>
+                    ref.read(historyItem.notifier).checkClientInfo(),
+                header: AppStrings.address,
               ),
+              InfoTextField(
+                controller: ref.watch(historyItem.notifier).idTextField,
+                enabled: ref.watch(historyItem).paymentMethod !=
+                    PaymentMethod.cancel,
+                onChanged: (string) =>
+                    ref.read(historyItem.notifier).checkClientInfo(),
+                header: AppStrings.id,
+              )
+            ],
+          ],
+        ),
         actions: <Widget>[
-          if (historyController.historyList[index].paymentMethod !=
-              PaymentMethod.cancel) ...[
-            if (historyController.isClientInfoComplete ||
-                item.clientInfo == null)
+          if (ref.watch(historyItem).paymentMethod != PaymentMethod.cancel) ...[
+            if (!ref.watch(historyItem).clientInfo!.isEmpty())
               CustomButton(
                 onPressed: () async =>
-                    historyController.printTransaction(index),
+                    ref.read(historyItem.notifier).printTransaction(),
                 text: AppStrings.print,
                 bgColor: Colors.blueAccent,
               ),
@@ -75,8 +67,11 @@ class DisplayMoreInfoDialog extends StatelessWidget {
             CustomButton(
               text: AppStrings.cancel,
               onPressed: () async {
-                await historyController.cancelTransaction(index).then((value) {
-                  Navigator.of(context).pop();
+                await ref
+                    .read(historyItem.notifier)
+                    .cancelTransaction()
+                    .then((value) {
+                  Navigator.of(context).pop(ref.read(historyItem));
                 });
               },
               bgColor: Colors.red,
