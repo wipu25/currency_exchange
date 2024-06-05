@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
@@ -7,13 +9,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final currencyListProvider = Provider((ref) => CurrencyListService());
 
 class CurrencyListService {
-  final List<List<String?>> _buyCurrencyList = [];
-  final List<List<String?>> _sellCurrencyList = [];
   List<Country> _currencyList = <Country>[];
   bool _isCurrencySet = false;
 
   bool get isCurrencySet => _isCurrencySet;
   List<Country> get currencyList => _currencyList;
+
+  //TODO: should be in exchange notifier
+  final List<List<String?>> _buyCurrencyList = [];
+  final List<List<String?>> _sellCurrencyList = [];
   List<List<String?>> get buyCurrencyList => _buyCurrencyList;
   List<List<String?>> get sellCurrencyList => _sellCurrencyList;
 
@@ -57,7 +61,6 @@ class CurrencyListService {
           sellPriceRange: _getPriceRange(currentCountry, i, PriceType.sell));
       _currencyList[i] = newCountry;
     }
-    // notifyListeners();
   }
 
   bool generateBuySellList(List<Country> value) {

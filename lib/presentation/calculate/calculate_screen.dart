@@ -1,5 +1,6 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/summary_panel_notifier.dart';
 import 'package:currency_exchange/presentation/calculate/widgets/convert_list.dart';
@@ -38,34 +39,28 @@ class _CalculateScreenState extends ConsumerState<CalculateScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Stack(
                 children: [
-                  // const Spacer(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SelectTransaction(),
-                      const SizedBox(
-                        height: 48,
-                      ),
-                      const SelectCountry(),
-                      const SizedBox(
-                        height: 48,
-                      ),
-                      const ConvertList(),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Consumer(
-                          builder: (_, ref, __) => Row(
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SelectTransaction(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 48.0),
+                          child: SelectCountry(),
+                        ),
+                        const ConvertList(),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Consumer(
+                            builder: (_, ref, __) {
+                              final totalItemAmount = ref.watch(calculateNotifier).totalItemAmount;
+                              final totalItemPrice = ref.watch(calculateNotifier).totalItemPrice;
+                              return (totalItemAmount != 0.0 && totalItemPrice != 0.0) ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    ref
-                                                .watch(calculateNotifier)
-                                                .totalItemAmount ==
-                                            0.0
-                                        ? ''
-                                        : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(ref.watch(calculateNotifier).totalItemAmount)}',
+                                  Text('${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(totalItemAmount)}',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -73,72 +68,68 @@ class _CalculateScreenState extends ConsumerState<CalculateScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  Text(
-                                    ref
-                                                .watch(calculateNotifier)
-                                                .totalItemPrice ==
-                                            0.0
-                                        ? ''
-                                        : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(ref.watch(calculateNotifier).totalItemPrice)}',
+                                  Text('${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(totalItemPrice)}',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
-                              )),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Consumer(
-                              builder: (_, ref, __) => ref
-                                      .watch(calculateNotifier.notifier)
-                                      .isTransactionBuy
-                                  ? CustomButton(
-                                      onPressed: () {
-                                        ref
-                                            .read(calculateNotifier.notifier)
-                                            .addSplitItem();
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                      },
-                                      text: AppStrings.addBill,
-                                      bgColor: Colors.orange,
-                                    )
-                                  : const SizedBox.shrink()),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Consumer(
-                              builder: (context, ref, child) => CustomButton(
-                                    onPressed: ref
-                                            .watch(calculateNotifier)
-                                            .isAddEnable
-                                        ? () {
-                                            ref
-                                                .read(
-                                                    calculateNotifier.notifier)
-                                                .addToReceipt();
-                                            ref
-                                                .read(summaryPanelNotifier
-                                                    .notifier)
-                                                .getSummary();
-                                          }
-                                        : null,
-                                    text: AppStrings.addReceipt,
-                                    bgColor:
-                                        ref.watch(calculateNotifier).isAddEnable
-                                            ? Colors.green
-                                            : Colors.grey,
-                                  )),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                    ],
+                              ) : const SizedBox.shrink();
+                            }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Consumer(
+                                builder: (_, ref, __) => ref
+                                        .watch(calculateNotifier).transaction == Transaction.buy
+                                    ? CustomButton(
+                                        onPressed: () {
+                                          ref
+                                              .read(calculateNotifier.notifier)
+                                              .addSplitItem();
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                        },
+                                        text: AppStrings.addBill,
+                                        bgColor: Colors.orange,
+                                      )
+                                    : const SizedBox.shrink()),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Consumer(
+                                builder: (context, ref, child) => CustomButton(
+                                      onPressed: ref
+                                              .watch(calculateNotifier)
+                                              .isAddEnable
+                                          ? () {
+                                              ref
+                                                  .read(calculateNotifier
+                                                      .notifier)
+                                                  .addToReceipt();
+                                              ref
+                                                  .read(summaryPanelNotifier
+                                                      .notifier)
+                                                  .getSummary();
+                                            }
+                                          : null,
+                                      text: AppStrings.addReceipt,
+                                      bgColor: ref
+                                              .watch(calculateNotifier)
+                                              .isAddEnable
+                                          ? Colors.green
+                                          : Colors.grey,
+                                    )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
                   ),
                   // const Spacer(),
                   const SummaryPanel(),

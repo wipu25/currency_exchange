@@ -11,35 +11,34 @@ class ConvertList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Consumer(builder: (_, ref, __) {
-      final calculateControllers = ref.watch(calculateNotifier);
-      final calculateControllersFunc = ref.watch(calculateNotifier.notifier);
+      final calculateState = ref.watch(calculateNotifier);
+      final calculateFunction = ref.watch(calculateNotifier.notifier);
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(calculateControllers.selectedPriceRange.length,
+        children: List.generate(calculateState.selectedPriceRange.length,
             (index) {
           final inputTextController = TextEditingController(
-              text: calculateControllers.inputPrice[index]);
+              text: calculateState.inputPrice[index]);
           inputTextController.selection = TextSelection.fromPosition(
               TextPosition(
-                  offset: calculateControllers.inputPrice[index].length));
+                  offset: calculateState.inputPrice[index].length));
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                !calculateControllersFunc.isTransactionBuy
+                !calculateFunction.isTransactionBuy
                     ? AppStrings.thb
-                    : calculateControllers.selectedCurrency?.currency ?? '',
+                    : calculateState.selectedCurrency?.currency ?? '',
                 style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(
                 width: 8,
               ),
               priceRange(
-                  calculateControllersFunc.isTransactionBuy,
-                  calculateControllers.selectedCurrency!.buyPriceRange,
-                  calculateControllers.selectedPriceRange[index],
-                  (value) => calculateControllersFunc.updateSelectedPriceRange(
+                  calculateFunction.isTransactionBuy,
+                  calculateState.selectedCurrency!.buyPriceRange,
+                  calculateState.selectedPriceRange[index],
+                  (value) => calculateFunction.updateSelectedPriceRange(
                       index, value)),
               const SizedBox(
                 width: 8,
@@ -74,10 +73,10 @@ class ConvertList extends ConsumerWidget {
                   ),
                   onChanged: (value) {
                     try {
-                      calculateControllersFunc.calculateAmount(index, value);
+                      calculateFunction.calculateAmount(index, value);
                       ScaffoldMessenger.of(context).clearSnackBars();
                     } catch (e) {
-                      calculateControllersFunc.disableAdd();
+                      calculateFunction.disableAdd();
                       ScaffoldMessenger.of(context).removeCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(e is CalculateException
@@ -93,9 +92,9 @@ class ConvertList extends ConsumerWidget {
                 width: 8,
               ),
               Text(
-                !calculateControllersFunc.isTransactionBuy
+                !calculateFunction.isTransactionBuy
                     ? AppStrings.thb
-                    : calculateControllers.selectedCurrency?.currency ?? '',
+                    : calculateState.selectedCurrency?.currency ?? '',
                 style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(
@@ -110,31 +109,30 @@ class ConvertList extends ConsumerWidget {
               ),
               Text(
                 CustomNumberFormat.commaFormat(
-                    calculateControllers.calculatedItem[index].price),
+                    calculateState.calculatedItem[index].price),
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(
                 width: 8,
               ),
               Text(
-                calculateControllersFunc.isTransactionBuy
+                calculateFunction.isTransactionBuy
                     ? AppStrings.thb
-                    : calculateControllers.selectedCurrency?.currency ?? '',
+                    : calculateState.selectedCurrency?.currency ?? '',
                 style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(
                 width: 8,
               ),
-              if (calculateControllers.inputPrice.length > 1)
+              if (calculateState.inputPrice.length > 1)
                 InkWell(
-                  onTap: () => calculateControllersFunc.removeSplitItem(index),
+                  onTap: () => calculateFunction.removeSplitItem(index),
                   child: const Icon(Icons.delete),
                 )
             ],
           );
         }),
       );
-    });
   }
 
   Widget priceRange(bool isBuy, List<PriceRange> buyRange,
