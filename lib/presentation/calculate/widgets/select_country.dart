@@ -1,61 +1,56 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/select_country_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectCountry extends ConsumerWidget {
+class SelectCountry extends StatelessWidget {
   const SelectCountry({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return const SelectCountryDialog();
+            });
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          checkCurrencyIcon(Transaction.buy),
+          const SizedBox(
+            width: 32,
+          ),
+          Consumer(
+            builder: (_, ref, __) {
+              final transaction = ref.watch(calculateNotifier).transaction;
+              return Icon(
+                Icons.arrow_forward,
+                size: 100,
+                color: transaction == Transaction.buy ? Colors.green : Colors.red,
+              );
+            } ,
+          ),
+          const SizedBox(
+            width: 32,
+          ),
+          checkCurrencyIcon(Transaction.sell),
+        ],
+      ),
+    );
+  }
+
+  Widget checkCurrencyIcon(Transaction transaction) {
     return Consumer(builder: (_, ref, __) {
-      final selectedCountry = ref.watch(calculateNotifier).selectedCurrency;
-      return GestureDetector(
-        onTap: () {
-          showDialog<void>(
-              context: context,
-              builder: (BuildContext dialogContext) {
-                return Consumer(
-                  builder: (_, ref, __) => SelectCountryDialog(
-                    selectedCountry:
-                        ref.watch(calculateNotifier).selectedCurrency,
-                    setSelectedCountry: (country) => ref
-                        .read(calculateNotifier.notifier)
-                        .setSelectedCurrency(country),
-                  ),
-                );
-              });
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                !ref.watch(calculateNotifier.notifier).isTransactionBuy
-                    ? currencyIcon('', AppStrings.thb)
-                    : currencyIcon(selectedCountry?.logo,
-                        selectedCountry?.countryName ?? ''),
-                const SizedBox(
-                  width: 32,
-                ),
-                const Icon(
-                  Icons.arrow_forward,
-                  size: 100,
-                ),
-                const SizedBox(
-                  width: 32,
-                ),
-                ref.watch(calculateNotifier.notifier).isTransactionBuy
-                    ? currencyIcon('', AppStrings.thb)
-                    : currencyIcon(selectedCountry?.logo,
-                        selectedCountry?.countryName ?? ''),
-              ],
-            ),
-          ],
-        ),
-      );
+      final calculateState = ref.watch(calculateNotifier);
+      return calculateState.transaction == transaction
+          ? currencyIcon('', AppStrings.thb)
+          : currencyIcon(calculateState.selectedCurrency?.logo,
+              calculateState.selectedCurrency?.countryName ?? '');
     });
   }
 

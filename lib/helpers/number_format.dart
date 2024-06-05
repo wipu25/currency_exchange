@@ -17,7 +17,10 @@ class CustomNumberFormat {
     if (split == null) {
       return '0';
     }
-    return pattern.format(int.parse(split[0].isEmpty ? '0' : split[0])) +
+    if (split[0].isEmpty) {
+      return '';
+    }
+    return pattern.format(int.parse(split[0])) +
         (split.length > 1 ? '.${split[1]}' : '');
   }
 }

@@ -62,4 +62,7 @@ class AppStrings {
   static const String hintName = 'ชื่อ นามสกุล';
   static const String hintAddress = 'ที่อยู่';
   static const String hintID = '123456789';
+
+  //error
+  static const String errorNetwork = 'เกิดข้อผิดพลาด';
 }

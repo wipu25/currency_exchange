@@ -7,11 +7,11 @@ import 'package:currency_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -29,25 +29,25 @@ class HomeScreen extends ConsumerWidget {
             Expanded(
               child: Row(
                 children: [
-                  Consumer(
-                    builder: (_, ref, __) => MenuSideBar(
-                      menuSelect: ref.watch(menuSelectStateProvider).menuSelect,
-                      isExpand: ref.watch(menuSelectStateProvider).isExpand,
+                  Consumer(builder: (_, ref, __) {
+                    final menuProviderWatch =
+                        ref.watch(menuSelectStateProvider);
+                    return MenuSideBar(
+                      menuSelect: menuProviderWatch.menuSelect,
+                      isExpand: menuProviderWatch.isExpand,
                       expandMenu: () =>
                           ref.read(menuSelectStateProvider.notifier).expand(),
                       selectedMenu: (MenuSelect itemMenu) => ref
                           .read(menuSelectStateProvider.notifier)
                           .switchScreen(itemMenu),
-                    ),
-                  ),
+                    );
+                  }),
                   Expanded(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
-                      child: SingleChildScrollView(
-                        child: Consumer(
-                          builder: (_, globalWidgetService, __) => screenSelect(
-                              ref.watch(menuSelectStateProvider).menuSelect),
-                        ),
+                      child: Consumer(
+                        builder: (_, ref, __) => screenSelect(
+                            ref.watch(menuSelectStateProvider).menuSelect),
                       ),
                     ),
                   ),

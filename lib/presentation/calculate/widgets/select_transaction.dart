@@ -1,14 +1,17 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
+import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectTransaction extends ConsumerWidget {
+class SelectTransaction extends StatelessWidget {
   const SelectTransaction({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
           AppStrings.transaction,
@@ -17,23 +20,29 @@ class SelectTransaction extends ConsumerWidget {
         const SizedBox(
           width: 8,
         ),
-        Consumer(
-            builder: (_, ref, __) => OutlinedButton(
-                onPressed: () =>
-                    ref.read(calculateNotifier.notifier).updateTransaction(),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      ref.watch(calculateNotifier).transaction.getString(),
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Icon(Icons.refresh)
-                  ],
-                ))),
+        Consumer(builder: (_, ref, __) {
+          return CustomIconButton(
+              onPressed: () =>
+                  ref.read(calculateNotifier.notifier).updateTransaction(),
+              bgColor:
+                  ref.watch(calculateNotifier).transaction == Transaction.buy
+                      ? Colors.green
+                      : Colors.red,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    ref.watch(calculateNotifier).transaction.getString(),
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  const Icon(Icons.refresh, color: Colors.white)
+                ],
+              ));
+        }),
       ],
     );
   }

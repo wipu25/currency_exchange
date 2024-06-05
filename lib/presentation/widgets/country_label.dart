@@ -4,11 +4,13 @@ class CountryLabel extends StatelessWidget {
   final String logo;
   final String currency;
   final String fullCountry;
+  final Color? textColor;
   const CountryLabel(
       {Key? key,
       required this.currency,
       required this.fullCountry,
-      required this.logo})
+      required this.logo,
+      this.textColor})
       : super(key: key);
 
   @override
@@ -17,7 +19,7 @@ class CountryLabel extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           logo.isEmpty
               ? const Icon(
@@ -33,19 +35,25 @@ class CountryLabel extends StatelessWidget {
                     height: 50,
                   )),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  currency,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  fullCountry,
-                  style: const TextStyle(fontSize: 16),
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    currency,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor ?? Colors.black),
+                  ),
+                  Text(
+                    fullCountry,
+                    style: TextStyle(
+                        fontSize: 16, color: textColor ?? Colors.black),
+                  )
+                ],
+              ),
             ),
           )
         ],

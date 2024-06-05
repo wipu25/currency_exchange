@@ -7,63 +7,50 @@ import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PriceCell extends ConsumerWidget {
-  final List<List<String?>> currencyList;
-  final int currencyIndex;
-  final PriceType priceType;
-  const PriceCell(
-      {super.key,
-      required this.currencyList,
-      required this.currencyIndex,
-      required this.priceType});
+class PriceCell extends StatelessWidget {
+  final String? value;
+  final bool isEdit;
+  final Color bgColor;
+  final Function(String) onChange;
+  const PriceCell({
+    super.key,
+    this.value,
+    required this.onChange,
+    required this.isEdit,
+    required this.bgColor,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Consumer(builder: (_, ref, child) {
-      return TableCell(
-        verticalAlignment: TableCellVerticalAlignment.middle,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              currencyList[currencyIndex].length,
-              (index) => Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: !ref.watch(exchangeNotifier).isEdit
-                    ? Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          CustomNumberFormat.fieldDoubleFormat(
-                              currencyList[currencyIndex][index] ?? '0.0'),
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      )
-                    : CustomTextField(
-                        value: CustomNumberFormat.fieldDoubleFormat(
-                            currencyList[currencyIndex][index]),
-                        onChanged: (value) {
-                          try {
-                            ref.read(exchangeNotifier.notifier).addRate(
-                                currencyIndex, index, value, priceType);
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                          } catch (e) {
-                            ScaffoldMessenger.of(context)
-                                .removeCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(e is CalculateException
-                                  ? e.message
-                                  : AppStrings.notNumberAlert),
-                              duration: const Duration(seconds: 3),
-                            ));
-                          }
-                        },
-                      ),
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: bgColor, borderRadius: BorderRadius.circular(16)),
+      padding: const EdgeInsets.all(4.0),
+      child: isEdit
+          ? Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                CustomNumberFormat.fieldDoubleFormat(value ?? '0.0'),
+                style: const TextStyle(fontSize: 20),
               ),
-            ).toList(),
-          ),
-        ),
-      );
-    });
+            )
+          : CustomTextField(
+              value: CustomNumberFormat.fieldDoubleFormat(value),
+              onChanged: (value) {
+                try {
+                  onChange.call(value);
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                } catch (e) {
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(e is CalculateException
+                        ? e.message
+                        : AppStrings.notNumberAlert),
+                    duration: const Duration(seconds: 3),
+                  ));
+                }
+              },
+            ),
+    );
   }
 }
