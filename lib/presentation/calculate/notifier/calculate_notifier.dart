@@ -142,7 +142,7 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
         : amount / priceRange;
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
     calculatedList[position] = CalculatedItem(
-        amount: amount, price: double.parse(price.toStringAsFixed(2)));
+        amount: amount, price: double.parse(price.toString()));
 
     state = state.copyWith(calculatedItem: calculatedList, isAddEnable: true);
     calculateTotal();
