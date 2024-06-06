@@ -173,8 +173,8 @@ class CalculateController with ChangeNotifier {
     final price = _receiptService.transaction == Transaction.buy
         ? priceRange * amount
         : amount / priceRange;
-    _calculatedItem[position] = CalculatedItem(
-        amount: amount, price: double.parse(price.toStringAsFixed(2)));
+    _calculatedItem[position] =
+        CalculatedItem(amount: amount, price: double.parse(price.toString()));
     _isAddEnable = true;
     calculateTotal();
   }
