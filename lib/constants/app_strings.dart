@@ -51,7 +51,7 @@ class AppStrings {
   static const String noTransaction = 'ไม่มีธุรกรรม';
   static const String cancel = 'ยกเลิก';
   static const String cancelling = 'กำลังยกเลิก';
-  static const String cancellingTime = 'เวลาธุรกรรม';
+  static const String time = 'เวลา';
   static const String moreInfo = 'เพิ่มเติม';
   static const String filter = 'กรอง';
 
@@ -65,4 +65,5 @@ class AppStrings {
 
   //error
   static const String errorNetwork = 'เกิดข้อผิดพลาด';
+  static const String clientInfoIncomplete = 'ข้อมูลไม่ครบ';
 }

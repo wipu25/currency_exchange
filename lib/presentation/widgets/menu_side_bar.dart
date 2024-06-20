@@ -16,38 +16,34 @@ class MenuSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.blueAccent,
-        width: isExpand ? 220 : 80,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment:
-                isExpand ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-            children: [
-              itemMenu(Icons.currency_exchange, MenuSelect.exchanges),
-              itemMenu(Icons.calculate_outlined, MenuSelect.calculate),
-              itemMenu(Icons.format_list_bulleted_outlined, MenuSelect.history),
-              //TODO: will continue later
-              // itemMenu(Icons.auto_graph, MenuSelect.sales),
-              // const Spacer(),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: isExpand ? 28 : 0),
-                child: GestureDetector(
-                    onTap: expandMenu,
-                    child: const Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: Colors.white,
-                    )),
-              )
-            ],
-          ),
-        ),
+    return Container(
+      color: Colors.blueAccent,
+      width: isExpand ? 220 : 80,
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment:
+            isExpand ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        children: [
+          itemMenu(Icons.currency_exchange, MenuSelect.exchanges),
+          itemMenu(Icons.calculate_outlined, MenuSelect.calculate),
+          itemMenu(Icons.format_list_bulleted_outlined, MenuSelect.history),
+          //TODO: will continue later
+          // itemMenu(Icons.auto_graph, MenuSelect.sales),
+          const Spacer(),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: isExpand ? 28 : 0, vertical: 12),
+            child: GestureDetector(
+                onTap: expandMenu,
+                child: Icon(
+                  isExpand
+                      ? Icons.arrow_back_ios_outlined
+                      : Icons.arrow_forward_ios_outlined,
+                  color: Colors.white,
+                )),
+          )
+        ],
       ),
     );
   }

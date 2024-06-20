@@ -43,11 +43,15 @@ class HomeScreen extends StatelessWidget {
                     );
                   }),
                   Expanded(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Consumer(
-                        builder: (_, ref, __) => screenSelect(
-                            ref.watch(menuSelectStateProvider).menuSelect),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 8.0),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: Consumer(
+                          builder: (_, ref, __) => screenSelect(
+                              ref.watch(menuSelectStateProvider).menuSelect),
+                        ),
                       ),
                     ),
                   ),

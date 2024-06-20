@@ -1,5 +1,6 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:currency_exchange/helpers/state_helper.dart';
 import 'package:currency_exchange/presentation/calculate/models/calculate_screen_state.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
@@ -22,11 +23,15 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
   bool get isTransactionBuy => state.transaction == Transaction.buy;
 
   void removeSplitItem(int position) {
-    state.selectedPriceRange.removeAt(position);
-    state.inputPrice.removeAt(position);
+    state = state.copyWith(
+        selectedPriceRange:
+            StateHelper.removeAt(state.selectedPriceRange, position));
+    state = state.copyWith(
+        inputPrice: StateHelper.removeAt(state.inputPrice, position));
     final currentItem = state.calculatedItem[position];
     removeTotal(currentItem.amount, currentItem.price);
-    state.calculatedItem.removeAt(position);
+    state = state.copyWith(
+        calculatedItem: StateHelper.removeAt(state.calculatedItem, position));
     if (position == state.currentInsert) {
       state = state.copyWith(currentInsert: 0);
     }
@@ -141,8 +146,8 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
         ? priceRange * amount
         : amount / priceRange;
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
-    calculatedList[position] = CalculatedItem(
-        amount: amount, price: double.parse(price.toString()));
+    calculatedList[position] =
+        CalculatedItem(amount: amount, price: double.parse(price.toString()));
 
     state = state.copyWith(calculatedItem: calculatedList, isAddEnable: true);
     calculateTotal();

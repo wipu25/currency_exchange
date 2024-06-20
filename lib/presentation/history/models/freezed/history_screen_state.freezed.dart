@@ -12,7 +12,7 @@ part of '../history_screen_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 HistoryScreenState _$HistoryScreenStateFromJson(Map<String, dynamic> json) {
   return _HistoryScreenState.fromJson(json);
@@ -127,11 +127,11 @@ class _$HistoryScreenStateCopyWithImpl<$Res, $Val extends HistoryScreenState>
 }
 
 /// @nodoc
-abstract class _$$_HistoryScreenStateCopyWith<$Res>
+abstract class _$$HistoryScreenStateImplCopyWith<$Res>
     implements $HistoryScreenStateCopyWith<$Res> {
-  factory _$$_HistoryScreenStateCopyWith(_$_HistoryScreenState value,
-          $Res Function(_$_HistoryScreenState) then) =
-      __$$_HistoryScreenStateCopyWithImpl<$Res>;
+  factory _$$HistoryScreenStateImplCopyWith(_$HistoryScreenStateImpl value,
+          $Res Function(_$HistoryScreenStateImpl) then) =
+      __$$HistoryScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -148,11 +148,11 @@ abstract class _$$_HistoryScreenStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_HistoryScreenStateCopyWithImpl<$Res>
-    extends _$HistoryScreenStateCopyWithImpl<$Res, _$_HistoryScreenState>
-    implements _$$_HistoryScreenStateCopyWith<$Res> {
-  __$$_HistoryScreenStateCopyWithImpl(
-      _$_HistoryScreenState _value, $Res Function(_$_HistoryScreenState) _then)
+class __$$HistoryScreenStateImplCopyWithImpl<$Res>
+    extends _$HistoryScreenStateCopyWithImpl<$Res, _$HistoryScreenStateImpl>
+    implements _$$HistoryScreenStateImplCopyWith<$Res> {
+  __$$HistoryScreenStateImplCopyWithImpl(_$HistoryScreenStateImpl _value,
+      $Res Function(_$HistoryScreenStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -169,7 +169,7 @@ class __$$_HistoryScreenStateCopyWithImpl<$Res>
     Object? paymentFilter = null,
     Object? transactionFilter = null,
   }) {
-    return _then(_$_HistoryScreenState(
+    return _then(_$HistoryScreenStateImpl(
       null == savedHistoryList
           ? _value._savedHistoryList
           : savedHistoryList // ignore: cast_nullable_to_non_nullable
@@ -216,8 +216,8 @@ class __$$_HistoryScreenStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HistoryScreenState extends _HistoryScreenState {
-  const _$_HistoryScreenState(
+class _$HistoryScreenStateImpl extends _HistoryScreenState {
+  const _$HistoryScreenStateImpl(
       final List<TransactionItem> savedHistoryList,
       final List<TransactionItem> historyList,
       this.isFilterUpdate,
@@ -235,8 +235,8 @@ class _$_HistoryScreenState extends _HistoryScreenState {
         _transactionFilter = transactionFilter,
         super._();
 
-  factory _$_HistoryScreenState.fromJson(Map<String, dynamic> json) =>
-      _$$_HistoryScreenStateFromJson(json);
+  factory _$HistoryScreenStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HistoryScreenStateImplFromJson(json);
 
   final List<TransactionItem> _savedHistoryList;
   @override
@@ -296,10 +296,10 @@ class _$_HistoryScreenState extends _HistoryScreenState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HistoryScreenState &&
+            other is _$HistoryScreenStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._savedHistoryList, _savedHistoryList) &&
             const DeepCollectionEquality()
@@ -340,13 +340,13 @@ class _$_HistoryScreenState extends _HistoryScreenState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HistoryScreenStateCopyWith<_$_HistoryScreenState> get copyWith =>
-      __$$_HistoryScreenStateCopyWithImpl<_$_HistoryScreenState>(
+  _$$HistoryScreenStateImplCopyWith<_$HistoryScreenStateImpl> get copyWith =>
+      __$$HistoryScreenStateImplCopyWithImpl<_$HistoryScreenStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HistoryScreenStateToJson(
+    return _$$HistoryScreenStateImplToJson(
       this,
     );
   }
@@ -363,11 +363,11 @@ abstract class _HistoryScreenState extends HistoryScreenState {
       final DateTime? dateTimeDisplay,
       final Map<String, bool> currencyFilter,
       final Map<String, bool> paymentFilter,
-      final Map<String, bool> transactionFilter) = _$_HistoryScreenState;
+      final Map<String, bool> transactionFilter) = _$HistoryScreenStateImpl;
   const _HistoryScreenState._() : super._();
 
   factory _HistoryScreenState.fromJson(Map<String, dynamic> json) =
-      _$_HistoryScreenState.fromJson;
+      _$HistoryScreenStateImpl.fromJson;
 
   @override
   List<TransactionItem> get savedHistoryList;
@@ -391,6 +391,6 @@ abstract class _HistoryScreenState extends HistoryScreenState {
   Map<String, bool> get transactionFilter;
   @override
   @JsonKey(ignore: true)
-  _$$_HistoryScreenStateCopyWith<_$_HistoryScreenState> get copyWith =>
+  _$$HistoryScreenStateImplCopyWith<_$HistoryScreenStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

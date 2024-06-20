@@ -6,14 +6,14 @@ part of '../client_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ClientInfo _$$_ClientInfoFromJson(Map<String, dynamic> json) =>
-    _$_ClientInfo(
+_$ClientInfoImpl _$$ClientInfoImplFromJson(Map<String, dynamic> json) =>
+    _$ClientInfoImpl(
       name: json['name'] as String?,
       id: json['id'] as String?,
       address: json['address'] as String?,
     );
 
-Map<String, dynamic> _$$_ClientInfoToJson(_$_ClientInfo instance) =>
+Map<String, dynamic> _$$ClientInfoImplToJson(_$ClientInfoImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'id': instance.id,

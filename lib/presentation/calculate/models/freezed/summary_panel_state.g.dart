@@ -6,8 +6,9 @@ part of '../summary_panel_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SummaryPanelState _$$_SummaryPanelStateFromJson(Map<String, dynamic> json) =>
-    _$_SummaryPanelState(
+_$SummaryPanelStateImpl _$$SummaryPanelStateImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SummaryPanelStateImpl(
       json['currentTransaction'] == null
           ? null
           : TransactionItem.fromJson(
@@ -20,8 +21,8 @@ _$_SummaryPanelState _$$_SummaryPanelStateFromJson(Map<String, dynamic> json) =>
       $enumDecode(_$PaymentMethodEnumMap, json['payment']),
     );
 
-Map<String, dynamic> _$$_SummaryPanelStateToJson(
-        _$_SummaryPanelState instance) =>
+Map<String, dynamic> _$$SummaryPanelStateImplToJson(
+        _$SummaryPanelStateImpl instance) =>
     <String, dynamic>{
       'currentTransaction': instance.currentTransaction?.toJson(),
       'totalBuyPrice': instance.totalBuyPrice,

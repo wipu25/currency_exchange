@@ -6,9 +6,9 @@ part of '../receipt_service_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ReceiptServiceState _$$_ReceiptServiceStateFromJson(
+_$ReceiptServiceStateImpl _$$ReceiptServiceStateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_ReceiptServiceState(
+    _$ReceiptServiceStateImpl(
       json['currentTransaction'] == null
           ? null
           : TransactionItem.fromJson(
@@ -17,7 +17,7 @@ _$_ReceiptServiceState _$$_ReceiptServiceStateFromJson(
       (json['totalItemPrice'] as num).toDouble(),
       (json['totalBuyPrice'] as num).toDouble(),
       (json['totalSellPrice'] as num).toDouble(),
-      json['sellTransactionCount'] as int,
+      (json['sellTransactionCount'] as num).toInt(),
       (json['currencyItem'] as List<dynamic>)
           .map((e) => ExchangeItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -25,8 +25,8 @@ _$_ReceiptServiceState _$$_ReceiptServiceStateFromJson(
       $enumDecode(_$PaymentMethodEnumMap, json['payment']),
     );
 
-Map<String, dynamic> _$$_ReceiptServiceStateToJson(
-        _$_ReceiptServiceState instance) =>
+Map<String, dynamic> _$$ReceiptServiceStateImplToJson(
+        _$ReceiptServiceStateImpl instance) =>
     <String, dynamic>{
       'currentTransaction': instance.currentTransaction?.toJson(),
       'totalItemAmount': instance.totalItemAmount,

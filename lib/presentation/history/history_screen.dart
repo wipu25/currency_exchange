@@ -1,13 +1,15 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/date_time_format.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/history_notifier.dart';
 import 'package:currency_exchange/presentation/history/widgets/filter.dart';
+import 'package:currency_exchange/presentation/history/widgets/history_item.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/custom_table.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
-import 'package:currency_exchange/presentation/widgets/display_more_info_dialog.dart';
-import 'package:currency_exchange/presentation/widgets/header_cell.dart';
+import 'package:currency_exchange/presentation/history/widgets/display_more_info_dialog.dart';
+import 'package:currency_exchange/presentation/history/widgets/header_cell.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,34 +41,28 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(AppStrings.date),
-                const SizedBox(
-                  width: 12,
-                ),
-                SizedBox(
-                  width: 200,
-                  child: Consumer(builder: (_, ref, child) {
-                    final dateTimeDisplay =
-                        ref.watch(historyNotifier).dateTimeDisplay;
-                    return CustomTextField(
-                      value: ref
-                          .watch(historyNotifier.notifier)
-                          .formatDateTime(dateTimeDisplay),
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: dateTimeDisplay,
-                            firstDate: DateTime(2023),
-                            lastDate: DateTime.now());
-                        if (pickedDate != null) {
-                          ref
-                              .read(historyNotifier.notifier)
-                              .selectDateTime(pickedDate);
-                        }
-                      },
-                    );
-                  }),
-                ),
+                Consumer(builder: (_, ref, __) {
+                  final dateTimeDisplay =
+                      ref.watch(historyNotifier).dateTimeDisplay;
+                  return CustomButton(
+                    text:
+                        "${AppStrings.date} ${DateTimeFormat.formatDateTime(dateTimeDisplay)}",
+                    bgColor: Colors.blueAccent,
+                    padding: EdgeInsets.zero,
+                    onPressed: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: dateTimeDisplay,
+                          firstDate: DateTime(2023),
+                          lastDate: DateTime.now());
+                      if (pickedDate != null) {
+                        ref
+                            .read(historyNotifier.notifier)
+                            .selectDateTime(pickedDate);
+                      }
+                    },
+                  );
+                }),
                 const Spacer(),
                 CustomButton(
                   padding: const EdgeInsets.all(4.0),
@@ -85,204 +81,66 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           const SizedBox(
             height: 20,
           ),
-          Consumer(builder: (_, ref, child) {
-            return ref.watch(historyNotifier).isLoading
-                ? const Center(child: Loading())
-                : ref.watch(historyNotifier).historyList.isEmpty
-                    ? const Center(child: Text(AppStrings.noTransaction))
-                    : Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(16)),
-                        ),
-                        child: CustomTable(
-                          customColumn: const <int, FlexColumnWidth>{
-                            0: FlexColumnWidth(1.15),
-                            2: FlexColumnWidth(0.5),
-                            3: FlexColumnWidth(0.9),
-                            4: FlexColumnWidth(1.3),
-                            8: FlexColumnWidth(0.75),
-                            9: FlexColumnWidth(0.75),
-                            10: FlexColumnWidth(0.75)
-                          },
-                          column: 11,
+          Expanded(
+            child: Consumer(builder: (_, ref, child) {
+              final historyService = ref.watch(historyNotifier);
+              final headerTitle =
+                  ref.watch(historyNotifier.notifier).headerTitle;
+              return historyService.isLoading
+                  ? const Center(child: Loading())
+                  : historyService.historyList.isEmpty
+                      ? const Center(child: Text(AppStrings.noTransaction))
+                      : Column(
                           children: [
-                            TableRow(
-                                children: ref
-                                    .watch(historyNotifier.notifier)
-                                    .headerTitle
-                                    .map((e) => HeaderCell(
-                                          text: e,
-                                          fontSize: 16,
-                                        ))
-                                    .toList()),
-                            ...List.generate(
-                                ref.watch(historyNotifier).historyList.length,
-                                (index) {
-                              final item =
-                                  ref.watch(historyNotifier).historyList[index];
-                              return TableRow(children: [
-                                Center(
-                                  child: Text(
-                                    item.dateTime.split('_')[0],
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    item.dateTime.split('_')[1],
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                    item.calculatedItem.length,
-                                    (index) => flexibleColumn(
-                                        item.calculatedItem[index].priceRange
-                                            .length,
-                                        Transaction.values
-                                            .firstWhere((element) =>
-                                                element ==
-                                                item.calculatedItem[index]
-                                                    .transaction)
-                                            .getString(),
-                                        index ==
-                                            item.calculatedItem.length - 1),
-                                  ).toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      item.calculatedItem.length,
-                                      (index) => flexibleColumn(
-                                          item.calculatedItem[index].priceRange
-                                              .length,
-                                          item.calculatedItem[index].currency,
-                                          index ==
-                                              item.calculatedItem.length -
-                                                  1)).toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      item.calculatedItem.length,
-                                      (index) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Column(
-                                                  children: List.generate(
-                                                      item.calculatedItem[index]
-                                                          .priceRange.length,
-                                                      (price) => Text(
-                                                            item
-                                                                .calculatedItem[
-                                                                    index]
-                                                                .priceRange[
-                                                                    price]
-                                                                .getRange(),
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                          )).toList()),
-                                              if (!(index ==
-                                                  item.calculatedItem.length -
-                                                      1))
-                                                const Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                )
-                                            ],
-                                          )).toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      item.calculatedItem.length,
-                                      (index) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Column(
-                                                  children: List.generate(
-                                                      item.calculatedItem[index]
-                                                          .priceRange.length,
-                                                      (price) => Text(
-                                                            item
-                                                                .calculatedItem[
-                                                                    index]
-                                                                .priceRange[
-                                                                    price]
-                                                                .getPrice(),
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                          )).toList()),
-                                              if (!(index ==
-                                                  item.calculatedItem.length -
-                                                      1))
-                                                const Divider(
-                                                  height: 2,
-                                                  color: Colors.black,
-                                                )
-                                            ],
-                                          )).toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      item.calculatedItem.length,
-                                      (index) => flexibleColumn(
-                                          item.calculatedItem[index].priceRange
-                                              .length,
-                                          item.calculatedItem[index]
-                                              .getAmountExchange(),
-                                          index ==
-                                              item.calculatedItem.length -
-                                                  1)).toList(),
-                                ),
-                                Column(
-                                  children: List.generate(
-                                      item.calculatedItem.length,
-                                      (index) => flexibleColumn(
-                                          item.calculatedItem[index].priceRange
-                                              .length,
-                                          item.calculatedItem[index]
-                                              .getTotalPrice(),
-                                          index ==
-                                              item.calculatedItem.length -
-                                                  1)).toList(),
-                                ),
-                                Center(
-                                  child: Text(
-                                    item.paymentMethod.getString(),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: item.paymentMethod ==
-                                                PaymentMethod.cancel
-                                            ? Colors.red
-                                            : Colors.black),
-                                  ),
-                                ),
-                                Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: CustomButton(
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                    headerTitle.length,
+                                    (index) => Expanded(
+                                          flex: _isFlexible(index),
+                                          child: HeaderCell(
+                                            text: headerTitle[index],
+                                            fontSize: 12,
+                                          ),
+                                        )).toList(),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: historyService.historyList.length,
+                                itemBuilder: (context, index) => HistoryItem(
+                                    item: historyService.historyList[index],
                                     onPressed: () =>
-                                        _dialogBuilder(context, index),
-                                    text: AppStrings.moreInfo,
-                                    bgColor: Colors.blueAccent,
-                                    fontSize: 8,
-                                  ),
-                                )),
-                              ]);
-                            }).toList()
+                                        _dialogBuilder(context, index)),
+                              ),
+                            )
                           ],
-                        ),
-                      );
-          }),
+                        );
+            }),
+          ),
         ],
       ),
     );
+  }
+
+  int _isFlexible(int index) {
+    switch (index) {
+      case 3:
+        return 4;
+      case 5:
+      case 4:
+      case 2:
+      case 6:
+      case 7:
+      case 1:
+        return 2;
+      default:
+        return 1;
+    }
   }
 
   Future<void> _dialogBuilder(BuildContext pageContext, int index) async {
@@ -297,28 +155,5 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     if (result != null) {
       ref.read(historyNotifier.notifier).updateTransaction(result, index);
     }
-  }
-
-  Widget flexibleColumn(int length, String text, bool isLast) {
-    return SizedBox(
-      height: length * 24,
-      child: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                text,
-                style: const TextStyle(fontSize: 12),
-              ),
-            ),
-          ),
-          if (!isLast)
-            const Divider(
-              height: 1,
-              color: Colors.black,
-            )
-        ],
-      ),
-    );
   }
 }

@@ -6,7 +6,8 @@ part of '../country.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Country _$$_CountryFromJson(Map<String, dynamic> json) => _$_Country(
+_$CountryImpl _$$CountryImplFromJson(Map<String, dynamic> json) =>
+    _$CountryImpl(
       logo: json['logo'] as String,
       currency: json['currency'] as String,
       countryName: json['countryName'] as String,
@@ -18,7 +19,7 @@ _$_Country _$$_CountryFromJson(Map<String, dynamic> json) => _$_Country(
           .toList(),
     );
 
-Map<String, dynamic> _$$_CountryToJson(_$_Country instance) =>
+Map<String, dynamic> _$$CountryImplToJson(_$CountryImpl instance) =>
     <String, dynamic>{
       'logo': instance.logo,
       'currency': instance.currency,

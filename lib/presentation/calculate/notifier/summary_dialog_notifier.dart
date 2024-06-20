@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:currency_exchange/models/client_info.dart';
+import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/models/summary_dialog_model.dart';
 import 'package:currency_exchange/presentation/calculate/models/summary_dialog_state.dart';
@@ -12,44 +13,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 final summaryDialogStateProvider =
-    StateNotifierProvider<SummaryDialogNotifier, SummaryDialogState>(
-        (ref) => SummaryDialogNotifier(ref));
+    NotifierProvider<SummaryDialogNotifier, SummaryDialogState>(
+        SummaryDialogNotifier.new);
 
-class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
-  final Ref _ref;
-  SummaryDialogNotifier(this._ref)
-      : super(
-            const SummaryDialogState(ClientInfo(), false, BillOperation.none));
-
-  bool get isContainSell => _ref.read(receiptProvider).isContainSell;
-  TransactionItem? get currentTransaction =>
-      _ref.read(receiptProvider).currentTransaction;
+class SummaryDialogNotifier extends Notifier<SummaryDialogState> {
+  @override
+  SummaryDialogState build() =>
+      const SummaryDialogState(null, false, BillOperation.none);
 
   void updateField(String value, ClientField clientField) {
     switch (clientField) {
       case ClientField.name:
         state =
-            state.copyWith(clientInfo: state.clientInfo.copyWith(name: value));
+            state.copyWith(clientInfo: state.clientInfo!.copyWith(name: value));
       case ClientField.id:
         state =
-            state.copyWith(clientInfo: state.clientInfo.copyWith(id: value));
+            state.copyWith(clientInfo: state.clientInfo!.copyWith(id: value));
       case ClientField.address:
         state = state.copyWith(
-            clientInfo: state.clientInfo.copyWith(address: value));
+            clientInfo: state.clientInfo!.copyWith(address: value));
     }
     state = state.copyWith(
-        isInfoFilled: state.clientInfo.name!.isNotEmpty &&
-            state.clientInfo.id!.isNotEmpty &&
-            state.clientInfo.address!.isNotEmpty);
+        isInfoFilled: state.clientInfo!.name!.isNotEmpty &&
+            state.clientInfo!.id!.isNotEmpty &&
+            state.clientInfo!.address!.isNotEmpty);
+  }
+
+  void setClientInfo() {
+    state = state.copyWith(
+        clientInfo: ref.read(receiptProvider).currentTransaction?.clientInfo);
   }
 
   void saveClientInfo() {
-    _ref.read(receiptProvider).setClientInfo(ClientInfo(
-        name: state.clientInfo.name, address: state.clientInfo.address));
+    if (state.clientInfo == null) return;
+    if (state.isInfoFilled == false) {
+      throw ClientInfoException('Client info incomplete');
+    }
+    ref.read(receiptProvider).setClientInfo(ClientInfo(
+        name: state.clientInfo!.name, address: state.clientInfo!.address));
   }
 
   Future<void> save() async {
-    final currentTransaction = _ref.read(receiptProvider).currentTransaction;
+    final currentTransaction = ref.read(receiptProvider).currentTransaction;
     state = state.copyWith(billOperation: BillOperation.save);
     final transactionFile = await _getTransactionFile();
     final timeNow = DateTime.now();
@@ -59,7 +64,7 @@ class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
         'transaction': [currentTransaction!.toJson()]
       };
       try {
-        await _ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
+        await ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
         _clearAllCurrencyItem();
         state = state.copyWith(billOperation: BillOperation.none);
       } catch (e) {
@@ -74,7 +79,7 @@ class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
         'transaction': List.from(saveTransaction.map((e) => e.toJson()))
       };
       try {
-        await _ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
+        await ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
         _clearAllCurrencyItem();
         state = state.copyWith(billOperation: BillOperation.none);
       } catch (e) {
@@ -84,7 +89,7 @@ class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
   }
 
   void _clearAllCurrencyItem() {
-    _ref.read(receiptProvider).clearItem();
+    ref.read(receiptProvider).clearItem();
   }
 
   //move to current transaction service
@@ -92,7 +97,7 @@ class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
     try {
       final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
       final transactionFile =
-          await _ref.read(firebaseProvider).getTransactionFile(currentDate);
+          await ref.read(firebaseProvider).getTransactionFile(currentDate);
       return transactionFile;
     } catch (e) {
       return null;
@@ -105,7 +110,7 @@ class SummaryDialogNotifier extends StateNotifier<SummaryDialogState> {
       return true;
     }
     final result = await PrintReceiptService().initPrint(
-        _ref.read(receiptProvider).currentTransaction, state.clientInfo.id);
+        ref.read(receiptProvider).currentTransaction, state.clientInfo!.id);
     if (!result) {
       state = state.copyWith(billOperation: BillOperation.none);
     }

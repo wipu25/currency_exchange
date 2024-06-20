@@ -12,7 +12,7 @@ part of '../exchange_item.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ExchangeItem _$ExchangeItemFromJson(Map<String, dynamic> json) {
   return _ExchangeItem.fromJson(json);
@@ -98,11 +98,11 @@ class _$ExchangeItemCopyWithImpl<$Res, $Val extends ExchangeItem>
 }
 
 /// @nodoc
-abstract class _$$_ExchangeItemCopyWith<$Res>
+abstract class _$$ExchangeItemImplCopyWith<$Res>
     implements $ExchangeItemCopyWith<$Res> {
-  factory _$$_ExchangeItemCopyWith(
-          _$_ExchangeItem value, $Res Function(_$_ExchangeItem) then) =
-      __$$_ExchangeItemCopyWithImpl<$Res>;
+  factory _$$ExchangeItemImplCopyWith(
+          _$ExchangeItemImpl value, $Res Function(_$ExchangeItemImpl) then) =
+      __$$ExchangeItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -115,11 +115,11 @@ abstract class _$$_ExchangeItemCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExchangeItemCopyWithImpl<$Res>
-    extends _$ExchangeItemCopyWithImpl<$Res, _$_ExchangeItem>
-    implements _$$_ExchangeItemCopyWith<$Res> {
-  __$$_ExchangeItemCopyWithImpl(
-      _$_ExchangeItem _value, $Res Function(_$_ExchangeItem) _then)
+class __$$ExchangeItemImplCopyWithImpl<$Res>
+    extends _$ExchangeItemCopyWithImpl<$Res, _$ExchangeItemImpl>
+    implements _$$ExchangeItemImplCopyWith<$Res> {
+  __$$ExchangeItemImplCopyWithImpl(
+      _$ExchangeItemImpl _value, $Res Function(_$ExchangeItemImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -132,7 +132,7 @@ class __$$_ExchangeItemCopyWithImpl<$Res>
     Object? currency = null,
     Object? transaction = null,
   }) {
-    return _then(_$_ExchangeItem(
+    return _then(_$ExchangeItemImpl(
       priceRange: null == priceRange
           ? _value._priceRange
           : priceRange // ignore: cast_nullable_to_non_nullable
@@ -163,8 +163,8 @@ class __$$_ExchangeItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExchangeItem extends _ExchangeItem {
-  const _$_ExchangeItem(
+class _$ExchangeItemImpl extends _ExchangeItem {
+  const _$ExchangeItemImpl(
       {required final List<PriceRange> priceRange,
       required final List<CalculatedItem> calculatedItem,
       required this.amountExchange,
@@ -175,8 +175,8 @@ class _$_ExchangeItem extends _ExchangeItem {
         _calculatedItem = calculatedItem,
         super._();
 
-  factory _$_ExchangeItem.fromJson(Map<String, dynamic> json) =>
-      _$$_ExchangeItemFromJson(json);
+  factory _$ExchangeItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExchangeItemImplFromJson(json);
 
   final List<PriceRange> _priceRange;
   @override
@@ -209,10 +209,10 @@ class _$_ExchangeItem extends _ExchangeItem {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ExchangeItem &&
+            other is _$ExchangeItemImpl &&
             const DeepCollectionEquality()
                 .equals(other._priceRange, _priceRange) &&
             const DeepCollectionEquality()
@@ -241,12 +241,12 @@ class _$_ExchangeItem extends _ExchangeItem {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExchangeItemCopyWith<_$_ExchangeItem> get copyWith =>
-      __$$_ExchangeItemCopyWithImpl<_$_ExchangeItem>(this, _$identity);
+  _$$ExchangeItemImplCopyWith<_$ExchangeItemImpl> get copyWith =>
+      __$$ExchangeItemImplCopyWithImpl<_$ExchangeItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExchangeItemToJson(
+    return _$$ExchangeItemImplToJson(
       this,
     );
   }
@@ -259,11 +259,11 @@ abstract class _ExchangeItem extends ExchangeItem {
       required final double amountExchange,
       required final double totalPrice,
       required final String currency,
-      required final Transaction transaction}) = _$_ExchangeItem;
+      required final Transaction transaction}) = _$ExchangeItemImpl;
   const _ExchangeItem._() : super._();
 
   factory _ExchangeItem.fromJson(Map<String, dynamic> json) =
-      _$_ExchangeItem.fromJson;
+      _$ExchangeItemImpl.fromJson;
 
   @override
   List<PriceRange> get priceRange;
@@ -279,6 +279,6 @@ abstract class _ExchangeItem extends ExchangeItem {
   Transaction get transaction;
   @override
   @JsonKey(ignore: true)
-  _$$_ExchangeItemCopyWith<_$_ExchangeItem> get copyWith =>
+  _$$ExchangeItemImplCopyWith<_$ExchangeItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

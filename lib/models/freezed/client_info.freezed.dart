@@ -12,7 +12,7 @@ part of '../client_info.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ClientInfo _$ClientInfoFromJson(Map<String, dynamic> json) {
   return _ClientInfo.fromJson(json);
@@ -74,22 +74,22 @@ class _$ClientInfoCopyWithImpl<$Res, $Val extends ClientInfo>
 }
 
 /// @nodoc
-abstract class _$$_ClientInfoCopyWith<$Res>
+abstract class _$$ClientInfoImplCopyWith<$Res>
     implements $ClientInfoCopyWith<$Res> {
-  factory _$$_ClientInfoCopyWith(
-          _$_ClientInfo value, $Res Function(_$_ClientInfo) then) =
-      __$$_ClientInfoCopyWithImpl<$Res>;
+  factory _$$ClientInfoImplCopyWith(
+          _$ClientInfoImpl value, $Res Function(_$ClientInfoImpl) then) =
+      __$$ClientInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? name, String? id, String? address});
 }
 
 /// @nodoc
-class __$$_ClientInfoCopyWithImpl<$Res>
-    extends _$ClientInfoCopyWithImpl<$Res, _$_ClientInfo>
-    implements _$$_ClientInfoCopyWith<$Res> {
-  __$$_ClientInfoCopyWithImpl(
-      _$_ClientInfo _value, $Res Function(_$_ClientInfo) _then)
+class __$$ClientInfoImplCopyWithImpl<$Res>
+    extends _$ClientInfoCopyWithImpl<$Res, _$ClientInfoImpl>
+    implements _$$ClientInfoImplCopyWith<$Res> {
+  __$$ClientInfoImplCopyWithImpl(
+      _$ClientInfoImpl _value, $Res Function(_$ClientInfoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_ClientInfoCopyWithImpl<$Res>
     Object? id = freezed,
     Object? address = freezed,
   }) {
-    return _then(_$_ClientInfo(
+    return _then(_$ClientInfoImpl(
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -118,11 +118,11 @@ class __$$_ClientInfoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClientInfo extends _ClientInfo {
-  const _$_ClientInfo({this.name, this.id, this.address}) : super._();
+class _$ClientInfoImpl extends _ClientInfo {
+  const _$ClientInfoImpl({this.name, this.id, this.address}) : super._();
 
-  factory _$_ClientInfo.fromJson(Map<String, dynamic> json) =>
-      _$$_ClientInfoFromJson(json);
+  factory _$ClientInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClientInfoImplFromJson(json);
 
   @override
   final String? name;
@@ -137,10 +137,10 @@ class _$_ClientInfo extends _ClientInfo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClientInfo &&
+            other is _$ClientInfoImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.address, address) || other.address == address));
@@ -153,12 +153,12 @@ class _$_ClientInfo extends _ClientInfo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClientInfoCopyWith<_$_ClientInfo> get copyWith =>
-      __$$_ClientInfoCopyWithImpl<_$_ClientInfo>(this, _$identity);
+  _$$ClientInfoImplCopyWith<_$ClientInfoImpl> get copyWith =>
+      __$$ClientInfoImplCopyWithImpl<_$ClientInfoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClientInfoToJson(
+    return _$$ClientInfoImplToJson(
       this,
     );
   }
@@ -168,11 +168,11 @@ abstract class _ClientInfo extends ClientInfo {
   const factory _ClientInfo(
       {final String? name,
       final String? id,
-      final String? address}) = _$_ClientInfo;
+      final String? address}) = _$ClientInfoImpl;
   const _ClientInfo._() : super._();
 
   factory _ClientInfo.fromJson(Map<String, dynamic> json) =
-      _$_ClientInfo.fromJson;
+      _$ClientInfoImpl.fromJson;
 
   @override
   String? get name;
@@ -182,6 +182,6 @@ abstract class _ClientInfo extends ClientInfo {
   String? get address;
   @override
   @JsonKey(ignore: true)
-  _$$_ClientInfoCopyWith<_$_ClientInfo> get copyWith =>
+  _$$ClientInfoImplCopyWith<_$ClientInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

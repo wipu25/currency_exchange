@@ -12,7 +12,7 @@ part of '../calculated_item.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 CalculatedItem _$CalculatedItemFromJson(Map<String, dynamic> json) {
   return _CalculatedItem.fromJson(json);
@@ -68,22 +68,22 @@ class _$CalculatedItemCopyWithImpl<$Res, $Val extends CalculatedItem>
 }
 
 /// @nodoc
-abstract class _$$_CalculatedItemCopyWith<$Res>
+abstract class _$$CalculatedItemImplCopyWith<$Res>
     implements $CalculatedItemCopyWith<$Res> {
-  factory _$$_CalculatedItemCopyWith(
-          _$_CalculatedItem value, $Res Function(_$_CalculatedItem) then) =
-      __$$_CalculatedItemCopyWithImpl<$Res>;
+  factory _$$CalculatedItemImplCopyWith(_$CalculatedItemImpl value,
+          $Res Function(_$CalculatedItemImpl) then) =
+      __$$CalculatedItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({double amount, double price});
 }
 
 /// @nodoc
-class __$$_CalculatedItemCopyWithImpl<$Res>
-    extends _$CalculatedItemCopyWithImpl<$Res, _$_CalculatedItem>
-    implements _$$_CalculatedItemCopyWith<$Res> {
-  __$$_CalculatedItemCopyWithImpl(
-      _$_CalculatedItem _value, $Res Function(_$_CalculatedItem) _then)
+class __$$CalculatedItemImplCopyWithImpl<$Res>
+    extends _$CalculatedItemCopyWithImpl<$Res, _$CalculatedItemImpl>
+    implements _$$CalculatedItemImplCopyWith<$Res> {
+  __$$CalculatedItemImplCopyWithImpl(
+      _$CalculatedItemImpl _value, $Res Function(_$CalculatedItemImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_CalculatedItemCopyWithImpl<$Res>
     Object? amount = null,
     Object? price = null,
   }) {
-    return _then(_$_CalculatedItem(
+    return _then(_$CalculatedItemImpl(
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -107,12 +107,12 @@ class __$$_CalculatedItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CalculatedItem extends _CalculatedItem {
-  const _$_CalculatedItem({required this.amount, required this.price})
+class _$CalculatedItemImpl extends _CalculatedItem {
+  const _$CalculatedItemImpl({required this.amount, required this.price})
       : super._();
 
-  factory _$_CalculatedItem.fromJson(Map<String, dynamic> json) =>
-      _$$_CalculatedItemFromJson(json);
+  factory _$CalculatedItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CalculatedItemImplFromJson(json);
 
   @override
   final double amount;
@@ -125,10 +125,10 @@ class _$_CalculatedItem extends _CalculatedItem {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CalculatedItem &&
+            other is _$CalculatedItemImpl &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.price, price) || other.price == price));
   }
@@ -140,12 +140,13 @@ class _$_CalculatedItem extends _CalculatedItem {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CalculatedItemCopyWith<_$_CalculatedItem> get copyWith =>
-      __$$_CalculatedItemCopyWithImpl<_$_CalculatedItem>(this, _$identity);
+  _$$CalculatedItemImplCopyWith<_$CalculatedItemImpl> get copyWith =>
+      __$$CalculatedItemImplCopyWithImpl<_$CalculatedItemImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CalculatedItemToJson(
+    return _$$CalculatedItemImplToJson(
       this,
     );
   }
@@ -154,11 +155,11 @@ class _$_CalculatedItem extends _CalculatedItem {
 abstract class _CalculatedItem extends CalculatedItem {
   const factory _CalculatedItem(
       {required final double amount,
-      required final double price}) = _$_CalculatedItem;
+      required final double price}) = _$CalculatedItemImpl;
   const _CalculatedItem._() : super._();
 
   factory _CalculatedItem.fromJson(Map<String, dynamic> json) =
-      _$_CalculatedItem.fromJson;
+      _$CalculatedItemImpl.fromJson;
 
   @override
   double get amount;
@@ -166,6 +167,6 @@ abstract class _CalculatedItem extends CalculatedItem {
   double get price;
   @override
   @JsonKey(ignore: true)
-  _$$_CalculatedItemCopyWith<_$_CalculatedItem> get copyWith =>
+  _$$CalculatedItemImplCopyWith<_$CalculatedItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

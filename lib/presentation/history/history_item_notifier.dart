@@ -23,14 +23,15 @@ class HistoryItemNotifier
     state = state.copyWith(paymentMethod: PaymentMethod.cancel);
   }
 
-  void checkClientInfo() {
-    if (nameTextField.text.isNotEmpty &&
-        addressTextField.text.isNotEmpty &&
-        idTextField.text.isNotEmpty) {
-      final newClientInfo =
-          ClientInfo(name: nameTextField.text, address: addressTextField.text);
-      state = state.copyWith(clientInfo: newClientInfo);
-    }
+  bool get isClientInfoComplete =>
+      nameTextField.text.isNotEmpty &&
+      addressTextField.text.isNotEmpty &&
+      idTextField.text.isNotEmpty;
+
+  void updateClientInfo() {
+    final newClientInfo =
+        ClientInfo(name: nameTextField.text, address: addressTextField.text);
+    state = state.copyWith(clientInfo: newClientInfo);
   }
 
   @override

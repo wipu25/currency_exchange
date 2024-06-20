@@ -12,7 +12,7 @@ part of '../receipt_service_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ReceiptServiceState _$ReceiptServiceStateFromJson(Map<String, dynamic> json) {
   return _ReceiptServiceState.fromJson(json);
@@ -133,11 +133,11 @@ class _$ReceiptServiceStateCopyWithImpl<$Res, $Val extends ReceiptServiceState>
 }
 
 /// @nodoc
-abstract class _$$_ReceiptServiceStateCopyWith<$Res>
+abstract class _$$ReceiptServiceStateImplCopyWith<$Res>
     implements $ReceiptServiceStateCopyWith<$Res> {
-  factory _$$_ReceiptServiceStateCopyWith(_$_ReceiptServiceState value,
-          $Res Function(_$_ReceiptServiceState) then) =
-      __$$_ReceiptServiceStateCopyWithImpl<$Res>;
+  factory _$$ReceiptServiceStateImplCopyWith(_$ReceiptServiceStateImpl value,
+          $Res Function(_$ReceiptServiceStateImpl) then) =
+      __$$ReceiptServiceStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -156,11 +156,11 @@ abstract class _$$_ReceiptServiceStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ReceiptServiceStateCopyWithImpl<$Res>
-    extends _$ReceiptServiceStateCopyWithImpl<$Res, _$_ReceiptServiceState>
-    implements _$$_ReceiptServiceStateCopyWith<$Res> {
-  __$$_ReceiptServiceStateCopyWithImpl(_$_ReceiptServiceState _value,
-      $Res Function(_$_ReceiptServiceState) _then)
+class __$$ReceiptServiceStateImplCopyWithImpl<$Res>
+    extends _$ReceiptServiceStateCopyWithImpl<$Res, _$ReceiptServiceStateImpl>
+    implements _$$ReceiptServiceStateImplCopyWith<$Res> {
+  __$$ReceiptServiceStateImplCopyWithImpl(_$ReceiptServiceStateImpl _value,
+      $Res Function(_$ReceiptServiceStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -176,7 +176,7 @@ class __$$_ReceiptServiceStateCopyWithImpl<$Res>
     Object? transaction = null,
     Object? payment = null,
   }) {
-    return _then(_$_ReceiptServiceState(
+    return _then(_$ReceiptServiceStateImpl(
       freezed == currentTransaction
           ? _value.currentTransaction
           : currentTransaction // ignore: cast_nullable_to_non_nullable
@@ -219,8 +219,8 @@ class __$$_ReceiptServiceStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ReceiptServiceState extends _ReceiptServiceState {
-  const _$_ReceiptServiceState(
+class _$ReceiptServiceStateImpl extends _ReceiptServiceState {
+  const _$ReceiptServiceStateImpl(
       this.currentTransaction,
       this.totalItemAmount,
       this.totalItemPrice,
@@ -233,8 +233,8 @@ class _$_ReceiptServiceState extends _ReceiptServiceState {
       : _currencyItem = currencyItem,
         super._();
 
-  factory _$_ReceiptServiceState.fromJson(Map<String, dynamic> json) =>
-      _$$_ReceiptServiceStateFromJson(json);
+  factory _$ReceiptServiceStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ReceiptServiceStateImplFromJson(json);
 
   @override
   final TransactionItem? currentTransaction;
@@ -267,10 +267,10 @@ class _$_ReceiptServiceState extends _ReceiptServiceState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ReceiptServiceState &&
+            other is _$ReceiptServiceStateImpl &&
             (identical(other.currentTransaction, currentTransaction) ||
                 other.currentTransaction == currentTransaction) &&
             (identical(other.totalItemAmount, totalItemAmount) ||
@@ -307,13 +307,13 @@ class _$_ReceiptServiceState extends _ReceiptServiceState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ReceiptServiceStateCopyWith<_$_ReceiptServiceState> get copyWith =>
-      __$$_ReceiptServiceStateCopyWithImpl<_$_ReceiptServiceState>(
+  _$$ReceiptServiceStateImplCopyWith<_$ReceiptServiceStateImpl> get copyWith =>
+      __$$ReceiptServiceStateImplCopyWithImpl<_$ReceiptServiceStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ReceiptServiceStateToJson(
+    return _$$ReceiptServiceStateImplToJson(
       this,
     );
   }
@@ -329,11 +329,11 @@ abstract class _ReceiptServiceState extends ReceiptServiceState {
       final int sellTransactionCount,
       final List<ExchangeItem> currencyItem,
       final Transaction transaction,
-      final PaymentMethod payment) = _$_ReceiptServiceState;
+      final PaymentMethod payment) = _$ReceiptServiceStateImpl;
   const _ReceiptServiceState._() : super._();
 
   factory _ReceiptServiceState.fromJson(Map<String, dynamic> json) =
-      _$_ReceiptServiceState.fromJson;
+      _$ReceiptServiceStateImpl.fromJson;
 
   @override
   TransactionItem? get currentTransaction;
@@ -355,6 +355,6 @@ abstract class _ReceiptServiceState extends ReceiptServiceState {
   PaymentMethod get payment;
   @override
   @JsonKey(ignore: true)
-  _$$_ReceiptServiceStateCopyWith<_$_ReceiptServiceState> get copyWith =>
+  _$$ReceiptServiceStateImplCopyWith<_$ReceiptServiceStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

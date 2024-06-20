@@ -12,7 +12,7 @@ part of '../summary_dialog_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 SummaryDialogState _$SummaryDialogStateFromJson(Map<String, dynamic> json) {
   return _SummaryDialogState.fromJson(json);
@@ -20,7 +20,7 @@ SummaryDialogState _$SummaryDialogStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SummaryDialogState {
-  ClientInfo get clientInfo => throw _privateConstructorUsedError;
+  ClientInfo? get clientInfo => throw _privateConstructorUsedError;
   bool get isInfoFilled => throw _privateConstructorUsedError;
   BillOperation get billOperation => throw _privateConstructorUsedError;
 
@@ -37,9 +37,9 @@ abstract class $SummaryDialogStateCopyWith<$Res> {
       _$SummaryDialogStateCopyWithImpl<$Res, SummaryDialogState>;
   @useResult
   $Res call(
-      {ClientInfo clientInfo, bool isInfoFilled, BillOperation billOperation});
+      {ClientInfo? clientInfo, bool isInfoFilled, BillOperation billOperation});
 
-  $ClientInfoCopyWith<$Res> get clientInfo;
+  $ClientInfoCopyWith<$Res>? get clientInfo;
 }
 
 /// @nodoc
@@ -55,15 +55,15 @@ class _$SummaryDialogStateCopyWithImpl<$Res, $Val extends SummaryDialogState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? clientInfo = null,
+    Object? clientInfo = freezed,
     Object? isInfoFilled = null,
     Object? billOperation = null,
   }) {
     return _then(_value.copyWith(
-      clientInfo: null == clientInfo
+      clientInfo: freezed == clientInfo
           ? _value.clientInfo
           : clientInfo // ignore: cast_nullable_to_non_nullable
-              as ClientInfo,
+              as ClientInfo?,
       isInfoFilled: null == isInfoFilled
           ? _value.isInfoFilled
           : isInfoFilled // ignore: cast_nullable_to_non_nullable
@@ -77,48 +77,52 @@ class _$SummaryDialogStateCopyWithImpl<$Res, $Val extends SummaryDialogState>
 
   @override
   @pragma('vm:prefer-inline')
-  $ClientInfoCopyWith<$Res> get clientInfo {
-    return $ClientInfoCopyWith<$Res>(_value.clientInfo, (value) {
+  $ClientInfoCopyWith<$Res>? get clientInfo {
+    if (_value.clientInfo == null) {
+      return null;
+    }
+
+    return $ClientInfoCopyWith<$Res>(_value.clientInfo!, (value) {
       return _then(_value.copyWith(clientInfo: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_SummaryDialogStateCopyWith<$Res>
+abstract class _$$SummaryDialogStateImplCopyWith<$Res>
     implements $SummaryDialogStateCopyWith<$Res> {
-  factory _$$_SummaryDialogStateCopyWith(_$_SummaryDialogState value,
-          $Res Function(_$_SummaryDialogState) then) =
-      __$$_SummaryDialogStateCopyWithImpl<$Res>;
+  factory _$$SummaryDialogStateImplCopyWith(_$SummaryDialogStateImpl value,
+          $Res Function(_$SummaryDialogStateImpl) then) =
+      __$$SummaryDialogStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {ClientInfo clientInfo, bool isInfoFilled, BillOperation billOperation});
+      {ClientInfo? clientInfo, bool isInfoFilled, BillOperation billOperation});
 
   @override
-  $ClientInfoCopyWith<$Res> get clientInfo;
+  $ClientInfoCopyWith<$Res>? get clientInfo;
 }
 
 /// @nodoc
-class __$$_SummaryDialogStateCopyWithImpl<$Res>
-    extends _$SummaryDialogStateCopyWithImpl<$Res, _$_SummaryDialogState>
-    implements _$$_SummaryDialogStateCopyWith<$Res> {
-  __$$_SummaryDialogStateCopyWithImpl(
-      _$_SummaryDialogState _value, $Res Function(_$_SummaryDialogState) _then)
+class __$$SummaryDialogStateImplCopyWithImpl<$Res>
+    extends _$SummaryDialogStateCopyWithImpl<$Res, _$SummaryDialogStateImpl>
+    implements _$$SummaryDialogStateImplCopyWith<$Res> {
+  __$$SummaryDialogStateImplCopyWithImpl(_$SummaryDialogStateImpl _value,
+      $Res Function(_$SummaryDialogStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? clientInfo = null,
+    Object? clientInfo = freezed,
     Object? isInfoFilled = null,
     Object? billOperation = null,
   }) {
-    return _then(_$_SummaryDialogState(
-      null == clientInfo
+    return _then(_$SummaryDialogStateImpl(
+      freezed == clientInfo
           ? _value.clientInfo
           : clientInfo // ignore: cast_nullable_to_non_nullable
-              as ClientInfo,
+              as ClientInfo?,
       null == isInfoFilled
           ? _value.isInfoFilled
           : isInfoFilled // ignore: cast_nullable_to_non_nullable
@@ -133,16 +137,16 @@ class __$$_SummaryDialogStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SummaryDialogState extends _SummaryDialogState {
-  const _$_SummaryDialogState(
+class _$SummaryDialogStateImpl extends _SummaryDialogState {
+  const _$SummaryDialogStateImpl(
       this.clientInfo, this.isInfoFilled, this.billOperation)
       : super._();
 
-  factory _$_SummaryDialogState.fromJson(Map<String, dynamic> json) =>
-      _$$_SummaryDialogStateFromJson(json);
+  factory _$SummaryDialogStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SummaryDialogStateImplFromJson(json);
 
   @override
-  final ClientInfo clientInfo;
+  final ClientInfo? clientInfo;
   @override
   final bool isInfoFilled;
   @override
@@ -154,10 +158,10 @@ class _$_SummaryDialogState extends _SummaryDialogState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SummaryDialogState &&
+            other is _$SummaryDialogStateImpl &&
             (identical(other.clientInfo, clientInfo) ||
                 other.clientInfo == clientInfo) &&
             (identical(other.isInfoFilled, isInfoFilled) ||
@@ -174,13 +178,13 @@ class _$_SummaryDialogState extends _SummaryDialogState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SummaryDialogStateCopyWith<_$_SummaryDialogState> get copyWith =>
-      __$$_SummaryDialogStateCopyWithImpl<_$_SummaryDialogState>(
+  _$$SummaryDialogStateImplCopyWith<_$SummaryDialogStateImpl> get copyWith =>
+      __$$SummaryDialogStateImplCopyWithImpl<_$SummaryDialogStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SummaryDialogStateToJson(
+    return _$$SummaryDialogStateImplToJson(
       this,
     );
   }
@@ -188,22 +192,22 @@ class _$_SummaryDialogState extends _SummaryDialogState {
 
 abstract class _SummaryDialogState extends SummaryDialogState {
   const factory _SummaryDialogState(
-      final ClientInfo clientInfo,
+      final ClientInfo? clientInfo,
       final bool isInfoFilled,
-      final BillOperation billOperation) = _$_SummaryDialogState;
+      final BillOperation billOperation) = _$SummaryDialogStateImpl;
   const _SummaryDialogState._() : super._();
 
   factory _SummaryDialogState.fromJson(Map<String, dynamic> json) =
-      _$_SummaryDialogState.fromJson;
+      _$SummaryDialogStateImpl.fromJson;
 
   @override
-  ClientInfo get clientInfo;
+  ClientInfo? get clientInfo;
   @override
   bool get isInfoFilled;
   @override
   BillOperation get billOperation;
   @override
   @JsonKey(ignore: true)
-  _$$_SummaryDialogStateCopyWith<_$_SummaryDialogState> get copyWith =>
+  _$$SummaryDialogStateImplCopyWith<_$SummaryDialogStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

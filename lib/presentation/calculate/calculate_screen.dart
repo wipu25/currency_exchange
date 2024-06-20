@@ -35,32 +35,33 @@ class _CalculateScreenState extends ConsumerState<CalculateScreen> {
     return Consumer(builder: (_, ref, child) {
       return !ref.watch(currencyListProvider).isCurrencySet
           ? const Center(child: Text(AppStrings.preventCalculate))
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SelectTransaction(),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 48.0),
-                          child: SelectCountry(),
-                        ),
-                        const ConvertList(),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        Consumer(
-                            builder: (_, ref, __) {
-                              final totalItemAmount = ref.watch(calculateNotifier).totalItemAmount;
-                              final totalItemPrice = ref.watch(calculateNotifier).totalItemPrice;
-                              return (totalItemAmount != 0.0 && totalItemPrice != 0.0) ? Row(
+          : Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SelectTransaction(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24.0),
+                        child: SelectCountry(),
+                      ),
+                      const Expanded(child: ConvertList()),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Consumer(builder: (_, ref, __) {
+                        final totalItemAmount =
+                            ref.watch(calculateNotifier).totalItemAmount;
+                        final totalItemPrice =
+                            ref.watch(calculateNotifier).totalItemPrice;
+                        return (totalItemAmount != 0.0 && totalItemPrice != 0.0)
+                            ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(totalItemAmount)}',
+                                  Text(
+                                    '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(totalItemAmount)}',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -68,73 +69,74 @@ class _CalculateScreenState extends ConsumerState<CalculateScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  Text('${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(totalItemPrice)}',
+                                  Text(
+                                    '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(totalItemPrice)}',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
-                              ) : const SizedBox.shrink();
-                            }),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Consumer(
-                                builder: (_, ref, __) => ref
-                                        .watch(calculateNotifier).transaction == Transaction.buy
-                                    ? CustomButton(
-                                        onPressed: () {
-                                          ref
-                                              .read(calculateNotifier.notifier)
-                                              .addSplitItem();
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
-                                        },
-                                        text: AppStrings.addBill,
-                                        bgColor: Colors.orange,
-                                      )
-                                    : const SizedBox.shrink()),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Consumer(
-                                builder: (context, ref, child) => CustomButton(
-                                      onPressed: ref
-                                              .watch(calculateNotifier)
-                                              .isAddEnable
-                                          ? () {
-                                              ref
-                                                  .read(calculateNotifier
-                                                      .notifier)
-                                                  .addToReceipt();
-                                              ref
-                                                  .read(summaryPanelNotifier
-                                                      .notifier)
-                                                  .getSummary();
-                                            }
-                                          : null,
-                                      text: AppStrings.addReceipt,
-                                      bgColor: ref
-                                              .watch(calculateNotifier)
-                                              .isAddEnable
-                                          ? Colors.green
-                                          : Colors.grey,
-                                    )),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    ),
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Consumer(
+                              builder: (_, ref, __) => ref
+                                          .watch(calculateNotifier)
+                                          .transaction ==
+                                      Transaction.buy
+                                  ? CustomButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(calculateNotifier.notifier)
+                                            .addSplitItem();
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                      },
+                                      text: AppStrings.addBill,
+                                      bgColor: Colors.orange,
+                                    )
+                                  : const SizedBox.shrink()),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Consumer(
+                              builder: (context, ref, child) => CustomButton(
+                                    onPressed: ref
+                                            .watch(calculateNotifier)
+                                            .isAddEnable
+                                        ? () {
+                                            ref
+                                                .read(
+                                                    calculateNotifier.notifier)
+                                                .addToReceipt();
+                                            ref
+                                                .read(summaryPanelNotifier
+                                                    .notifier)
+                                                .getSummary();
+                                          }
+                                        : null,
+                                    text: AppStrings.addReceipt,
+                                    bgColor:
+                                        ref.watch(calculateNotifier).isAddEnable
+                                            ? Colors.green
+                                            : Colors.grey,
+                                  )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                    ],
                   ),
-                  // const Spacer(),
-                  const SummaryPanel(),
-                ],
-              ),
+                ),
+                const SummaryPanel(),
+              ],
             );
     });
   }

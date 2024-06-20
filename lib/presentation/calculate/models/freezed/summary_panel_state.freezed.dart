@@ -12,7 +12,7 @@ part of '../summary_panel_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 SummaryPanelState _$SummaryPanelStateFromJson(Map<String, dynamic> json) {
   return _SummaryPanelState.fromJson(json);
@@ -105,11 +105,11 @@ class _$SummaryPanelStateCopyWithImpl<$Res, $Val extends SummaryPanelState>
 }
 
 /// @nodoc
-abstract class _$$_SummaryPanelStateCopyWith<$Res>
+abstract class _$$SummaryPanelStateImplCopyWith<$Res>
     implements $SummaryPanelStateCopyWith<$Res> {
-  factory _$$_SummaryPanelStateCopyWith(_$_SummaryPanelState value,
-          $Res Function(_$_SummaryPanelState) then) =
-      __$$_SummaryPanelStateCopyWithImpl<$Res>;
+  factory _$$SummaryPanelStateImplCopyWith(_$SummaryPanelStateImpl value,
+          $Res Function(_$SummaryPanelStateImpl) then) =
+      __$$SummaryPanelStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -124,11 +124,11 @@ abstract class _$$_SummaryPanelStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_SummaryPanelStateCopyWithImpl<$Res>
-    extends _$SummaryPanelStateCopyWithImpl<$Res, _$_SummaryPanelState>
-    implements _$$_SummaryPanelStateCopyWith<$Res> {
-  __$$_SummaryPanelStateCopyWithImpl(
-      _$_SummaryPanelState _value, $Res Function(_$_SummaryPanelState) _then)
+class __$$SummaryPanelStateImplCopyWithImpl<$Res>
+    extends _$SummaryPanelStateCopyWithImpl<$Res, _$SummaryPanelStateImpl>
+    implements _$$SummaryPanelStateImplCopyWith<$Res> {
+  __$$SummaryPanelStateImplCopyWithImpl(_$SummaryPanelStateImpl _value,
+      $Res Function(_$SummaryPanelStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -140,7 +140,7 @@ class __$$_SummaryPanelStateCopyWithImpl<$Res>
     Object? currencyItem = null,
     Object? payment = null,
   }) {
-    return _then(_$_SummaryPanelState(
+    return _then(_$SummaryPanelStateImpl(
       freezed == currentTransaction
           ? _value.currentTransaction
           : currentTransaction // ignore: cast_nullable_to_non_nullable
@@ -167,14 +167,14 @@ class __$$_SummaryPanelStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SummaryPanelState extends _SummaryPanelState {
-  const _$_SummaryPanelState(this.currentTransaction, this.totalBuyPrice,
+class _$SummaryPanelStateImpl extends _SummaryPanelState {
+  const _$SummaryPanelStateImpl(this.currentTransaction, this.totalBuyPrice,
       this.totalSellPrice, final List<ExchangeItem> currencyItem, this.payment)
       : _currencyItem = currencyItem,
         super._();
 
-  factory _$_SummaryPanelState.fromJson(Map<String, dynamic> json) =>
-      _$$_SummaryPanelStateFromJson(json);
+  factory _$SummaryPanelStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SummaryPanelStateImplFromJson(json);
 
   @override
   final TransactionItem? currentTransaction;
@@ -199,10 +199,10 @@ class _$_SummaryPanelState extends _SummaryPanelState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SummaryPanelState &&
+            other is _$SummaryPanelStateImpl &&
             (identical(other.currentTransaction, currentTransaction) ||
                 other.currentTransaction == currentTransaction) &&
             (identical(other.totalBuyPrice, totalBuyPrice) ||
@@ -227,13 +227,13 @@ class _$_SummaryPanelState extends _SummaryPanelState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SummaryPanelStateCopyWith<_$_SummaryPanelState> get copyWith =>
-      __$$_SummaryPanelStateCopyWithImpl<_$_SummaryPanelState>(
+  _$$SummaryPanelStateImplCopyWith<_$SummaryPanelStateImpl> get copyWith =>
+      __$$SummaryPanelStateImplCopyWithImpl<_$SummaryPanelStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SummaryPanelStateToJson(
+    return _$$SummaryPanelStateImplToJson(
       this,
     );
   }
@@ -245,11 +245,11 @@ abstract class _SummaryPanelState extends SummaryPanelState {
       final double totalBuyPrice,
       final double totalSellPrice,
       final List<ExchangeItem> currencyItem,
-      final PaymentMethod payment) = _$_SummaryPanelState;
+      final PaymentMethod payment) = _$SummaryPanelStateImpl;
   const _SummaryPanelState._() : super._();
 
   factory _SummaryPanelState.fromJson(Map<String, dynamic> json) =
-      _$_SummaryPanelState.fromJson;
+      _$SummaryPanelStateImpl.fromJson;
 
   @override
   TransactionItem? get currentTransaction;
@@ -263,6 +263,6 @@ abstract class _SummaryPanelState extends SummaryPanelState {
   PaymentMethod get payment;
   @override
   @JsonKey(ignore: true)
-  _$$_SummaryPanelStateCopyWith<_$_SummaryPanelState> get copyWith =>
+  _$$SummaryPanelStateImplCopyWith<_$SummaryPanelStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
