@@ -41,4 +41,9 @@ class SummaryPanelNotifier extends StateNotifier<SummaryPanelState> {
   void submit() {
     _ref.read(receiptProvider).setCurrentTransaction();
   }
+
+  void clear() {
+    state = state
+        .copyWith(currencyItem: [], totalSellPrice: 0.0, totalBuyPrice: 0.0);
+  }
 }

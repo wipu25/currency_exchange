@@ -7,14 +7,14 @@ class HeaderCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TableCell(
-        child: Center(
-            child: Padding(
+    return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+        ),
       ),
-    )));
+    );
   }
 }

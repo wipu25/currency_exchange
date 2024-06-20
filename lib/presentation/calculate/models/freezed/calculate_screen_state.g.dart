@@ -6,9 +6,9 @@ part of '../calculate_screen_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CalculateScreenState _$$_CalculateScreenStateFromJson(
+_$CalculateScreenStateImpl _$$CalculateScreenStateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_CalculateScreenState(
+    _$CalculateScreenStateImpl(
       json['selectedCurrency'] == null
           ? null
           : Country.fromJson(json['selectedCurrency'] as Map<String, dynamic>),
@@ -21,13 +21,13 @@ _$_CalculateScreenState _$$_CalculateScreenStateFromJson(
       (json['calculatedItem'] as List<dynamic>)
           .map((e) => CalculatedItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['currentInsert'] as int,
+      (json['currentInsert'] as num).toInt(),
       (json['totalItemAmount'] as num).toDouble(),
       (json['totalItemPrice'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$_CalculateScreenStateToJson(
-        _$_CalculateScreenState instance) =>
+Map<String, dynamic> _$$CalculateScreenStateImplToJson(
+        _$CalculateScreenStateImpl instance) =>
     <String, dynamic>{
       'selectedCurrency': instance.selectedCurrency?.toJson(),
       'isAddEnable': instance.isAddEnable,

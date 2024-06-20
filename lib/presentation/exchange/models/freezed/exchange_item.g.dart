@@ -6,8 +6,8 @@ part of '../exchange_item.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ExchangeItem _$$_ExchangeItemFromJson(Map<String, dynamic> json) =>
-    _$_ExchangeItem(
+_$ExchangeItemImpl _$$ExchangeItemImplFromJson(Map<String, dynamic> json) =>
+    _$ExchangeItemImpl(
       priceRange: (json['priceRange'] as List<dynamic>)
           .map((e) => PriceRange.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -20,7 +20,7 @@ _$_ExchangeItem _$$_ExchangeItemFromJson(Map<String, dynamic> json) =>
       transaction: $enumDecode(_$TransactionEnumMap, json['transaction']),
     );
 
-Map<String, dynamic> _$$_ExchangeItemToJson(_$_ExchangeItem instance) =>
+Map<String, dynamic> _$$ExchangeItemImplToJson(_$ExchangeItemImpl instance) =>
     <String, dynamic>{
       'priceRange': instance.priceRange.map((e) => e.toJson()).toList(),
       'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),

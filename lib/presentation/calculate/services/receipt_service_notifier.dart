@@ -24,7 +24,7 @@ class ReceiptStateService {
   PaymentMethod get payment => _payment;
 
   //todo move to dialog
-  bool get isContainSell => _sellTransactionCount > 0;
+  bool get _isContainSell => _sellTransactionCount > 0;
 
   setPayment(PaymentMethod? value) {
     if (value == null) return;
@@ -86,16 +86,18 @@ class ReceiptStateService {
   //todo: check by summary dialog actually no need
   setCurrentTransaction() {
     _currentTransaction = TransactionItem(
-      calculatedItem: _currencyItem,
-      dateTime: DateFormat('yyyy-MM-dd_HH:mm:ss').format(DateTime.now()),
-      paymentMethod: _payment,
-      totalSellPrice: _totalSellPrice,
-      totalBuyPrice: _totalBuyPrice,
-    );
+        calculatedItem: _currencyItem,
+        dateTime: DateFormat('yyyy-MM-dd_HH:mm:ss').format(DateTime.now()),
+        paymentMethod: _payment,
+        totalSellPrice: _totalSellPrice,
+        totalBuyPrice: _totalBuyPrice,
+        clientInfo: _isContainSell
+            ? const ClientInfo(name: '', id: '', address: '')
+            : null);
   }
 
   setClientInfo(ClientInfo clientInfo) {
-    if (isContainSell) {
+    if (_isContainSell) {
       _currentTransaction =
           _currentTransaction!.copyWith(clientInfo: clientInfo);
     }

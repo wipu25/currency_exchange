@@ -7,6 +7,7 @@ import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
 import 'package:currency_exchange/presentation/exchange/widgets/price_cell.dart';
 import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
+import 'package:currency_exchange/presentation/widgets/item_container.dart';
 import 'package:currency_exchange/presentation/widgets/loading.dart';
 import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class ExchangeScreen extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 4.0),
                             child: Container(
-                              padding: const EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16.0),
                                   color: Colors.white,
@@ -81,25 +82,7 @@ class ExchangeScreen extends ConsumerWidget {
                                           (buyItem) => Padding(
                                                 padding:
                                                     const EdgeInsets.all(4.0),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16.0),
-                                                      color: Colors.white,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                            blurRadius: 2,
-                                                            spreadRadius: 1,
-                                                            offset:
-                                                                const Offset(
-                                                                    2, 2),
-                                                            color: Colors.black
-                                                                .withOpacity(
-                                                                    0.2))
-                                                      ]),
+                                                child: ItemContainer(
                                                   child: Row(
                                                     children: [
                                                       Expanded(

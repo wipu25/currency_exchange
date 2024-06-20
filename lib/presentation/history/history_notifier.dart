@@ -11,22 +11,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 final historyNotifier =
-    NotifierProvider<HistoryScreenNotifier, HistoryScreenState>(
+    NotifierProvider.autoDispose<HistoryScreenNotifier, HistoryScreenState>(
         HistoryScreenNotifier.new);
 
 enum FilterType { currency, payment, transaction }
 
-class HistoryScreenNotifier extends Notifier<HistoryScreenState> {
+class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
   @override
   HistoryScreenState build() => HistoryScreenState(
       [], [], false, false, false, false, DateTime.now(), {}, {}, {});
 
   final _headerTitle = [
     'วันที่',
-    'เวลาธุรกรรม',
-    'ซื้อ/ขาย',
+    'เวลา',
     'สกุลเงิน',
-    'ธนบัตรที่รับ',
+    'ธนบัตร',
     'ราคา',
     'จำนวน',
     'ราคารวม',
@@ -34,8 +33,6 @@ class HistoryScreenNotifier extends Notifier<HistoryScreenState> {
     'เพิ่มเติม'
   ];
 
-  String formatDateTime(DateTime? dateTime) =>
-      DateFormat('dd/MM/yyyy').format(dateTime ?? DateTime.now()).toString();
   List<String> get headerTitle => _headerTitle;
 
   Future<void> init() async {
@@ -182,7 +179,7 @@ class HistoryScreenNotifier extends Notifier<HistoryScreenState> {
       removeList.removeWhere((element) {
         final isCurrency = removeCurrency.contains(element.currency.toString());
         final isTransaction =
-            removeTransaction.contains(element.transaction.toString());
+            removeTransaction.contains(element.transaction.name);
         return isCurrency || isTransaction;
       });
       if (removeList.isEmpty) {

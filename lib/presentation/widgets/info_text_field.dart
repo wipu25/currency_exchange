@@ -23,10 +23,12 @@ class InfoTextField extends StatelessWidget {
       children: [
         Text(
           header,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 20,
+          ),
         ),
         const SizedBox(
-          height: 4,
+          height: 8,
         ),
         TextField(
           controller: controller,

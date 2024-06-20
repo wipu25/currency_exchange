@@ -12,7 +12,7 @@ part of '../exchange_screen_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ExchangeScreenState _$ExchangeScreenStateFromJson(Map<String, dynamic> json) {
   return _ExchangeScreenState.fromJson(json);
@@ -74,22 +74,22 @@ class _$ExchangeScreenStateCopyWithImpl<$Res, $Val extends ExchangeScreenState>
 }
 
 /// @nodoc
-abstract class _$$_ExchangeScreenStateCopyWith<$Res>
+abstract class _$$ExchangeScreenStateImplCopyWith<$Res>
     implements $ExchangeScreenStateCopyWith<$Res> {
-  factory _$$_ExchangeScreenStateCopyWith(_$_ExchangeScreenState value,
-          $Res Function(_$_ExchangeScreenState) then) =
-      __$$_ExchangeScreenStateCopyWithImpl<$Res>;
+  factory _$$ExchangeScreenStateImplCopyWith(_$ExchangeScreenStateImpl value,
+          $Res Function(_$ExchangeScreenStateImpl) then) =
+      __$$ExchangeScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool isSave, bool isEdit, bool isCurrencyLoading});
 }
 
 /// @nodoc
-class __$$_ExchangeScreenStateCopyWithImpl<$Res>
-    extends _$ExchangeScreenStateCopyWithImpl<$Res, _$_ExchangeScreenState>
-    implements _$$_ExchangeScreenStateCopyWith<$Res> {
-  __$$_ExchangeScreenStateCopyWithImpl(_$_ExchangeScreenState _value,
-      $Res Function(_$_ExchangeScreenState) _then)
+class __$$ExchangeScreenStateImplCopyWithImpl<$Res>
+    extends _$ExchangeScreenStateCopyWithImpl<$Res, _$ExchangeScreenStateImpl>
+    implements _$$ExchangeScreenStateImplCopyWith<$Res> {
+  __$$ExchangeScreenStateImplCopyWithImpl(_$ExchangeScreenStateImpl _value,
+      $Res Function(_$ExchangeScreenStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_ExchangeScreenStateCopyWithImpl<$Res>
     Object? isEdit = null,
     Object? isCurrencyLoading = null,
   }) {
-    return _then(_$_ExchangeScreenState(
+    return _then(_$ExchangeScreenStateImpl(
       isSave: null == isSave
           ? _value.isSave
           : isSave // ignore: cast_nullable_to_non_nullable
@@ -118,15 +118,15 @@ class __$$_ExchangeScreenStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExchangeScreenState extends _ExchangeScreenState {
-  const _$_ExchangeScreenState(
+class _$ExchangeScreenStateImpl extends _ExchangeScreenState {
+  const _$ExchangeScreenStateImpl(
       {required this.isSave,
       required this.isEdit,
       required this.isCurrencyLoading})
       : super._();
 
-  factory _$_ExchangeScreenState.fromJson(Map<String, dynamic> json) =>
-      _$$_ExchangeScreenStateFromJson(json);
+  factory _$ExchangeScreenStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExchangeScreenStateImplFromJson(json);
 
   @override
   final bool isSave;
@@ -141,10 +141,10 @@ class _$_ExchangeScreenState extends _ExchangeScreenState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ExchangeScreenState &&
+            other is _$ExchangeScreenStateImpl &&
             (identical(other.isSave, isSave) || other.isSave == isSave) &&
             (identical(other.isEdit, isEdit) || other.isEdit == isEdit) &&
             (identical(other.isCurrencyLoading, isCurrencyLoading) ||
@@ -159,13 +159,13 @@ class _$_ExchangeScreenState extends _ExchangeScreenState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExchangeScreenStateCopyWith<_$_ExchangeScreenState> get copyWith =>
-      __$$_ExchangeScreenStateCopyWithImpl<_$_ExchangeScreenState>(
+  _$$ExchangeScreenStateImplCopyWith<_$ExchangeScreenStateImpl> get copyWith =>
+      __$$ExchangeScreenStateImplCopyWithImpl<_$ExchangeScreenStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExchangeScreenStateToJson(
+    return _$$ExchangeScreenStateImplToJson(
       this,
     );
   }
@@ -175,11 +175,11 @@ abstract class _ExchangeScreenState extends ExchangeScreenState {
   const factory _ExchangeScreenState(
       {required final bool isSave,
       required final bool isEdit,
-      required final bool isCurrencyLoading}) = _$_ExchangeScreenState;
+      required final bool isCurrencyLoading}) = _$ExchangeScreenStateImpl;
   const _ExchangeScreenState._() : super._();
 
   factory _ExchangeScreenState.fromJson(Map<String, dynamic> json) =
-      _$_ExchangeScreenState.fromJson;
+      _$ExchangeScreenStateImpl.fromJson;
 
   @override
   bool get isSave;
@@ -189,6 +189,6 @@ abstract class _ExchangeScreenState extends ExchangeScreenState {
   bool get isCurrencyLoading;
   @override
   @JsonKey(ignore: true)
-  _$$_ExchangeScreenStateCopyWith<_$_ExchangeScreenState> get copyWith =>
+  _$$ExchangeScreenStateImplCopyWith<_$ExchangeScreenStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

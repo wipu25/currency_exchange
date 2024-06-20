@@ -9,7 +9,7 @@ part 'freezed/summary_dialog_state.g.dart';
 class SummaryDialogState with _$SummaryDialogState {
   const SummaryDialogState._();
 
-  const factory SummaryDialogState(ClientInfo clientInfo, bool isInfoFilled,
+  const factory SummaryDialogState(ClientInfo? clientInfo, bool isInfoFilled,
       BillOperation billOperation) = _SummaryDialogState;
 
   factory SummaryDialogState.fromJson(Map<String, Object?> json) =>

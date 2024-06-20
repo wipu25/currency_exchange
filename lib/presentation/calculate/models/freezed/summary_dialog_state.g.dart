@@ -6,18 +6,20 @@ part of '../summary_dialog_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SummaryDialogState _$$_SummaryDialogStateFromJson(
+_$SummaryDialogStateImpl _$$SummaryDialogStateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_SummaryDialogState(
-      ClientInfo.fromJson(json['clientInfo'] as Map<String, dynamic>),
+    _$SummaryDialogStateImpl(
+      json['clientInfo'] == null
+          ? null
+          : ClientInfo.fromJson(json['clientInfo'] as Map<String, dynamic>),
       json['isInfoFilled'] as bool,
       $enumDecode(_$BillOperationEnumMap, json['billOperation']),
     );
 
-Map<String, dynamic> _$$_SummaryDialogStateToJson(
-        _$_SummaryDialogState instance) =>
+Map<String, dynamic> _$$SummaryDialogStateImplToJson(
+        _$SummaryDialogStateImpl instance) =>
     <String, dynamic>{
-      'clientInfo': instance.clientInfo.toJson(),
+      'clientInfo': instance.clientInfo?.toJson(),
       'isInfoFilled': instance.isInfoFilled,
       'billOperation': _$BillOperationEnumMap[instance.billOperation]!,
     };

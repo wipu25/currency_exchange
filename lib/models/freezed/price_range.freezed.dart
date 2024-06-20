@@ -12,7 +12,7 @@ part of '../price_range.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 PriceRange _$PriceRangeFromJson(Map<String, dynamic> json) {
   return _PriceRange.fromJson(json);
@@ -74,22 +74,22 @@ class _$PriceRangeCopyWithImpl<$Res, $Val extends PriceRange>
 }
 
 /// @nodoc
-abstract class _$$_PriceRangeCopyWith<$Res>
+abstract class _$$PriceRangeImplCopyWith<$Res>
     implements $PriceRangeCopyWith<$Res> {
-  factory _$$_PriceRangeCopyWith(
-          _$_PriceRange value, $Res Function(_$_PriceRange) then) =
-      __$$_PriceRangeCopyWithImpl<$Res>;
+  factory _$$PriceRangeImplCopyWith(
+          _$PriceRangeImpl value, $Res Function(_$PriceRangeImpl) then) =
+      __$$PriceRangeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({double? min, double? max, double? price});
 }
 
 /// @nodoc
-class __$$_PriceRangeCopyWithImpl<$Res>
-    extends _$PriceRangeCopyWithImpl<$Res, _$_PriceRange>
-    implements _$$_PriceRangeCopyWith<$Res> {
-  __$$_PriceRangeCopyWithImpl(
-      _$_PriceRange _value, $Res Function(_$_PriceRange) _then)
+class __$$PriceRangeImplCopyWithImpl<$Res>
+    extends _$PriceRangeCopyWithImpl<$Res, _$PriceRangeImpl>
+    implements _$$PriceRangeImplCopyWith<$Res> {
+  __$$PriceRangeImplCopyWithImpl(
+      _$PriceRangeImpl _value, $Res Function(_$PriceRangeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_PriceRangeCopyWithImpl<$Res>
     Object? max = freezed,
     Object? price = freezed,
   }) {
-    return _then(_$_PriceRange(
+    return _then(_$PriceRangeImpl(
       min: freezed == min
           ? _value.min
           : min // ignore: cast_nullable_to_non_nullable
@@ -118,11 +118,11 @@ class __$$_PriceRangeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PriceRange extends _PriceRange {
-  const _$_PriceRange({this.min, this.max, this.price}) : super._();
+class _$PriceRangeImpl extends _PriceRange {
+  const _$PriceRangeImpl({this.min, this.max, this.price}) : super._();
 
-  factory _$_PriceRange.fromJson(Map<String, dynamic> json) =>
-      _$$_PriceRangeFromJson(json);
+  factory _$PriceRangeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PriceRangeImplFromJson(json);
 
   @override
   final double? min;
@@ -137,10 +137,10 @@ class _$_PriceRange extends _PriceRange {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PriceRange &&
+            other is _$PriceRangeImpl &&
             (identical(other.min, min) || other.min == min) &&
             (identical(other.max, max) || other.max == max) &&
             (identical(other.price, price) || other.price == price));
@@ -153,12 +153,12 @@ class _$_PriceRange extends _PriceRange {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PriceRangeCopyWith<_$_PriceRange> get copyWith =>
-      __$$_PriceRangeCopyWithImpl<_$_PriceRange>(this, _$identity);
+  _$$PriceRangeImplCopyWith<_$PriceRangeImpl> get copyWith =>
+      __$$PriceRangeImplCopyWithImpl<_$PriceRangeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PriceRangeToJson(
+    return _$$PriceRangeImplToJson(
       this,
     );
   }
@@ -168,11 +168,11 @@ abstract class _PriceRange extends PriceRange {
   const factory _PriceRange(
       {final double? min,
       final double? max,
-      final double? price}) = _$_PriceRange;
+      final double? price}) = _$PriceRangeImpl;
   const _PriceRange._() : super._();
 
   factory _PriceRange.fromJson(Map<String, dynamic> json) =
-      _$_PriceRange.fromJson;
+      _$PriceRangeImpl.fromJson;
 
   @override
   double? get min;
@@ -182,6 +182,6 @@ abstract class _PriceRange extends PriceRange {
   double? get price;
   @override
   @JsonKey(ignore: true)
-  _$$_PriceRangeCopyWith<_$_PriceRange> get copyWith =>
+  _$$PriceRangeImplCopyWith<_$PriceRangeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

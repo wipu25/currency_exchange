@@ -6,8 +6,9 @@ part of '../transaction_item.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
-    _$_TransactionItem(
+_$TransactionItemImpl _$$TransactionItemImplFromJson(
+        Map<String, dynamic> json) =>
+    _$TransactionItemImpl(
       calculatedItem: (json['calculatedItem'] as List<dynamic>)
           .map((e) => ExchangeItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -20,7 +21,8 @@ _$_TransactionItem _$$_TransactionItemFromJson(Map<String, dynamic> json) =>
           : ClientInfo.fromJson(json['clientInfo'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_TransactionItemToJson(_$_TransactionItem instance) =>
+Map<String, dynamic> _$$TransactionItemImplToJson(
+        _$TransactionItemImpl instance) =>
     <String, dynamic>{
       'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),
       'totalBuyPrice': instance.totalBuyPrice,

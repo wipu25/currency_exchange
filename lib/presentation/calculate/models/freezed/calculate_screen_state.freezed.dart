@@ -12,7 +12,7 @@ part of '../calculate_screen_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 CalculateScreenState _$CalculateScreenStateFromJson(Map<String, dynamic> json) {
   return _CalculateScreenState.fromJson(json);
@@ -134,11 +134,11 @@ class _$CalculateScreenStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_CalculateScreenStateCopyWith<$Res>
+abstract class _$$CalculateScreenStateImplCopyWith<$Res>
     implements $CalculateScreenStateCopyWith<$Res> {
-  factory _$$_CalculateScreenStateCopyWith(_$_CalculateScreenState value,
-          $Res Function(_$_CalculateScreenState) then) =
-      __$$_CalculateScreenStateCopyWithImpl<$Res>;
+  factory _$$CalculateScreenStateImplCopyWith(_$CalculateScreenStateImpl value,
+          $Res Function(_$CalculateScreenStateImpl) then) =
+      __$$CalculateScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -157,11 +157,11 @@ abstract class _$$_CalculateScreenStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CalculateScreenStateCopyWithImpl<$Res>
-    extends _$CalculateScreenStateCopyWithImpl<$Res, _$_CalculateScreenState>
-    implements _$$_CalculateScreenStateCopyWith<$Res> {
-  __$$_CalculateScreenStateCopyWithImpl(_$_CalculateScreenState _value,
-      $Res Function(_$_CalculateScreenState) _then)
+class __$$CalculateScreenStateImplCopyWithImpl<$Res>
+    extends _$CalculateScreenStateCopyWithImpl<$Res, _$CalculateScreenStateImpl>
+    implements _$$CalculateScreenStateImplCopyWith<$Res> {
+  __$$CalculateScreenStateImplCopyWithImpl(_$CalculateScreenStateImpl _value,
+      $Res Function(_$CalculateScreenStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -177,7 +177,7 @@ class __$$_CalculateScreenStateCopyWithImpl<$Res>
     Object? totalItemAmount = null,
     Object? totalItemPrice = null,
   }) {
-    return _then(_$_CalculateScreenState(
+    return _then(_$CalculateScreenStateImpl(
       freezed == selectedCurrency
           ? _value.selectedCurrency
           : selectedCurrency // ignore: cast_nullable_to_non_nullable
@@ -220,8 +220,8 @@ class __$$_CalculateScreenStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CalculateScreenState extends _CalculateScreenState {
-  const _$_CalculateScreenState(
+class _$CalculateScreenStateImpl extends _CalculateScreenState {
+  const _$CalculateScreenStateImpl(
       this.selectedCurrency,
       this.isAddEnable,
       this.transaction,
@@ -236,8 +236,8 @@ class _$_CalculateScreenState extends _CalculateScreenState {
         _calculatedItem = calculatedItem,
         super._();
 
-  factory _$_CalculateScreenState.fromJson(Map<String, dynamic> json) =>
-      _$$_CalculateScreenStateFromJson(json);
+  factory _$CalculateScreenStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CalculateScreenStateImplFromJson(json);
 
   @override
   final Country? selectedCurrency;
@@ -283,10 +283,10 @@ class _$_CalculateScreenState extends _CalculateScreenState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CalculateScreenState &&
+            other is _$CalculateScreenStateImpl &&
             (identical(other.selectedCurrency, selectedCurrency) ||
                 other.selectedCurrency == selectedCurrency) &&
             (identical(other.isAddEnable, isAddEnable) ||
@@ -324,13 +324,14 @@ class _$_CalculateScreenState extends _CalculateScreenState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CalculateScreenStateCopyWith<_$_CalculateScreenState> get copyWith =>
-      __$$_CalculateScreenStateCopyWithImpl<_$_CalculateScreenState>(
-          this, _$identity);
+  _$$CalculateScreenStateImplCopyWith<_$CalculateScreenStateImpl>
+      get copyWith =>
+          __$$CalculateScreenStateImplCopyWithImpl<_$CalculateScreenStateImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CalculateScreenStateToJson(
+    return _$$CalculateScreenStateImplToJson(
       this,
     );
   }
@@ -346,11 +347,11 @@ abstract class _CalculateScreenState extends CalculateScreenState {
       final List<CalculatedItem> calculatedItem,
       final int currentInsert,
       final double totalItemAmount,
-      final double totalItemPrice) = _$_CalculateScreenState;
+      final double totalItemPrice) = _$CalculateScreenStateImpl;
   const _CalculateScreenState._() : super._();
 
   factory _CalculateScreenState.fromJson(Map<String, dynamic> json) =
-      _$_CalculateScreenState.fromJson;
+      _$CalculateScreenStateImpl.fromJson;
 
   @override
   Country? get selectedCurrency;
@@ -372,6 +373,6 @@ abstract class _CalculateScreenState extends CalculateScreenState {
   double get totalItemPrice;
   @override
   @JsonKey(ignore: true)
-  _$$_CalculateScreenStateCopyWith<_$_CalculateScreenState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CalculateScreenStateImplCopyWith<_$CalculateScreenStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

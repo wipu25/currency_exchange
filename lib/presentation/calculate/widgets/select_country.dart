@@ -31,9 +31,10 @@ class SelectCountry extends StatelessWidget {
               return Icon(
                 Icons.arrow_forward,
                 size: 100,
-                color: transaction == Transaction.buy ? Colors.green : Colors.red,
+                color:
+                    transaction == Transaction.buy ? Colors.green : Colors.red,
               );
-            } ,
+            },
           ),
           const SizedBox(
             width: 32,

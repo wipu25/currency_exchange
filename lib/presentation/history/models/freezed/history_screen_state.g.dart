@@ -6,9 +6,9 @@ part of '../history_screen_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_HistoryScreenState _$$_HistoryScreenStateFromJson(
+_$HistoryScreenStateImpl _$$HistoryScreenStateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_HistoryScreenState(
+    _$HistoryScreenStateImpl(
       (json['savedHistoryList'] as List<dynamic>)
           .map((e) => TransactionItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -27,8 +27,8 @@ _$_HistoryScreenState _$$_HistoryScreenStateFromJson(
       Map<String, bool>.from(json['transactionFilter'] as Map),
     );
 
-Map<String, dynamic> _$$_HistoryScreenStateToJson(
-        _$_HistoryScreenState instance) =>
+Map<String, dynamic> _$$HistoryScreenStateImplToJson(
+        _$HistoryScreenStateImpl instance) =>
     <String, dynamic>{
       'savedHistoryList':
           instance.savedHistoryList.map((e) => e.toJson()).toList(),
