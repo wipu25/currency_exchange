@@ -46,6 +46,13 @@ class AppStrings {
   static const String errorFillAll = 'เติมให้ครบช่อง';
   static const String errorNegative = 'ตัวเลขติดลบ';
 
+  static const List<String> exchangeHeader = [
+    AppStrings.currency,
+    AppStrings.price,
+    AppStrings.buying,
+    AppStrings.selling
+  ];
+
   //history-screen
   static const String date = 'วันที่';
   static const String noTransaction = 'ไม่มีธุรกรรม';
