@@ -1,4 +1,3 @@
-import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/country_label.dart';
 import 'package:currency_exchange/services/currency_list_service.dart';

@@ -8,9 +8,6 @@ part of '../exchange_item.dart';
 
 _$ExchangeItemImpl _$$ExchangeItemImplFromJson(Map<String, dynamic> json) =>
     _$ExchangeItemImpl(
-      priceRange: (json['priceRange'] as List<dynamic>)
-          .map((e) => PriceRange.fromJson(e as Map<String, dynamic>))
-          .toList(),
       calculatedItem: (json['calculatedItem'] as List<dynamic>)
           .map((e) => CalculatedItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -22,7 +19,6 @@ _$ExchangeItemImpl _$$ExchangeItemImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ExchangeItemImplToJson(_$ExchangeItemImpl instance) =>
     <String, dynamic>{
-      'priceRange': instance.priceRange.map((e) => e.toJson()).toList(),
       'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),
       'amountExchange': instance.amountExchange,
       'totalPrice': instance.totalPrice,

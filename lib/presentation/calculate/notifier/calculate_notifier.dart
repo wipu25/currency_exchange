@@ -17,17 +17,13 @@ final calculateNotifier =
 
 class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
   @override
-  CalculateScreenState build() => const CalculateScreenState(
-      null, false, Transaction.buy, [], [], [], 0, 0, 0);
+  CalculateScreenState build() =>
+      const CalculateScreenState(null, false, Transaction.buy, [], 0, 0, 0);
 
   bool get isTransactionBuy => state.transaction == Transaction.buy;
+  List<String> inputPrice = [];
 
   void removeSplitItem(int position) {
-    state = state.copyWith(
-        selectedPriceRange:
-            StateHelper.removeAt(state.selectedPriceRange, position));
-    state = state.copyWith(
-        inputPrice: StateHelper.removeAt(state.inputPrice, position));
     final currentItem = state.calculatedItem[position];
     removeTotal(currentItem.amount, currentItem.price);
     state = state.copyWith(
@@ -46,26 +42,27 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
 
   //TODO: feeling duplicated
   void addSplitItem() {
-    state = state.copyWith(isAddEnable: false, selectedPriceRange: [
-      ...state.selectedPriceRange,
-      state.transaction == Transaction.buy
-          ? state.selectedCurrency!.buyPriceRange.first
-          : state.selectedCurrency!.sellPriceRange.first
-    ], inputPrice: [
-      ...state.inputPrice,
-      ''
-    ], calculatedItem: [
+    inputPrice.add('');
+    state = state.copyWith(isAddEnable: false, calculatedItem: [
       ...state.calculatedItem,
-      const CalculatedItem(amount: 0.0, price: 0.0)
+      CalculatedItem(
+          selectedPriceRange: state.transaction == Transaction.buy
+              ? state.selectedCurrency!.buyPriceRange.first
+              : state.selectedCurrency!.sellPriceRange.first,
+          amount: 0.0,
+          price: 0.0)
     ]);
   }
 
   void updateSelectedPriceRange(int position, PriceRange value) {
-    final newRangeList = List<PriceRange>.from(state.selectedPriceRange);
-    newRangeList[position] = value;
-    state = state.copyWith(selectedPriceRange: newRangeList);
+    final newRangeList = List<CalculatedItem>.from(state.calculatedItem);
+    newRangeList[position] = CalculatedItem(
+        selectedPriceRange: value,
+        amount: state.calculatedItem[position].amount,
+        price: state.calculatedItem[position].price);
+    state = state.copyWith(calculatedItem: newRangeList);
     try {
-      calculateAmount(position, state.inputPrice[position]);
+      calculateAmount(position, inputPrice[position]);
     } catch (_) {}
   }
 
@@ -96,30 +93,28 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
 
   void _setSelectedPriceRange() {
     List.generate(
-        state.selectedPriceRange.length,
-        (index) => state.selectedPriceRange[index] =
-            state.transaction == Transaction.buy
+        state.calculatedItem.length,
+        (index) => state.calculatedItem[index].copyWith(
+            selectedPriceRange: state.transaction == Transaction.buy
                 ? state.selectedCurrency!.buyPriceRange.first
-                : state.selectedCurrency!.sellPriceRange.first);
+                : state.selectedCurrency!.sellPriceRange.first));
   }
 
   void _clearCurrentBill() {
+    inputPrice = [''];
     state = state.copyWith(
-        selectedPriceRange: [],
-        inputPrice: [],
-        calculatedItem: [],
-        totalItemAmount: 0.0,
-        totalItemPrice: 0.0);
+        calculatedItem: [], totalItemAmount: 0.0, totalItemPrice: 0.0);
   }
 
   void _onEmptyAmount(int position, String value) {
-    final inputList = List<String>.from(state.inputPrice);
+    final inputList = List<String>.from(inputPrice);
     inputList[position] = '';
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
-    calculatedList[position] = const CalculatedItem(amount: 0.0, price: 0.0);
+    calculatedList[position] =
+        state.calculatedItem[position].copyWith(amount: 0.0, price: 0.0);
 
-    state =
-        state.copyWith(inputPrice: inputList, calculatedItem: calculatedList);
+    inputPrice = inputList;
+    state = state.copyWith(calculatedItem: calculatedList);
     throw CalculateException(AppStrings.emptyAlert);
   }
 
@@ -131,23 +126,25 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
       _onEmptyAmount(position, value);
     }
 
-    final inputList = List<String>.from(state.inputPrice);
+    final inputList = List<String>.from(inputPrice);
     inputList[position] = CustomNumberFormat.fieldFormat(splitDecimal[0]) +
         (splitDecimal.length > 1 ? '.${splitDecimal[1]}' : '');
-    state = state.copyWith(inputPrice: inputList);
+    inputPrice = inputList;
 
     final amount = double.parse(numValue);
     if (amount.isNegative) {
       throw CalculateException(AppStrings.negativeAlert);
     }
 
-    final priceRange = state.selectedPriceRange[position].price ?? 0;
+    final priceRange = state.calculatedItem[position].selectedPriceRange;
     final price = state.transaction == Transaction.buy
-        ? priceRange * amount
-        : amount / priceRange;
+        ? priceRange.price ?? 0 * amount
+        : amount / (priceRange.price ?? 0);
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
-    calculatedList[position] =
-        CalculatedItem(amount: amount, price: double.parse(price.toString()));
+    calculatedList[position] = CalculatedItem(
+        selectedPriceRange: priceRange,
+        amount: amount,
+        price: double.parse(price.toString()));
 
     state = state.copyWith(calculatedItem: calculatedList, isAddEnable: true);
     calculateTotal();
@@ -175,7 +172,6 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
 
   void addToReceipt() {
     ref.read(receiptProvider).addCurrencyItem(ExchangeItem(
-        priceRange: state.selectedPriceRange,
         calculatedItem: state.calculatedItem,
         amountExchange: state.totalItemAmount,
         totalPrice: state.totalItemPrice,

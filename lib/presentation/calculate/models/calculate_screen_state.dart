@@ -1,5 +1,4 @@
 import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/models/calculated_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,8 +14,6 @@ class CalculateScreenState with _$CalculateScreenState {
       Country? selectedCurrency,
       bool isAddEnable,
       Transaction transaction,
-      List<PriceRange> selectedPriceRange,
-      List<String> inputPrice,
       List<CalculatedItem> calculatedItem,
       int currentInsert,
       double totalItemAmount,

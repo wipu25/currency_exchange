@@ -21,20 +21,6 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
   HistoryScreenState build() => HistoryScreenState(
       [], [], false, false, false, false, DateTime.now(), {}, {}, {});
 
-  final _headerTitle = [
-    'วันที่',
-    'เวลา',
-    'สกุลเงิน',
-    'ธนบัตร',
-    'ราคา',
-    'จำนวน',
-    'ราคารวม',
-    'จ่ายผ่าน',
-    'เพิ่มเติม'
-  ];
-
-  List<String> get headerTitle => _headerTitle;
-
   Future<void> init() async {
     state = state.copyWith(isLoading: true, dateTimeDisplay: DateTime.now());
     await _getTransaction(state.dateTimeDisplay!);

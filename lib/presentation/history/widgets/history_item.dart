@@ -37,7 +37,7 @@ class HistoryItem extends StatelessWidget {
           ),
           Expanded(
               flex: 8,
-              child: HistoryCalculateItem(calculatedItem: item.calculatedItem)),
+              child: HistoryCalculateItem(exchangeItem: item.calculatedItem)),
           Expanded(
             flex: 1,
             child: Center(

@@ -46,7 +46,6 @@ class ReceiptStateService {
         _currencyItem.insert(
             i,
             ExchangeItem(
-                priceRange: index.priceRange + exchangeItem.priceRange,
                 calculatedItem:
                     index.calculatedItem + exchangeItem.calculatedItem,
                 amountExchange:
@@ -58,7 +57,6 @@ class ReceiptStateService {
       }
     }
     _currencyItem.add(ExchangeItem(
-        priceRange: exchangeItem.priceRange,
         calculatedItem: exchangeItem.calculatedItem,
         amountExchange: exchangeItem.amountExchange,
         totalPrice: exchangeItem.totalPrice,

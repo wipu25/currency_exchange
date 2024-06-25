@@ -53,6 +53,18 @@ class AppStrings {
     AppStrings.selling
   ];
 
+  static const List<String> historyHeader = [
+    'วันที่',
+    'เวลา',
+    'สกุลเงิน',
+    'ธนบัตร',
+    'ราคา',
+    'จำนวน',
+    'ราคารวม',
+    'จ่ายผ่าน',
+    'เพิ่มเติม'
+  ];
+
   //history-screen
   static const String date = 'วันที่';
   static const String noTransaction = 'ไม่มีธุรกรรม';

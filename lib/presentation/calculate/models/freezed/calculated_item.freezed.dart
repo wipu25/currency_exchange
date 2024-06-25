@@ -20,6 +20,7 @@ CalculatedItem _$CalculatedItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CalculatedItem {
+  PriceRange get selectedPriceRange => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
 
@@ -35,7 +36,9 @@ abstract class $CalculatedItemCopyWith<$Res> {
           CalculatedItem value, $Res Function(CalculatedItem) then) =
       _$CalculatedItemCopyWithImpl<$Res, CalculatedItem>;
   @useResult
-  $Res call({double amount, double price});
+  $Res call({PriceRange selectedPriceRange, double amount, double price});
+
+  $PriceRangeCopyWith<$Res> get selectedPriceRange;
 }
 
 /// @nodoc
@@ -51,10 +54,15 @@ class _$CalculatedItemCopyWithImpl<$Res, $Val extends CalculatedItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? selectedPriceRange = null,
     Object? amount = null,
     Object? price = null,
   }) {
     return _then(_value.copyWith(
+      selectedPriceRange: null == selectedPriceRange
+          ? _value.selectedPriceRange
+          : selectedPriceRange // ignore: cast_nullable_to_non_nullable
+              as PriceRange,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -64,6 +72,14 @@ class _$CalculatedItemCopyWithImpl<$Res, $Val extends CalculatedItem>
           : price // ignore: cast_nullable_to_non_nullable
               as double,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PriceRangeCopyWith<$Res> get selectedPriceRange {
+    return $PriceRangeCopyWith<$Res>(_value.selectedPriceRange, (value) {
+      return _then(_value.copyWith(selectedPriceRange: value) as $Val);
+    });
   }
 }
 
@@ -75,7 +91,10 @@ abstract class _$$CalculatedItemImplCopyWith<$Res>
       __$$CalculatedItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double amount, double price});
+  $Res call({PriceRange selectedPriceRange, double amount, double price});
+
+  @override
+  $PriceRangeCopyWith<$Res> get selectedPriceRange;
 }
 
 /// @nodoc
@@ -89,10 +108,15 @@ class __$$CalculatedItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? selectedPriceRange = null,
     Object? amount = null,
     Object? price = null,
   }) {
     return _then(_$CalculatedItemImpl(
+      selectedPriceRange: null == selectedPriceRange
+          ? _value.selectedPriceRange
+          : selectedPriceRange // ignore: cast_nullable_to_non_nullable
+              as PriceRange,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -108,12 +132,17 @@ class __$$CalculatedItemImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CalculatedItemImpl extends _CalculatedItem {
-  const _$CalculatedItemImpl({required this.amount, required this.price})
+  const _$CalculatedItemImpl(
+      {required this.selectedPriceRange,
+      required this.amount,
+      required this.price})
       : super._();
 
   factory _$CalculatedItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalculatedItemImplFromJson(json);
 
+  @override
+  final PriceRange selectedPriceRange;
   @override
   final double amount;
   @override
@@ -121,7 +150,7 @@ class _$CalculatedItemImpl extends _CalculatedItem {
 
   @override
   String toString() {
-    return 'CalculatedItem(amount: $amount, price: $price)';
+    return 'CalculatedItem(selectedPriceRange: $selectedPriceRange, amount: $amount, price: $price)';
   }
 
   @override
@@ -129,13 +158,16 @@ class _$CalculatedItemImpl extends _CalculatedItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CalculatedItemImpl &&
+            (identical(other.selectedPriceRange, selectedPriceRange) ||
+                other.selectedPriceRange == selectedPriceRange) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.price, price) || other.price == price));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, amount, price);
+  int get hashCode =>
+      Object.hash(runtimeType, selectedPriceRange, amount, price);
 
   @JsonKey(ignore: true)
   @override
@@ -154,13 +186,16 @@ class _$CalculatedItemImpl extends _CalculatedItem {
 
 abstract class _CalculatedItem extends CalculatedItem {
   const factory _CalculatedItem(
-      {required final double amount,
+      {required final PriceRange selectedPriceRange,
+      required final double amount,
       required final double price}) = _$CalculatedItemImpl;
   const _CalculatedItem._() : super._();
 
   factory _CalculatedItem.fromJson(Map<String, dynamic> json) =
       _$CalculatedItemImpl.fromJson;
 
+  @override
+  PriceRange get selectedPriceRange;
   @override
   double get amount;
   @override

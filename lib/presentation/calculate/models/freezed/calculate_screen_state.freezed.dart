@@ -23,8 +23,6 @@ mixin _$CalculateScreenState {
   Country? get selectedCurrency => throw _privateConstructorUsedError;
   bool get isAddEnable => throw _privateConstructorUsedError;
   Transaction get transaction => throw _privateConstructorUsedError;
-  List<PriceRange> get selectedPriceRange => throw _privateConstructorUsedError;
-  List<String> get inputPrice => throw _privateConstructorUsedError;
   List<CalculatedItem> get calculatedItem => throw _privateConstructorUsedError;
   int get currentInsert => throw _privateConstructorUsedError;
   double get totalItemAmount => throw _privateConstructorUsedError;
@@ -46,8 +44,6 @@ abstract class $CalculateScreenStateCopyWith<$Res> {
       {Country? selectedCurrency,
       bool isAddEnable,
       Transaction transaction,
-      List<PriceRange> selectedPriceRange,
-      List<String> inputPrice,
       List<CalculatedItem> calculatedItem,
       int currentInsert,
       double totalItemAmount,
@@ -73,8 +69,6 @@ class _$CalculateScreenStateCopyWithImpl<$Res,
     Object? selectedCurrency = freezed,
     Object? isAddEnable = null,
     Object? transaction = null,
-    Object? selectedPriceRange = null,
-    Object? inputPrice = null,
     Object? calculatedItem = null,
     Object? currentInsert = null,
     Object? totalItemAmount = null,
@@ -93,14 +87,6 @@ class _$CalculateScreenStateCopyWithImpl<$Res,
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
-      selectedPriceRange: null == selectedPriceRange
-          ? _value.selectedPriceRange
-          : selectedPriceRange // ignore: cast_nullable_to_non_nullable
-              as List<PriceRange>,
-      inputPrice: null == inputPrice
-          ? _value.inputPrice
-          : inputPrice // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       calculatedItem: null == calculatedItem
           ? _value.calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
@@ -145,8 +131,6 @@ abstract class _$$CalculateScreenStateImplCopyWith<$Res>
       {Country? selectedCurrency,
       bool isAddEnable,
       Transaction transaction,
-      List<PriceRange> selectedPriceRange,
-      List<String> inputPrice,
       List<CalculatedItem> calculatedItem,
       int currentInsert,
       double totalItemAmount,
@@ -170,8 +154,6 @@ class __$$CalculateScreenStateImplCopyWithImpl<$Res>
     Object? selectedCurrency = freezed,
     Object? isAddEnable = null,
     Object? transaction = null,
-    Object? selectedPriceRange = null,
-    Object? inputPrice = null,
     Object? calculatedItem = null,
     Object? currentInsert = null,
     Object? totalItemAmount = null,
@@ -190,14 +172,6 @@ class __$$CalculateScreenStateImplCopyWithImpl<$Res>
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
-      null == selectedPriceRange
-          ? _value._selectedPriceRange
-          : selectedPriceRange // ignore: cast_nullable_to_non_nullable
-              as List<PriceRange>,
-      null == inputPrice
-          ? _value._inputPrice
-          : inputPrice // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       null == calculatedItem
           ? _value._calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
@@ -225,15 +199,11 @@ class _$CalculateScreenStateImpl extends _CalculateScreenState {
       this.selectedCurrency,
       this.isAddEnable,
       this.transaction,
-      final List<PriceRange> selectedPriceRange,
-      final List<String> inputPrice,
       final List<CalculatedItem> calculatedItem,
       this.currentInsert,
       this.totalItemAmount,
       this.totalItemPrice)
-      : _selectedPriceRange = selectedPriceRange,
-        _inputPrice = inputPrice,
-        _calculatedItem = calculatedItem,
+      : _calculatedItem = calculatedItem,
         super._();
 
   factory _$CalculateScreenStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -245,23 +215,6 @@ class _$CalculateScreenStateImpl extends _CalculateScreenState {
   final bool isAddEnable;
   @override
   final Transaction transaction;
-  final List<PriceRange> _selectedPriceRange;
-  @override
-  List<PriceRange> get selectedPriceRange {
-    if (_selectedPriceRange is EqualUnmodifiableListView)
-      return _selectedPriceRange;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_selectedPriceRange);
-  }
-
-  final List<String> _inputPrice;
-  @override
-  List<String> get inputPrice {
-    if (_inputPrice is EqualUnmodifiableListView) return _inputPrice;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_inputPrice);
-  }
-
   final List<CalculatedItem> _calculatedItem;
   @override
   List<CalculatedItem> get calculatedItem {
@@ -279,7 +232,7 @@ class _$CalculateScreenStateImpl extends _CalculateScreenState {
 
   @override
   String toString() {
-    return 'CalculateScreenState(selectedCurrency: $selectedCurrency, isAddEnable: $isAddEnable, transaction: $transaction, selectedPriceRange: $selectedPriceRange, inputPrice: $inputPrice, calculatedItem: $calculatedItem, currentInsert: $currentInsert, totalItemAmount: $totalItemAmount, totalItemPrice: $totalItemPrice)';
+    return 'CalculateScreenState(selectedCurrency: $selectedCurrency, isAddEnable: $isAddEnable, transaction: $transaction, calculatedItem: $calculatedItem, currentInsert: $currentInsert, totalItemAmount: $totalItemAmount, totalItemPrice: $totalItemPrice)';
   }
 
   @override
@@ -293,10 +246,6 @@ class _$CalculateScreenStateImpl extends _CalculateScreenState {
                 other.isAddEnable == isAddEnable) &&
             (identical(other.transaction, transaction) ||
                 other.transaction == transaction) &&
-            const DeepCollectionEquality()
-                .equals(other._selectedPriceRange, _selectedPriceRange) &&
-            const DeepCollectionEquality()
-                .equals(other._inputPrice, _inputPrice) &&
             const DeepCollectionEquality()
                 .equals(other._calculatedItem, _calculatedItem) &&
             (identical(other.currentInsert, currentInsert) ||
@@ -314,8 +263,6 @@ class _$CalculateScreenStateImpl extends _CalculateScreenState {
       selectedCurrency,
       isAddEnable,
       transaction,
-      const DeepCollectionEquality().hash(_selectedPriceRange),
-      const DeepCollectionEquality().hash(_inputPrice),
       const DeepCollectionEquality().hash(_calculatedItem),
       currentInsert,
       totalItemAmount,
@@ -342,8 +289,6 @@ abstract class _CalculateScreenState extends CalculateScreenState {
       final Country? selectedCurrency,
       final bool isAddEnable,
       final Transaction transaction,
-      final List<PriceRange> selectedPriceRange,
-      final List<String> inputPrice,
       final List<CalculatedItem> calculatedItem,
       final int currentInsert,
       final double totalItemAmount,
@@ -359,10 +304,6 @@ abstract class _CalculateScreenState extends CalculateScreenState {
   bool get isAddEnable;
   @override
   Transaction get transaction;
-  @override
-  List<PriceRange> get selectedPriceRange;
-  @override
-  List<String> get inputPrice;
   @override
   List<CalculatedItem> get calculatedItem;
   @override

@@ -14,10 +14,6 @@ _$CalculateScreenStateImpl _$$CalculateScreenStateImplFromJson(
           : Country.fromJson(json['selectedCurrency'] as Map<String, dynamic>),
       json['isAddEnable'] as bool,
       $enumDecode(_$TransactionEnumMap, json['transaction']),
-      (json['selectedPriceRange'] as List<dynamic>)
-          .map((e) => PriceRange.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['inputPrice'] as List<dynamic>).map((e) => e as String).toList(),
       (json['calculatedItem'] as List<dynamic>)
           .map((e) => CalculatedItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -32,9 +28,6 @@ Map<String, dynamic> _$$CalculateScreenStateImplToJson(
       'selectedCurrency': instance.selectedCurrency?.toJson(),
       'isAddEnable': instance.isAddEnable,
       'transaction': _$TransactionEnumMap[instance.transaction]!,
-      'selectedPriceRange':
-          instance.selectedPriceRange.map((e) => e.toJson()).toList(),
-      'inputPrice': instance.inputPrice,
       'calculatedItem': instance.calculatedItem.map((e) => e.toJson()).toList(),
       'currentInsert': instance.currentInsert,
       'totalItemAmount': instance.totalItemAmount,
