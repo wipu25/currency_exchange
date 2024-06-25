@@ -1,12 +1,9 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/presentation/calculate/models/exchange_screen_state.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PriceCell extends StatelessWidget {
   final String? value;

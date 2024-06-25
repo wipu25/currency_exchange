@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';

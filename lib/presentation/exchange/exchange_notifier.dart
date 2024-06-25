@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/number_format.dart';
 import 'package:currency_exchange/models/country.dart';
 import 'package:currency_exchange/models/exception.dart';
@@ -9,7 +8,6 @@ import 'package:currency_exchange/presentation/calculate/models/exchange_screen_
 import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final exchangeNotifier = AsyncNotifierProvider<ExchangeNotifier, ExchangeState>(

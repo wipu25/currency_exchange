@@ -2,6 +2,7 @@ import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/history_item_notifier.dart';
+import 'package:currency_exchange/presentation/history/history_notifier.dart';
 import 'package:currency_exchange/presentation/history/widgets/history_calculate_item.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/info_text_field.dart';
@@ -11,12 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DisplayMoreInfoDialog extends ConsumerWidget {
-  final TransactionItem transactionItem;
-  const DisplayMoreInfoDialog({super.key, required this.transactionItem});
+  final int index;
+  const DisplayMoreInfoDialog({super.key, required this.index});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final historyItem = historyItemProvider(transactionItem);
+    final historyItem =
+        historyItemProvider(ref.read(historyNotifier).historyList[index]);
     return AlertDialog(
       surfaceTintColor: Colors.white,
       scrollable: true,
@@ -148,7 +150,7 @@ class DisplayMoreInfoDialog extends ConsumerWidget {
                   flexibleText(AppStrings.totalPrice),
                 ],
               ),
-              HistoryCalculateItem(calculatedItem: item.calculatedItem),
+              HistoryCalculateItem(exchangeItem: item.calculatedItem),
             ],
           ),
         ),

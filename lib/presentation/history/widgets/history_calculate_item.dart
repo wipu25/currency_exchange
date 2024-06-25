@@ -5,15 +5,15 @@ import 'package:currency_exchange/presentation/widgets/item_container.dart';
 import 'package:flutter/material.dart';
 
 class HistoryCalculateItem extends StatelessWidget {
-  final List<ExchangeItem> calculatedItem;
-  const HistoryCalculateItem({super.key, required this.calculatedItem});
+  final List<ExchangeItem> exchangeItem;
+  const HistoryCalculateItem({super.key, required this.exchangeItem});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: List.generate(calculatedItem.length, (index) {
-        final item = calculatedItem[index];
+      children: List.generate(exchangeItem.length, (index) {
+        final item = exchangeItem[index];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: ItemContainer(
@@ -55,15 +55,16 @@ class HistoryCalculateItem extends StatelessWidget {
                   flex: 3,
                   child: Column(
                       children: List.generate(
-                          item.priceRange.length,
+                          exchangeItem[index].calculatedItem.length,
                           (price) => Row(
                                 children: [
                                   Expanded(
                                     flex: 2,
                                     child: Center(
                                       child: Text(
-                                        calculatedItem[index]
-                                            .priceRange[price]
+                                        exchangeItem[index]
+                                            .calculatedItem[price]
+                                            .selectedPriceRange
                                             .getRange(),
                                       ),
                                     ),
@@ -72,7 +73,10 @@ class HistoryCalculateItem extends StatelessWidget {
                                     flex: 1,
                                     child: Center(
                                       child: Text(
-                                        item.priceRange[price].getPrice(),
+                                        exchangeItem[index]
+                                            .calculatedItem[price]
+                                            .selectedPriceRange
+                                            .getPrice(),
                                       ),
                                     ),
                                   )

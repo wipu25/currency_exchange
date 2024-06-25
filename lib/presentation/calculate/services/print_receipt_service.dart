@@ -95,13 +95,15 @@ class PrintReceiptService {
             styles: const PosStyles(align: PosAlign.left),
           ),
           PosColumn(
-            text: calculatedItem.priceRange[calculateItem].getRange(),
+            text: calculatedItem
+                .calculatedItem[calculateItem].selectedPriceRange
+                .getRange(),
             width: 3,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
             text:
-                '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.priceRange[calculateItem].getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+                '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.calculatedItem[calculateItem].selectedPriceRange.getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
             width: 6,
             styles: const PosStyles(align: PosAlign.right),
           ),

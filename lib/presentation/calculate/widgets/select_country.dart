@@ -18,29 +18,33 @@ class SelectCountry extends StatelessWidget {
               return const SelectCountryDialog();
             });
       },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          checkCurrencyIcon(Transaction.buy),
-          const SizedBox(
-            width: 32,
-          ),
-          Consumer(
-            builder: (_, ref, __) {
-              final transaction = ref.watch(calculateNotifier).transaction;
-              return Icon(
-                Icons.arrow_forward,
-                size: 100,
-                color:
-                    transaction == Transaction.buy ? Colors.green : Colors.red,
-              );
-            },
-          ),
-          const SizedBox(
-            width: 32,
-          ),
-          checkCurrencyIcon(Transaction.sell),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            checkCurrencyIcon(Transaction.buy),
+            const SizedBox(
+              width: 32,
+            ),
+            Consumer(
+              builder: (_, ref, __) {
+                final transaction = ref.watch(calculateNotifier).transaction;
+                return Icon(
+                  Icons.arrow_forward,
+                  size: 100,
+                  color: transaction == Transaction.buy
+                      ? Colors.green
+                      : Colors.red,
+                );
+              },
+            ),
+            const SizedBox(
+              width: 32,
+            ),
+            checkCurrencyIcon(Transaction.sell),
+          ],
+        ),
       ),
     );
   }

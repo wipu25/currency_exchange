@@ -46,7 +46,7 @@ class SummaryItem extends StatelessWidget {
                             ),
                           ),
                           ...List.generate(
-                              item.priceRange.length,
+                              item.calculatedItem.length,
                               (index) => Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -55,12 +55,12 @@ class SummaryItem extends StatelessWidget {
                                         height: 4,
                                       ),
                                       flexibleText(
-                                          '${AppStrings.range} ${item.priceRange[index].getRange()}'),
+                                          '${AppStrings.range} ${item.calculatedItem[index].selectedPriceRange.getRange()}'),
                                       const SizedBox(
                                         height: 4,
                                       ),
                                       flexibleText(
-                                          '${AppStrings.price} ${item.priceRange[index].getPrice()} X ${item.calculatedItem[index].getAmount()}'),
+                                          '${AppStrings.price} ${item.calculatedItem[index].selectedPriceRange.getPrice()} X ${item.calculatedItem[index].getAmount()}'),
                                       const SizedBox(
                                         height: 4,
                                       ),

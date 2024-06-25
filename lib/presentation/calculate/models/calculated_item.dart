@@ -1,4 +1,5 @@
 import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:currency_exchange/models/price_range.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed/calculated_item.freezed.dart';
@@ -9,7 +10,9 @@ class CalculatedItem with _$CalculatedItem {
   const CalculatedItem._();
 
   const factory CalculatedItem(
-      {required double amount, required double price}) = _CalculatedItem;
+      {required PriceRange selectedPriceRange,
+      required double amount,
+      required double price}) = _CalculatedItem;
 
   factory CalculatedItem.fromJson(Map<String, Object?> json) =>
       _$CalculatedItemFromJson(json);

@@ -32,32 +32,28 @@ class Filter extends ConsumerWidget {
           bgColor: Colors.blueAccent,
         ),
       ],
-      content: Consumer(builder: (_, ref, __) {
-        return SingleChildScrollView(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FilterColumn(
-                  AppStrings.currency,
-                  ref.watch(historyNotifier).currencyFilter,
-                  FilterType.currency),
-              const SizedBox(
-                width: 32,
-              ),
-              FilterColumn(AppStrings.paymentMethod,
-                  ref.watch(historyNotifier).paymentFilter, FilterType.payment),
-              const SizedBox(
-                width: 32,
-              ),
-              FilterColumn(
-                  AppStrings.transaction,
-                  ref.watch(historyNotifier).transactionFilter,
-                  FilterType.transaction),
-            ],
-          ),
-        );
-      }),
+      content: SingleChildScrollView(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FilterColumn(AppStrings.currency,
+                ref.watch(historyNotifier).currencyFilter, FilterType.currency),
+            const SizedBox(
+              width: 32,
+            ),
+            FilterColumn(AppStrings.paymentMethod,
+                ref.watch(historyNotifier).paymentFilter, FilterType.payment),
+            const SizedBox(
+              width: 32,
+            ),
+            FilterColumn(
+                AppStrings.transaction,
+                ref.watch(historyNotifier).transactionFilter,
+                FilterType.transaction),
+          ],
+        ),
+      ),
     );
   }
 }

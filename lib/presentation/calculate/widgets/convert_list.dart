@@ -16,12 +16,12 @@ class ConvertList extends ConsumerWidget {
     final calculateState = ref.watch(calculateNotifier);
     final calculateFunction = ref.watch(calculateNotifier.notifier);
     return ListView.builder(
-        itemCount: calculateState.selectedPriceRange.length,
+        itemCount: calculateState.calculatedItem.length,
         itemBuilder: (context, index) {
           final inputTextController =
-              TextEditingController(text: calculateState.inputPrice[index]);
+              TextEditingController(text: calculateFunction.inputPrice[index]);
           inputTextController.selection = TextSelection.fromPosition(
-              TextPosition(offset: calculateState.inputPrice[index].length));
+              TextPosition(offset: calculateFunction.inputPrice[index].length));
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ItemContainer(
@@ -39,7 +39,7 @@ class ConvertList extends ConsumerWidget {
                   priceRange(
                       calculateFunction.isTransactionBuy,
                       calculateState.selectedCurrency!.buyPriceRange,
-                      calculateState.selectedPriceRange[index],
+                      calculateState.calculatedItem[index].selectedPriceRange,
                       (value) => calculateFunction.updateSelectedPriceRange(
                           index, value)),
                   const Padding(
@@ -107,7 +107,7 @@ class ConvertList extends ConsumerWidget {
                         : calculateState.selectedCurrency?.currency ?? '',
                     style: const TextStyle(fontSize: 12),
                   ),
-                  if (calculateState.inputPrice.length > 1)
+                  if (calculateFunction.inputPrice.length > 1)
                     InkWell(
                       onTap: () => calculateFunction.removeSplitItem(index),
                       child: const Icon(Icons.delete),

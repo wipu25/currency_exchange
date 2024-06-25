@@ -20,7 +20,6 @@ ExchangeItem _$ExchangeItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExchangeItem {
-  List<PriceRange> get priceRange => throw _privateConstructorUsedError;
   List<CalculatedItem> get calculatedItem => throw _privateConstructorUsedError;
   double get amountExchange => throw _privateConstructorUsedError;
   double get totalPrice => throw _privateConstructorUsedError;
@@ -40,8 +39,7 @@ abstract class $ExchangeItemCopyWith<$Res> {
       _$ExchangeItemCopyWithImpl<$Res, ExchangeItem>;
   @useResult
   $Res call(
-      {List<PriceRange> priceRange,
-      List<CalculatedItem> calculatedItem,
+      {List<CalculatedItem> calculatedItem,
       double amountExchange,
       double totalPrice,
       String currency,
@@ -61,7 +59,6 @@ class _$ExchangeItemCopyWithImpl<$Res, $Val extends ExchangeItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? priceRange = null,
     Object? calculatedItem = null,
     Object? amountExchange = null,
     Object? totalPrice = null,
@@ -69,10 +66,6 @@ class _$ExchangeItemCopyWithImpl<$Res, $Val extends ExchangeItem>
     Object? transaction = null,
   }) {
     return _then(_value.copyWith(
-      priceRange: null == priceRange
-          ? _value.priceRange
-          : priceRange // ignore: cast_nullable_to_non_nullable
-              as List<PriceRange>,
       calculatedItem: null == calculatedItem
           ? _value.calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
@@ -106,8 +99,7 @@ abstract class _$$ExchangeItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<PriceRange> priceRange,
-      List<CalculatedItem> calculatedItem,
+      {List<CalculatedItem> calculatedItem,
       double amountExchange,
       double totalPrice,
       String currency,
@@ -125,7 +117,6 @@ class __$$ExchangeItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? priceRange = null,
     Object? calculatedItem = null,
     Object? amountExchange = null,
     Object? totalPrice = null,
@@ -133,10 +124,6 @@ class __$$ExchangeItemImplCopyWithImpl<$Res>
     Object? transaction = null,
   }) {
     return _then(_$ExchangeItemImpl(
-      priceRange: null == priceRange
-          ? _value._priceRange
-          : priceRange // ignore: cast_nullable_to_non_nullable
-              as List<PriceRange>,
       calculatedItem: null == calculatedItem
           ? _value._calculatedItem
           : calculatedItem // ignore: cast_nullable_to_non_nullable
@@ -165,26 +152,16 @@ class __$$ExchangeItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ExchangeItemImpl extends _ExchangeItem {
   const _$ExchangeItemImpl(
-      {required final List<PriceRange> priceRange,
-      required final List<CalculatedItem> calculatedItem,
+      {required final List<CalculatedItem> calculatedItem,
       required this.amountExchange,
       required this.totalPrice,
       required this.currency,
       required this.transaction})
-      : _priceRange = priceRange,
-        _calculatedItem = calculatedItem,
+      : _calculatedItem = calculatedItem,
         super._();
 
   factory _$ExchangeItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExchangeItemImplFromJson(json);
-
-  final List<PriceRange> _priceRange;
-  @override
-  List<PriceRange> get priceRange {
-    if (_priceRange is EqualUnmodifiableListView) return _priceRange;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_priceRange);
-  }
 
   final List<CalculatedItem> _calculatedItem;
   @override
@@ -205,7 +182,7 @@ class _$ExchangeItemImpl extends _ExchangeItem {
 
   @override
   String toString() {
-    return 'ExchangeItem(priceRange: $priceRange, calculatedItem: $calculatedItem, amountExchange: $amountExchange, totalPrice: $totalPrice, currency: $currency, transaction: $transaction)';
+    return 'ExchangeItem(calculatedItem: $calculatedItem, amountExchange: $amountExchange, totalPrice: $totalPrice, currency: $currency, transaction: $transaction)';
   }
 
   @override
@@ -213,8 +190,6 @@ class _$ExchangeItemImpl extends _ExchangeItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ExchangeItemImpl &&
-            const DeepCollectionEquality()
-                .equals(other._priceRange, _priceRange) &&
             const DeepCollectionEquality()
                 .equals(other._calculatedItem, _calculatedItem) &&
             (identical(other.amountExchange, amountExchange) ||
@@ -231,7 +206,6 @@ class _$ExchangeItemImpl extends _ExchangeItem {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_priceRange),
       const DeepCollectionEquality().hash(_calculatedItem),
       amountExchange,
       totalPrice,
@@ -254,8 +228,7 @@ class _$ExchangeItemImpl extends _ExchangeItem {
 
 abstract class _ExchangeItem extends ExchangeItem {
   const factory _ExchangeItem(
-      {required final List<PriceRange> priceRange,
-      required final List<CalculatedItem> calculatedItem,
+      {required final List<CalculatedItem> calculatedItem,
       required final double amountExchange,
       required final double totalPrice,
       required final String currency,
@@ -265,8 +238,6 @@ abstract class _ExchangeItem extends ExchangeItem {
   factory _ExchangeItem.fromJson(Map<String, dynamic> json) =
       _$ExchangeItemImpl.fromJson;
 
-  @override
-  List<PriceRange> get priceRange;
   @override
   List<CalculatedItem> get calculatedItem;
   @override
