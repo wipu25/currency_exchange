@@ -1,8 +1,8 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/history/history_item_notifier.dart';
-import 'package:currency_exchange/presentation/history/history_notifier.dart';
+import 'package:currency_exchange/presentation/history/notifiers/history_item_notifier.dart';
+import 'package:currency_exchange/presentation/history/notifiers/history_notifier.dart';
 import 'package:currency_exchange/presentation/history/widgets/history_calculate_item.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:currency_exchange/presentation/widgets/info_text_field.dart';

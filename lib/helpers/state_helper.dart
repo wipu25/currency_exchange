@@ -4,4 +4,10 @@ class StateHelper {
     newList.removeAt(position);
     return newList;
   }
+
+  static List<T> updateAt<T>(List<T> list, int position, T value) {
+    final newList = List<T>.from(list);
+    newList[position] = value;
+    return newList;
+  }
 }

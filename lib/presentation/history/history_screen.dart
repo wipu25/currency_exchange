@@ -1,5 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/presentation/history/history_notifier.dart';
+import 'package:currency_exchange/presentation/history/notifiers/history_notifier.dart';
 import 'package:currency_exchange/presentation/history/widgets/date_time_button.dart';
 import 'package:currency_exchange/presentation/history/widgets/filter.dart';
 import 'package:currency_exchange/presentation/history/widgets/history_table.dart';

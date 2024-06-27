@@ -26,7 +26,7 @@ class MenuSideBar extends StatelessWidget {
             isExpand ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
           itemMenu(Icons.currency_exchange, MenuSelect.exchanges),
-          itemMenu(Icons.calculate_outlined, MenuSelect.calculate),
+          itemMenu(Icons.calculate_outlined, MenuSelect.history),
           itemMenu(Icons.format_list_bulleted_outlined, MenuSelect.history),
           //TODO: will continue later
           // itemMenu(Icons.auto_graph, MenuSelect.sales),

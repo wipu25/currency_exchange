@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/models/history_screen_state.dart';
+import 'package:currency_exchange/presentation/history/services/filter_service.dart';
 import 'package:currency_exchange/services/currency_list_service.dart';
 import 'package:currency_exchange/services/firebase_service.dart';
 import 'package:flutter/foundation.dart';
@@ -25,21 +26,8 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     state = state.copyWith(isLoading: true, dateTimeDisplay: DateTime.now());
     await _getTransaction(state.dateTimeDisplay!);
     final currencyListService = ref.read(currencyListProvider);
-    for (var i = 0; i < currencyListService.currencyList.length; i++) {
-      final newFilter = Map<String, bool>.from(state.currencyFilter);
-      newFilter[currencyListService.currencyList[i].currency] = true;
-      state = state.copyWith(currencyFilter: newFilter);
-    }
-    for (var i in PaymentMethod.values) {
-      final newFilter = Map<String, bool>.from(state.paymentFilter);
-      newFilter[i.getString()] = true;
-      state = state.copyWith(paymentFilter: newFilter);
-    }
-    for (var i in Transaction.values) {
-      final newFilter = Map<String, bool>.from(state.transactionFilter);
-      newFilter[i.name] = true;
-      state = state.copyWith(transactionFilter: newFilter);
-    }
+    ref.read(filterService).initFilter(currencyListService.currencyList.length,
+        PaymentMethod.values.length, Transaction.values.length);
     state = state.copyWith(isLoading: false);
   }
 
@@ -135,26 +123,22 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
   }
 
   filterItem() {
-    if (state.isFilterUpdate == false) {
+    if (ref.read(filterService).isFilterUpdate == false) {
       return;
     }
-    state = state.copyWith(isFilterUpdate: false, isLoading: true);
-    state = state.copyWith(historyList: List.from(state.savedHistoryList));
-    final currencyFilter = state.currencyFilter;
-    final paymentFilter = state.paymentFilter;
-    final transactionFilter = state.transactionFilter;
-    final removeCurrency = currencyFilter.keys
-        .where((element) => currencyFilter[element] == false)
-        .toList();
-    final removePayment = paymentFilter.keys
-        .where((element) => paymentFilter[element] == false)
-        .toList();
-    final removeTransaction = transactionFilter.keys
-        .where((element) => transactionFilter[element] == false)
-        .toList();
+    ref.read(filterService).isFilterUpdate = false;
+    state = state.copyWith(
+        isLoading: true, historyList: List.from(state.savedHistoryList));
+    final filterState = ref.read(filterService).historyFilterState;
+    var removePayment =
+        _filterType(filterState.selectPaymentFilter, PaymentMethod.values);
+    var removeTransaction =
+        _filterType(filterState.selectTransactionFilter, Transaction.values);
+    var removeCurrency = _filterType(filterState.selectCurrencyFilter,
+        ref.read(currencyListProvider).currencyList);
+
     for (var i = 0; i < state.historyList.length; i++) {
-      if (removePayment
-          .contains(state.historyList[i].paymentMethod.getString())) {
+      if (removePayment.contains(state.historyList[i].paymentMethod)) {
         final newList = List<TransactionItem>.from(state.historyList);
         newList.removeAt(i);
         state = state.copyWith(historyList: newList);
@@ -163,9 +147,8 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
       }
       final removeList = state.historyList[i].calculatedItem.toList();
       removeList.removeWhere((element) {
-        final isCurrency = removeCurrency.contains(element.currency.toString());
-        final isTransaction =
-            removeTransaction.contains(element.transaction.name);
+        final isCurrency = removeCurrency.contains(element.currency);
+        final isTransaction = removeTransaction.contains(element.transaction);
         return isCurrency || isTransaction;
       });
       if (removeList.isEmpty) {
@@ -182,27 +165,13 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     state = state.copyWith(isLoading: false);
   }
 
-  updateFilter(String name, bool? value, FilterType filterType) {
-    switch (filterType) {
-      case FilterType.payment:
-        final filterList = Map<String, bool>.from(state.paymentFilter);
-        filterList[name] = value ?? filterList[name]!;
-        state = state.copyWith(paymentFilter: filterList);
-      case FilterType.transaction:
-        final filterList = Map<String, bool>.from(state.transactionFilter);
-        filterList[name] = value ?? filterList[name]!;
-        state = state.copyWith(transactionFilter: filterList);
-      default:
-        final filterList = Map<String, bool>.from(state.currencyFilter);
-        filterList[name] = value ?? filterList[name]!;
-        state = state.copyWith(currencyFilter: filterList);
+  List<dynamic> _filterType(List<bool> listValue, List<dynamic> listFilter) {
+    var filter = [];
+    for (var i = 0; i < listFilter.length; i++) {
+      if (listValue[i] == false) {
+        filter.add(ref.read(currencyListProvider).currencyList[i].currency);
+      }
     }
-    state = state.copyWith(isFilterUpdate: true);
-  }
-
-  selectAllFilter(bool newValue) {
-    final newFilter = Map<String, bool>.from(state.currencyFilter);
-    newFilter.updateAll((key, value) => value = newValue);
-    state = state.copyWith(currencyFilter: newFilter, isFilterUpdate: true);
+    return filter;
   }
 }

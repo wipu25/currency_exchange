@@ -1,6 +1,6 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/helpers/date_time_format.dart';
-import 'package:currency_exchange/presentation/history/history_notifier.dart';
+import 'package:currency_exchange/presentation/history/notifiers/history_notifier.dart';
 import 'package:currency_exchange/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
