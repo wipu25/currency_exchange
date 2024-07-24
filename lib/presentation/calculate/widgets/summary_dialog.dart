@@ -102,70 +102,67 @@ class _SummaryDialogState extends ConsumerState<SummaryDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (ref.watch(summaryDialogStateProvider).isInfoFilled ||
-                ref.watch(summaryDialogStateProvider).clientInfo == null) ...[
-              CustomButton(
-                text: AppStrings.print,
-                onPressed: () {
-                  try {
-                    ref
-                        .read(summaryDialogStateProvider.notifier)
-                        .saveClientInfo();
-                    ref
-                        .read(summaryDialogStateProvider.notifier)
-                        .createPdf()
-                        .then((value) {
-                      var snackBar = const SnackBar(
-                          content: Text(AppStrings.successPrint));
-                      Navigator.of(context).pop();
-                      if (!value) {
-                        snackBar = const SnackBar(
-                          content: Text(AppStrings.alertPrint),
-                        );
-                        return;
-                      }
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      ref.read(summaryDialogStateProvider.notifier).save();
-                      ref.read(summaryPanelNotifier.notifier).clear();
-                    });
-                  } catch (e) {
-                    final snackBar = SnackBar(
-                        content: Text(e is ClientInfoException
-                            ? AppStrings.clientInfoIncomplete
-                            : e.toString()));
+            CustomButton(
+              text: AppStrings.print,
+              onPressed: () {
+                try {
+                  ref
+                      .read(summaryDialogStateProvider.notifier)
+                      .saveClientInfo();
+                  ref
+                      .read(summaryDialogStateProvider.notifier)
+                      .createPdf()
+                      .then((value) {
+                    var snackBar =
+                        const SnackBar(content: Text(AppStrings.successPrint));
+                    Navigator.of(context).pop();
+                    if (!value) {
+                      snackBar = const SnackBar(
+                        content: Text(AppStrings.alertPrint),
+                      );
+                      return;
+                    }
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
-                bgColor: Colors.lightGreen,
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              CustomButton(
-                text: AppStrings.save,
-                onPressed: () {
-                  try {
-                    ref
-                        .read(summaryDialogStateProvider.notifier)
-                        .saveClientInfo();
-                    ref
-                        .read(summaryDialogStateProvider.notifier)
-                        .save()
-                        .then((value) {
-                      Navigator.of(context).pop();
-                      ref.read(summaryPanelNotifier.notifier).clear();
-                    });
-                  } catch (e) {
-                    final snackBar = SnackBar(
-                        content: Text(e is ClientInfoException
-                            ? AppStrings.clientInfoIncomplete
-                            : e.toString()));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
-                bgColor: Colors.blueAccent,
-              ),
-            ],
+                    ref.read(summaryDialogStateProvider.notifier).save();
+                    ref.read(summaryPanelNotifier.notifier).clear();
+                  });
+                } catch (e) {
+                  final snackBar = SnackBar(
+                      content: Text(e is ClientInfoException
+                          ? AppStrings.clientInfoIncomplete
+                          : e.toString()));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+              bgColor: Colors.lightGreen,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            CustomButton(
+              text: AppStrings.save,
+              onPressed: () {
+                try {
+                  ref
+                      .read(summaryDialogStateProvider.notifier)
+                      .saveClientInfo();
+                  ref
+                      .read(summaryDialogStateProvider.notifier)
+                      .save()
+                      .then((value) {
+                    Navigator.of(context).pop();
+                    ref.read(summaryPanelNotifier.notifier).clear();
+                  });
+                } catch (e) {
+                  final snackBar = SnackBar(
+                      content: Text(e is ClientInfoException
+                          ? AppStrings.clientInfoIncomplete
+                          : e.toString()));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+              bgColor: Colors.blueAccent,
+            ),
             const SizedBox(
               width: 8,
             ),

@@ -85,8 +85,13 @@ class PrintReceiptService {
     for (var item = 0; item < transactionItem!.calculatedItem.length; item++) {
       final calculatedItem = transactionItem!.calculatedItem[item];
       for (var calculateItem = 0;
-          calculateItem < calculatedItem.calculatedItem.length;
+          calculateItem < (calculatedItem.calculatedItem.length ?? 0);
           calculateItem++) {
+        final getPrice =
+            (calculatedItem.calculatedItem[calculateItem].priceRange ??
+                        calculatedItem.priceRange?[calculateItem])
+                    ?.getPrice() ??
+                '';
         pw.row([
           PosColumn(
             text:
@@ -95,15 +100,13 @@ class PrintReceiptService {
             styles: const PosStyles(align: PosAlign.left),
           ),
           PosColumn(
-            text: calculatedItem
-                .calculatedItem[calculateItem].selectedPriceRange
-                .getRange(),
+            text: getPrice,
             width: 3,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
             text:
-                '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.calculatedItem[calculateItem].selectedPriceRange.getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+                '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
             width: 6,
             styles: const PosStyles(align: PosAlign.right),
           ),

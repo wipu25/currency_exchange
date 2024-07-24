@@ -30,7 +30,7 @@ class DisplayMoreInfoDialog extends ConsumerWidget {
       content: Column(
         children: [
           itemInfo(ref.watch(historyItem)),
-          if (ref.watch(historyItem).clientInfo != null) ...[
+          if (ref.watch(historyItem.notifier).isContainSell()) ...[
             InfoTextField(
                 controller: ref.watch(historyItem.notifier).nameTextField,
                 enabled: ref.watch(historyItem).paymentMethod !=
@@ -58,8 +58,7 @@ class DisplayMoreInfoDialog extends ConsumerWidget {
         ],
       ),
       actions: <Widget>[
-        ...(ref.watch(historyItem.notifier).isClientInfoComplete &&
-                ref.watch(historyItem).paymentMethod != PaymentMethod.cancel
+        ...(ref.watch(historyItem).paymentMethod != PaymentMethod.cancel
             ? <Widget>[
                 CustomButton(
                   onPressed: () async {

@@ -40,7 +40,7 @@ class DisplayTransactionDialog extends StatelessWidget {
                                             flex: 2,
                                             child: Text(
                                                 index.calculatedItem[item]
-                                                    .selectedPriceRange
+                                                    .priceRange!
                                                     .getRange(),
                                                 style: const TextStyle(
                                                   fontSize: 20,
@@ -48,7 +48,7 @@ class DisplayTransactionDialog extends StatelessWidget {
                                         Expanded(
                                             flex: 2,
                                             child: Text(
-                                                '${index.calculatedItem[item].getAmount()} X ${index.calculatedItem[item].selectedPriceRange.getPrice()}',
+                                                '${index.calculatedItem[item].getAmount()} X ${index.calculatedItem[item].priceRange!.getPrice()}',
                                                 style: const TextStyle(
                                                   fontSize: 20,
                                                 ))),

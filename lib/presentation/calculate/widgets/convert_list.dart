@@ -39,7 +39,7 @@ class ConvertList extends ConsumerWidget {
                   priceRange(
                       calculateFunction.isTransactionBuy,
                       calculateState.selectedCurrency!.buyPriceRange,
-                      calculateState.calculatedItem[index].selectedPriceRange,
+                      calculateState.calculatedItem[index].priceRange!,
                       (value) => calculateFunction.updateSelectedPriceRange(
                           index, value)),
                   const Padding(

@@ -10,7 +10,7 @@ class CalculatedItem with _$CalculatedItem {
   const CalculatedItem._();
 
   const factory CalculatedItem(
-      {required PriceRange selectedPriceRange,
+      {PriceRange? priceRange,
       required double amount,
       required double price}) = _CalculatedItem;
 

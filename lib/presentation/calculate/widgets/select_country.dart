@@ -23,7 +23,7 @@ class SelectCountry extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            checkCurrencyIcon(Transaction.buy),
+            checkCurrencyIcon(Transaction.sell),
             const SizedBox(
               width: 32,
             ),
@@ -42,7 +42,7 @@ class SelectCountry extends StatelessWidget {
             const SizedBox(
               width: 32,
             ),
-            checkCurrencyIcon(Transaction.sell),
+            checkCurrencyIcon(Transaction.buy),
           ],
         ),
       ),

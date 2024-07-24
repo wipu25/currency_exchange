@@ -1,4 +1,5 @@
 import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:currency_exchange/models/price_range.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/calculate/models/calculated_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,6 +13,7 @@ class ExchangeItem with _$ExchangeItem {
 
   const factory ExchangeItem({
     required List<CalculatedItem> calculatedItem,
+    List<PriceRange>? priceRange,
     required double amountExchange,
     required double totalPrice,
     required String currency,

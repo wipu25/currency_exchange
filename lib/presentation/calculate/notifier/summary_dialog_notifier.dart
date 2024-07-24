@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/exception.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/calculate/models/summary_dialog_model.dart';
 import 'package:currency_exchange/presentation/calculate/models/summary_dialog_state.dart';
@@ -45,10 +44,6 @@ class SummaryDialogNotifier extends Notifier<SummaryDialogState> {
   }
 
   void saveClientInfo() {
-    if (state.clientInfo == null) return;
-    if (state.isInfoFilled == false) {
-      throw ClientInfoException('Client info incomplete');
-    }
     ref.read(receiptProvider).setClientInfo(ClientInfo(
         name: state.clientInfo!.name, address: state.clientInfo!.address));
   }

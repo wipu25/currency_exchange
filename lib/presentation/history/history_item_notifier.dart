@@ -23,15 +23,19 @@ class HistoryItemNotifier
     state = state.copyWith(paymentMethod: PaymentMethod.cancel);
   }
 
-  bool get isClientInfoComplete =>
-      nameTextField.text.isNotEmpty &&
-      addressTextField.text.isNotEmpty &&
-      idTextField.text.isNotEmpty;
-
   void updateClientInfo() {
     final newClientInfo =
         ClientInfo(name: nameTextField.text, address: addressTextField.text);
     state = state.copyWith(clientInfo: newClientInfo);
+  }
+
+  bool isContainSell() {
+    for (var item = 0; item < state.calculatedItem.length; item++) {
+      if (state.calculatedItem[item].transaction == Transaction.sell) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override

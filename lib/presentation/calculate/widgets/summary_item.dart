@@ -55,12 +55,12 @@ class SummaryItem extends StatelessWidget {
                                         height: 4,
                                       ),
                                       flexibleText(
-                                          '${AppStrings.range} ${item.calculatedItem[index].selectedPriceRange.getRange()}'),
+                                          '${AppStrings.range} ${item.calculatedItem[index].priceRange?.getRange()}'),
                                       const SizedBox(
                                         height: 4,
                                       ),
                                       flexibleText(
-                                          '${AppStrings.price} ${item.calculatedItem[index].selectedPriceRange.getPrice()} X ${item.calculatedItem[index].getAmount()}'),
+                                          '${AppStrings.price} ${item.calculatedItem[index].priceRange?.getPrice()} X ${item.calculatedItem[index].getAmount()}'),
                                       const SizedBox(
                                         height: 4,
                                       ),
