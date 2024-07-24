@@ -58,6 +58,7 @@ class ExchangeItem extends StatelessWidget {
                     (buyItem) => Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: ItemContainer(
+                            padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
                                 Expanded(
@@ -77,22 +78,28 @@ class ExchangeItem extends StatelessWidget {
                                         buyItem, value, PriceType.buy),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: PriceCell(
-                                    bgColor: AppColors.bgGreen,
-                                    value: sellCurrencyItem[buyItem],
-                                    state: state,
-                                    onChange: (value) => onPriceChange(
-                                        buyItem, value, PriceType.sell),
-                                  ),
-                                )
                               ],
                             ),
                           ),
                         )),
               ),
             ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ItemContainer(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PriceCell(
+                    bgColor: AppColors.bgGreen,
+                    value: sellCurrencyItem[0],
+                    state: state,
+                    onChange: (value) =>
+                        onPriceChange(0, value, PriceType.sell),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

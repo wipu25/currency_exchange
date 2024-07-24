@@ -46,7 +46,7 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
     state = state.copyWith(isAddEnable: false, calculatedItem: [
       ...state.calculatedItem,
       CalculatedItem(
-          selectedPriceRange: state.transaction == Transaction.buy
+          priceRange: state.transaction == Transaction.buy
               ? state.selectedCurrency!.buyPriceRange.first
               : state.selectedCurrency!.sellPriceRange.first,
           amount: 0.0,
@@ -57,7 +57,7 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
   void updateSelectedPriceRange(int position, PriceRange value) {
     final newRangeList = List<CalculatedItem>.from(state.calculatedItem);
     newRangeList[position] = CalculatedItem(
-        selectedPriceRange: value,
+        priceRange: value,
         amount: state.calculatedItem[position].amount,
         price: state.calculatedItem[position].price);
     state = state.copyWith(calculatedItem: newRangeList);
@@ -95,7 +95,7 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
     List.generate(
         state.calculatedItem.length,
         (index) => state.calculatedItem[index].copyWith(
-            selectedPriceRange: state.transaction == Transaction.buy
+            priceRange: state.transaction == Transaction.buy
                 ? state.selectedCurrency!.buyPriceRange.first
                 : state.selectedCurrency!.sellPriceRange.first));
   }
@@ -136,13 +136,13 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
       throw CalculateException(AppStrings.negativeAlert);
     }
 
-    final priceRange = state.calculatedItem[position].selectedPriceRange;
+    final priceRange = state.calculatedItem[position].priceRange;
     final price = state.transaction == Transaction.buy
-        ? priceRange.price ?? 0 * amount
-        : amount / (priceRange.price ?? 0);
+        ? priceRange?.price ?? 0 * amount
+        : amount / (priceRange?.price ?? 0);
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
     calculatedList[position] = CalculatedItem(
-        selectedPriceRange: priceRange,
+        priceRange: priceRange,
         amount: amount,
         price: double.parse(price.toString()));
 

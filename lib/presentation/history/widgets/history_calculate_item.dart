@@ -55,16 +55,19 @@ class HistoryCalculateItem extends StatelessWidget {
                   flex: 3,
                   child: Column(
                       children: List.generate(
-                          exchangeItem[index].calculatedItem.length,
+                          exchangeItem[index].priceRange?.length ??
+                              exchangeItem[index].calculatedItem.length,
                           (price) => Row(
                                 children: [
                                   Expanded(
                                     flex: 2,
                                     child: Center(
                                       child: Text(
-                                        exchangeItem[index]
-                                            .calculatedItem[price]
-                                            .selectedPriceRange
+                                        (exchangeItem[index]
+                                                    .priceRange?[price] ??
+                                                exchangeItem[index]
+                                                    .calculatedItem[price]
+                                                    .priceRange)!
                                             .getRange(),
                                       ),
                                     ),
@@ -73,9 +76,11 @@ class HistoryCalculateItem extends StatelessWidget {
                                     flex: 1,
                                     child: Center(
                                       child: Text(
-                                        exchangeItem[index]
-                                            .calculatedItem[price]
-                                            .selectedPriceRange
+                                        (exchangeItem[index]
+                                                    .priceRange?[price] ??
+                                                exchangeItem[index]
+                                                    .calculatedItem[price]
+                                                    .priceRange)!
                                             .getPrice(),
                                       ),
                                     ),

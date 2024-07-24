@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
     return TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll<Color>(bgColor)),
+            backgroundColor: WidgetStatePropertyAll<Color>(bgColor)),
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -54,7 +54,7 @@ class CustomIconButton extends StatelessWidget {
     return TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll<Color>(bgColor)),
+            backgroundColor: WidgetStatePropertyAll<Color>(bgColor)),
         child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
