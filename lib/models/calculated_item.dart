@@ -15,10 +15,10 @@ class CalculatedItem with _$CalculatedItem {
       _$CalculatedItemFromJson(json);
 
   String getAmount() {
-    return CustomNumberFormat.commaFormat(amount);
+    return CustomNumberFormat.commaFormat4(amount);
   }
 
   String getPrice() {
-    return CustomNumberFormat.commaFormat(price);
+    return CustomNumberFormat.commaFormat1(price);
   }
 }

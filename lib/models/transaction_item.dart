@@ -24,10 +24,10 @@ class TransactionItem with _$TransactionItem {
       _$TransactionItemFromJson(json);
 
   String getTotalBuyPrice() {
-    return CustomNumberFormat.commaFormat(totalBuyPrice);
+    return CustomNumberFormat.commaFormat1(totalBuyPrice);
   }
 
   String getTotalSellPrice() {
-    return CustomNumberFormat.commaFormat(totalSellPrice);
+    return CustomNumberFormat.commaFormat1(totalSellPrice);
   }
 }

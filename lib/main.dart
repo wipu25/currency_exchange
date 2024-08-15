@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           create: (context) {
             final firebaseService = context.read<FirebaseService>();
             final currencyListService = context.read<CurrencyListService>();
+
             final currency =
                 ExchangeController(firebaseService, currencyListService);
             currency.getCurrency();
