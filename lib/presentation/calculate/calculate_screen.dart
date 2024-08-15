@@ -57,7 +57,7 @@ class CalculateScreen extends StatelessWidget {
                                       calculateControllers.totalItemAmount ==
                                               0.0
                                           ? ''
-                                          : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemAmount)}',
+                                          : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat1(calculateControllers.totalItemAmount)}',
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
@@ -68,7 +68,7 @@ class CalculateScreen extends StatelessWidget {
                                     Text(
                                       calculateControllers.totalItemPrice == 0.0
                                           ? ''
-                                          : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(calculateControllers.totalItemPrice)}',
+                                          : '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat1(calculateControllers.totalItemPrice)}',
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),

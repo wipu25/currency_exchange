@@ -66,9 +66,9 @@ class CalculateController with ChangeNotifier {
   bool get isClientInfoComplete => _isClientInfoComplete;
 
   String get totalBuyPriceComma =>
-      CustomNumberFormat.commaFormat(_receiptService.totalBuyPrice);
+      CustomNumberFormat.commaFormat1(_receiptService.totalBuyPrice);
   String get totalSellPriceComma =>
-      CustomNumberFormat.commaFormat(_receiptService.totalSellPrice);
+      CustomNumberFormat.commaFormat1(_receiptService.totalSellPrice);
 
   bool get isTransactionBuy => _receiptService.isTransactionBuy;
   Country? get selectedCountry => _selectedCurrency;
