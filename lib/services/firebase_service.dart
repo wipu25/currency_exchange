@@ -29,7 +29,6 @@ class FirebaseService {
   }
 
   Future<Uint8List?> getCurrencyFile({String? date}) async {
-    //todo please determine template by release debug
     await _checkStorage();
     final file = await storage
         ?.ref()

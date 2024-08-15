@@ -1,8 +1,13 @@
 import 'package:intl/intl.dart';
 
 class CustomNumberFormat {
-  static String commaFormat(double? value) {
+  static String commaFormat4(double? value) {
     var pattern = NumberFormat("###,##0.0###", "en_US");
+    return value == 0 ? '0.0' : pattern.format(value ?? 0);
+  }
+
+  static String commaFormat1(double? value) {
+    var pattern = NumberFormat("###,##0.#", "en_US");
     return value == 0 ? '0.0' : pattern.format(value ?? 0);
   }
 

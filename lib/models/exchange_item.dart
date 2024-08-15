@@ -23,10 +23,10 @@ class ExchangeItem with _$ExchangeItem {
       _$ExchangeItemFromJson(json);
 
   String getTotalPrice() {
-    return CustomNumberFormat.commaFormat(totalPrice);
+    return CustomNumberFormat.commaFormat1(totalPrice);
   }
 
   String getAmountExchange() {
-    return CustomNumberFormat.commaFormat(amountExchange);
+    return CustomNumberFormat.commaFormat4(amountExchange);
   }
 }

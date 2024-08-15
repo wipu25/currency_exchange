@@ -13,8 +13,8 @@ class CustomTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Table(
-        border: TableBorder.symmetric(
-            inside: const BorderSide(width: 1, color: Colors.black)),
+        border: const TableBorder.symmetric(
+            inside: BorderSide(width: 1, color: Colors.black)),
         columnWidths: columnWidth(),
         children: children);
   }

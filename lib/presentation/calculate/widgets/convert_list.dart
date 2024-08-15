@@ -112,7 +112,7 @@ class ConvertList extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      CustomNumberFormat.commaFormat(
+                      CustomNumberFormat.commaFormat1(
                           calculateControllers.calculatedItem[index].price),
                       style: const TextStyle(fontSize: 18),
                     ),
