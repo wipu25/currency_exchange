@@ -1,5 +1,6 @@
 import 'package:currency_exchange/constants/app_strings.dart';
 import 'package:currency_exchange/models/exception.dart';
+import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
@@ -82,36 +83,67 @@ class PrintReceiptService {
   }
 
   void getTransactionList() {
+    List<List<PosColumn>> buyList = [];
+    List<List<PosColumn>> sellList = [];
     for (var item = 0; item < transactionItem!.calculatedItem.length; item++) {
       final calculatedItem = transactionItem!.calculatedItem[item];
       for (var calculateItem = 0;
-          calculateItem < (calculatedItem.calculatedItem.length ?? 0);
+          calculateItem < (calculatedItem.calculatedItem.length);
           calculateItem++) {
         final getPrice =
             (calculatedItem.calculatedItem[calculateItem].priceRange ??
                         calculatedItem.priceRange?[calculateItem])
                     ?.getPrice() ??
                 '';
-        pw.row([
-          PosColumn(
-            text:
-                '${calculatedItem.transaction.name.toUpperCase()} ${calculatedItem.currency}',
-            width: 3,
-            styles: const PosStyles(align: PosAlign.left),
-          ),
-          PosColumn(
-            text: getPrice,
-            width: 3,
-            styles: const PosStyles(align: PosAlign.center),
-          ),
-          PosColumn(
-            text:
-                '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
-            width: 6,
-            styles: const PosStyles(align: PosAlign.right),
-          ),
-        ]);
+        if (calculatedItem.transaction == Transaction.buy) {
+          buyList.add([
+            PosColumn(
+              text: calculatedItem.currency,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.left),
+            ),
+            PosColumn(
+              text: getPrice,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.center),
+            ),
+            PosColumn(
+              text:
+                  '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+              width: 6,
+              styles: const PosStyles(align: PosAlign.right),
+            ),
+          ]);
+        } else {
+          sellList.add([
+            PosColumn(
+              text: calculatedItem.currency,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.left),
+            ),
+            PosColumn(
+              text: getPrice,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.center),
+            ),
+            PosColumn(
+              text:
+                  '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+              width: 6,
+              styles: const PosStyles(align: PosAlign.right),
+            ),
+          ]);
+        }
       }
+    }
+    pw.text('BUY Item');
+    for (var i in buyList) {
+      pw.row(i);
+    }
+    pw.hr(ch: '-', linesAfter: 0);
+    pw.text('SELL Item');
+    for (var i in sellList) {
+      pw.row(i);
     }
     pw.hr(ch: '-', linesAfter: 0);
   }

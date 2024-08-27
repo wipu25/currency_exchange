@@ -138,7 +138,7 @@ class CalculateScreenNotifier extends Notifier<CalculateScreenState> {
 
     final priceRange = state.calculatedItem[position].priceRange;
     final price = state.transaction == Transaction.buy
-        ? priceRange?.price ?? 0 * amount
+        ? (priceRange?.price ?? 0) * amount
         : amount / (priceRange?.price ?? 0);
     final calculatedList = List<CalculatedItem>.from(state.calculatedItem);
     calculatedList[position] = CalculatedItem(
