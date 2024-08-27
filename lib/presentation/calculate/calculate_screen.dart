@@ -57,7 +57,7 @@ class CalculateScreen extends StatelessWidget {
                                       calculateControllers.totalItemAmount ==
                                               0.0
                                           ? ''
-                                          : '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat1(calculateControllers.totalItemAmount)}',
+                                          : '${AppStrings.totalAmount} ${calculateControllers.selectedCountry?.currency == 'VND' ? CustomNumberFormat.commaFormat6(calculateControllers.totalItemAmount) : CustomNumberFormat.commaFormat1(calculateControllers.totalItemAmount)}',
                                       style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
