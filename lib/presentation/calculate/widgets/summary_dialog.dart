@@ -127,10 +127,7 @@ class _SummaryDialogState extends ConsumerState<SummaryDialog> {
                     ref.read(summaryPanelNotifier.notifier).clear();
                   });
                 } catch (e) {
-                  final snackBar = SnackBar(
-                      content: Text(e is ClientInfoException
-                          ? AppStrings.clientInfoIncomplete
-                          : e.toString()));
+                  final snackBar = SnackBar(content: Text(e.toString()));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
