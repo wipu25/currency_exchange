@@ -112,6 +112,9 @@ class ConvertList extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
+                      // calculateControllers.selectedCountry?.currency == 'VND' ?
+                      // CustomNumberFormat.commaFormat6(
+                      //     calculateControllers.calculatedItem[index].price) :
                       CustomNumberFormat.commaFormat1(
                           calculateControllers.calculatedItem[index].price),
                       style: const TextStyle(fontSize: 18),
