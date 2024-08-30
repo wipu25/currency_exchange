@@ -16,7 +16,7 @@ class TotalCalculate extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat(totalItemAmount)}',
+                '${AppStrings.totalAmount} ${CustomNumberFormat.commaFormat4(totalItemAmount)}',
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -24,7 +24,7 @@ class TotalCalculate extends ConsumerWidget {
                 width: 12,
               ),
               Text(
-                '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat(totalItemPrice)}',
+                '${AppStrings.totalPrice} ${CustomNumberFormat.commaFormat4(totalItemPrice)}',
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
