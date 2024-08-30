@@ -16,8 +16,8 @@ class PriceRange with _$PriceRange {
       _$PriceRangeFromJson(json);
 
   String getRange() {
-    var minStr = CustomNumberFormat.commaFormat(min ?? 0.0);
-    var maxStr = CustomNumberFormat.commaFormat(max ?? 0.0);
+    var minStr = CustomNumberFormat.commaFormat4(min ?? 0.0);
+    var maxStr = CustomNumberFormat.commaFormat4(max ?? 0.0);
     var hyphen = '-';
     if (min == null) {
       minStr = '0.0';
@@ -33,7 +33,7 @@ class PriceRange with _$PriceRange {
   }
 
   String getPrice() {
-    return CustomNumberFormat.commaFormat(price);
+    return CustomNumberFormat.commaFormat4(price);
   }
 }
 

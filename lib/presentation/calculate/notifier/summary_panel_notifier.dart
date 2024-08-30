@@ -15,9 +15,9 @@ class SummaryPanelNotifier extends StateNotifier<SummaryPanelState> {
       : super(const SummaryPanelState(null, 0.0, 0.0, [], PaymentMethod.cash));
 
   String get totalBuyPriceComma =>
-      CustomNumberFormat.commaFormat(state.totalBuyPrice);
+      CustomNumberFormat.commaFormat4(state.totalBuyPrice);
   String get totalSellPriceComma =>
-      CustomNumberFormat.commaFormat(state.totalSellPrice);
+      CustomNumberFormat.commaFormat4(state.totalSellPrice);
 
   void getSummary() {
     final receiptService = _ref.read(receiptProvider);

@@ -76,7 +76,7 @@ class PrintReceiptService {
           styles: const PosStyles(align: PosAlign.left));
     }
     pw.hr(ch: '=', linesAfter: 1);
-    pw.text('Thank you',
+    pw.text('Please verify the transaction and amount received',
         styles: const PosStyles(bold: true, align: PosAlign.center));
     pw.feed(3);
     pw.cut();
@@ -136,14 +136,19 @@ class PrintReceiptService {
         }
       }
     }
-    pw.text('BUY Item');
-    for (var i in buyList) {
-      pw.row(i);
+    if (buyList.isNotEmpty) {
+      pw.text('BUY');
+      for (var i in buyList) {
+        pw.row(i);
+      }
+      pw.hr(ch: '-', linesAfter: 0);
     }
-    pw.hr(ch: '-', linesAfter: 0);
-    pw.text('SELL Item');
-    for (var i in sellList) {
-      pw.row(i);
+    if (sellList.isNotEmpty) {
+      pw.text('SELL');
+      for (var i in sellList) {
+        pw.row(i);
+      }
+      pw.hr(ch: '-', linesAfter: 0);
     }
     pw.hr(ch: '-', linesAfter: 0);
   }
