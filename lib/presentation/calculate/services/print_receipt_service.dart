@@ -75,23 +75,24 @@ class PrintReceiptService {
           styles: const PosStyles(align: PosAlign.left));
     }
     pw.hr(ch: '=', linesAfter: 1);
-    pw.text('Thank you',
+    pw.text('Please verify the transaction and amount received',
         styles: const PosStyles(bold: true, align: PosAlign.center));
     pw.feed(3);
     pw.cut();
   }
 
   void getTransactionList() {
+    List<List<PosColumn>> buyList = [];
+    List<List<PosColumn>> sellList = [];
     for (var item = 0; item < transactionItem!.calculatedItem.length; item++) {
       final calculatedItem = transactionItem!.calculatedItem[item];
       for (var calculateItem = 0;
           calculateItem < calculatedItem.calculatedItem.length;
           calculateItem++) {
-        pw.row([
+        final item = [
           PosColumn(
-            text:
-                '${calculatedItem.transaction.toUpperCase()} ${calculatedItem.currency}',
-            width: 3,
+            text: calculatedItem.currency,
+            width: 2,
             styles: const PosStyles(align: PosAlign.left),
           ),
           PosColumn(
@@ -102,12 +103,28 @@ class PrintReceiptService {
           PosColumn(
             text:
                 '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.priceRange[calculateItem].getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
-            width: 6,
+            width: 7,
             styles: const PosStyles(align: PosAlign.right),
           ),
-        ]);
+        ];
+        calculatedItem.transaction == 'buy'
+            ? buyList.add(item)
+            : sellList.add(item);
       }
     }
-    pw.hr(ch: '-', linesAfter: 0);
+    if (buyList.isNotEmpty) {
+      pw.text('BUY');
+      for (var i in buyList) {
+        pw.row(i);
+      }
+      pw.hr(ch: '-', linesAfter: 0);
+    }
+    if (sellList.isNotEmpty) {
+      pw.text('SELL');
+      for (var i in sellList) {
+        pw.row(i);
+      }
+      pw.hr(ch: '-', linesAfter: 0);
+    }
   }
 }
