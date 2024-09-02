@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:currency_exchange/helpers/text_style_helper.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/models/transaction_item.dart';
 import 'package:currency_exchange/presentation/history/widgets/history_calculate_item.dart';
@@ -22,7 +23,7 @@ class HistoryItem extends StatelessWidget {
             child: Center(
               child: Text(
                 item.dateTime.split('_')[0].replaceAll('-', '/'),
-                style: const TextStyle(fontSize: 12),
+                style: TextStyleHelper.body2,
               ),
             ),
           ),
@@ -31,7 +32,7 @@ class HistoryItem extends StatelessWidget {
             child: Center(
               child: Text(
                 item.dateTime.split('_')[1],
-                style: const TextStyle(fontSize: 12),
+                style: TextStyleHelper.body2,
               ),
             ),
           ),
@@ -43,8 +44,7 @@ class HistoryItem extends StatelessWidget {
             child: Center(
               child: Text(
                 item.paymentMethod.getString(),
-                style: TextStyle(
-                    fontSize: 12,
+                style: TextStyleHelper.body1.apply(
                     color: item.paymentMethod == PaymentMethod.cancel
                         ? Colors.red
                         : Colors.black),
@@ -64,29 +64,6 @@ class HistoryItem extends StatelessWidget {
             ),
           ),
         ]),
-      ),
-    );
-  }
-
-  Widget flexibleColumn(int length, String text, bool isLast) {
-    return SizedBox(
-      height: length * 24,
-      child: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                text,
-                style: const TextStyle(fontSize: 12),
-              ),
-            ),
-          ),
-          if (!isLast)
-            const Divider(
-              height: 1,
-              color: Colors.black,
-            )
-        ],
       ),
     );
   }

@@ -74,7 +74,7 @@ class HistoryTitle extends StatelessWidget {
                   flex: _flexibleSpace[index],
                   child: HeaderCell(
                     text: AppStrings.historyHeader[index],
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 )).toList(),
       ),

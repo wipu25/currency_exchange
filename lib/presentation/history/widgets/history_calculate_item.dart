@@ -1,4 +1,5 @@
 import 'package:currency_exchange/constants/app_colors.dart';
+import 'package:currency_exchange/helpers/text_style_helper.dart';
 import 'package:currency_exchange/models/receipt.dart';
 import 'package:currency_exchange/presentation/exchange/models/exchange_item.dart';
 import 'package:currency_exchange/presentation/widgets/item_container.dart';
@@ -27,6 +28,9 @@ class HistoryCalculateItem extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(
+                        width: 8,
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         decoration: BoxDecoration(
@@ -39,12 +43,16 @@ class HistoryCalculateItem extends StatelessWidget {
                               .firstWhere(
                                   (element) => element == item.transaction)
                               .getString(),
+                          style: TextStyleHelper.body1,
                         ),
                       ),
                       const SizedBox(
-                        width: 4,
+                        width: 8,
                       ),
-                      Text(item.currency),
+                      Text(
+                        item.currency,
+                        style: TextStyleHelper.body1,
+                      ),
                       const SizedBox(
                         width: 4,
                       ),
@@ -69,6 +77,7 @@ class HistoryCalculateItem extends StatelessWidget {
                                                     .calculatedItem[price]
                                                     .priceRange)!
                                             .getRange(),
+                                        style: TextStyleHelper.body1,
                                       ),
                                     ),
                                   ),
@@ -82,6 +91,7 @@ class HistoryCalculateItem extends StatelessWidget {
                                                     .calculatedItem[price]
                                                     .priceRange)!
                                             .getPrice(),
+                                        style: TextStyleHelper.body1,
                                       ),
                                     ),
                                   )
@@ -91,11 +101,25 @@ class HistoryCalculateItem extends StatelessWidget {
                 const SizedBox(
                   width: 4,
                 ),
-                Expanded(child: Center(child: Text(item.getAmountExchange()))),
+                Expanded(
+                    child: Center(
+                        child: Text(
+                  item.transaction == Transaction.buy
+                      ? item.getAmountExchange()
+                      : item.getTotalPrice(),
+                  style: TextStyleHelper.body1,
+                ))),
                 const SizedBox(
                   width: 4,
                 ),
-                Expanded(child: Center(child: Text(item.getTotalPrice())))
+                Expanded(
+                    child: Center(
+                        child: Text(
+                  item.transaction == Transaction.buy
+                      ? item.getTotalPrice()
+                      : item.getAmountExchange(),
+                  style: TextStyleHelper.body1,
+                )))
               ],
             ),
           ),
