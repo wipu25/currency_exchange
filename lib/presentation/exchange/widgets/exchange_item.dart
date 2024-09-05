@@ -1,10 +1,10 @@
-import 'package:currency_exchange/constants/app_colors.dart';
-import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/price_range.dart';
-import 'package:currency_exchange/presentation/calculate/models/exchange_screen_state.dart';
-import 'package:currency_exchange/presentation/exchange/widgets/price_cell.dart';
-import 'package:currency_exchange/presentation/widgets/country_label.dart';
-import 'package:currency_exchange/presentation/widgets/item_container.dart';
+import 'package:thanarak_exchange/constants/app_colors.dart';
+import 'package:thanarak_exchange/models/country.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/exchange_screen_state.dart';
+import 'package:thanarak_exchange/presentation/exchange/widgets/price_cell.dart';
+import 'package:thanarak_exchange/presentation/widgets/country_label.dart';
+import 'package:thanarak_exchange/presentation/widgets/item_container.dart';
 import 'package:flutter/material.dart';
 
 class ExchangeItem extends StatelessWidget {

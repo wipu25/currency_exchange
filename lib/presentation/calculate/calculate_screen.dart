@@ -1,12 +1,12 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/calculate_btn_row.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/convert_list.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/select_country.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/select_transaction.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/summary_panel.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/total_calculate.dart';
-import 'package:currency_exchange/services/currency_list_service.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/calculate_notifier.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/calculate_btn_row.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/convert_list.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/select_country.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/select_transaction.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/summary_panel.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/total_calculate.dart';
+import 'package:thanarak_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,4 +1,4 @@
-import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed/price_range.freezed.dart';

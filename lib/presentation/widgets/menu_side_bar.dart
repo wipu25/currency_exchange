@@ -1,4 +1,4 @@
-import 'package:currency_exchange/services/global_widget_service.dart';
+import 'package:thanarak_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
 
 class MenuSideBar extends StatelessWidget {

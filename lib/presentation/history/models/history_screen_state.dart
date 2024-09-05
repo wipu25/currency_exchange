@@ -1,4 +1,4 @@
-import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed/history_screen_state.freezed.dart';

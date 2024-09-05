@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:currency_exchange/firebase_options.dart';
+import 'package:thanarak_exchange/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,9 +21,7 @@ class FirebaseService {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
-    };
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     storage = FirebaseStorage.instance;
     if (kReleaseMode) {
       path = prodPath;

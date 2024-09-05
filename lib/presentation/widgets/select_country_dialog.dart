@@ -1,6 +1,6 @@
-import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
-import 'package:currency_exchange/presentation/widgets/country_label.dart';
-import 'package:currency_exchange/services/currency_list_service.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/calculate_notifier.dart';
+import 'package:thanarak_exchange/presentation/widgets/country_label.dart';
+import 'package:thanarak_exchange/services/currency_list_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

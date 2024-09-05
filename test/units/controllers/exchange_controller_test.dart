@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/price_range.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_controller.dart';
-import 'package:currency_exchange/services/currency_list_service.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
+import 'package:thanarak_exchange/models/country.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/presentation/exchange/exchange_controller.dart';
+import 'package:thanarak_exchange/services/currency_list_service.dart';
+import 'package:thanarak_exchange/services/firebase_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

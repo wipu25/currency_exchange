@@ -1,9 +1,10 @@
-import 'package:currency_exchange/presentation/calculate/calculate_screen.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_screen.dart';
-import 'package:currency_exchange/presentation/history/history_screen.dart';
-import 'package:currency_exchange/presentation/sales/sales_screen.dart';
-import 'package:currency_exchange/presentation/widgets/menu_side_bar.dart';
-import 'package:currency_exchange/services/global_widget_service.dart';
+import 'package:thanarak_exchange/presentation/calculate/calculate_screen.dart';
+import 'package:thanarak_exchange/presentation/exchange/exchange_screen.dart';
+import 'package:thanarak_exchange/presentation/history/history_screen.dart';
+import 'package:thanarak_exchange/presentation/sales/sales_screen.dart';
+import 'package:thanarak_exchange/presentation/widgets/custom_button.dart';
+import 'package:thanarak_exchange/presentation/widgets/menu_side_bar.dart';
+import 'package:thanarak_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

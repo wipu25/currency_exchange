@@ -6,10 +6,10 @@
 import 'dart:async' as _i5;
 import 'dart:typed_data' as _i6;
 
-import 'package:currency_exchange/models/country.dart' as _i8;
-import 'package:currency_exchange/models/price_range.dart' as _i9;
-import 'package:currency_exchange/services/currency_list_service.dart' as _i7;
-import 'package:currency_exchange/services/firebase_service.dart' as _i2;
+import 'package:thanarak_exchange/models/country.dart' as _i8;
+import 'package:thanarak_exchange/models/price_range.dart' as _i9;
+import 'package:thanarak_exchange/services/currency_list_service.dart' as _i7;
+import 'package:thanarak_exchange/services/firebase_service.dart' as _i2;
 import 'package:firebase_storage/firebase_storage.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i3;

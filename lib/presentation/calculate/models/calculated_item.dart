@@ -1,5 +1,5 @@
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'freezed/calculated_item.freezed.dart';

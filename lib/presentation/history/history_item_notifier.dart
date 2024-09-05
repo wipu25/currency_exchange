@@ -1,7 +1,7 @@
-import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
+import 'package:thanarak_exchange/models/client_info.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/presentation/calculate/services/print_receipt_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

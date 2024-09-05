@@ -1,6 +1,6 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/presentation/calculate/notifier/calculate_notifier.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/calculate_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

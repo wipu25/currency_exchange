@@ -1,7 +1,7 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/country.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final currencyListProvider = Provider((ref) => CurrencyListService());
