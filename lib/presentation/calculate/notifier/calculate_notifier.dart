@@ -1,14 +1,14 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/helpers/state_helper.dart';
-import 'package:currency_exchange/presentation/calculate/models/calculate_screen_state.dart';
-import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/presentation/calculate/models/calculated_item.dart';
-import 'package:currency_exchange/presentation/exchange/models/exchange_item.dart';
-import 'package:currency_exchange/models/price_range.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/helpers/state_helper.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/calculate_screen_state.dart';
+import 'package:thanarak_exchange/models/country.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/calculated_item.dart';
+import 'package:thanarak_exchange/presentation/exchange/models/exchange_item.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/calculate/services/receipt_service_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final calculateNotifier =

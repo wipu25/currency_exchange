@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/calculate/models/summary_dialog_model.dart';
-import 'package:currency_exchange/presentation/calculate/models/summary_dialog_state.dart';
-import 'package:currency_exchange/presentation/calculate/services/print_receipt_service.dart';
-import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
+import 'package:thanarak_exchange/models/client_info.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/summary_dialog_model.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/summary_dialog_state.dart';
+import 'package:thanarak_exchange/presentation/calculate/services/print_receipt_service.dart';
+import 'package:thanarak_exchange/presentation/calculate/services/receipt_service_notifier.dart';
+import 'package:thanarak_exchange/services/firebase_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +45,7 @@ class SummaryDialogNotifier extends Notifier<SummaryDialogState> {
 
   void saveClientInfo() {
     ref.read(receiptProvider).setClientInfo(ClientInfo(
-        name: state.clientInfo!.name, address: state.clientInfo!.address));
+        name: state.clientInfo?.name, address: state.clientInfo?.address));
   }
 
   Future<void> save() async {
@@ -101,11 +101,11 @@ class SummaryDialogNotifier extends Notifier<SummaryDialogState> {
 
   Future<bool> createPdf() async {
     state = state.copyWith(billOperation: BillOperation.print);
-    if (!kReleaseMode) {
-      return true;
-    }
+    // if (!kReleaseMode) {
+    //   return true;
+    // }
     final result = await PrintReceiptService().initPrint(
-        ref.read(receiptProvider).currentTransaction, state.clientInfo!.id);
+        ref.read(receiptProvider).currentTransaction, state.clientInfo?.id);
     if (!result) {
       state = state.copyWith(billOperation: BillOperation.none);
     }

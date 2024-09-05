@@ -1,7 +1,7 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

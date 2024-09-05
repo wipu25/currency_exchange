@@ -1,5 +1,5 @@
-import 'package:currency_exchange/presentation/exchange/exchange_notifier.dart';
-import 'package:currency_exchange/presentation/home/home_screen.dart';
+import 'package:thanarak_exchange/presentation/exchange/exchange_notifier.dart';
+import 'package:thanarak_exchange/presentation/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

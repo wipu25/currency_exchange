@@ -1,8 +1,8 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/presentation/calculate/models/exchange_screen_state.dart';
-import 'package:currency_exchange/presentation/widgets/custom_text_field.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/exchange_screen_state.dart';
+import 'package:thanarak_exchange/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class PriceCell extends StatelessWidget {

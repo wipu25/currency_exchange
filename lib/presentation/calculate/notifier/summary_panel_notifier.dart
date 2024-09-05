@@ -1,7 +1,7 @@
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/calculate/models/summary_panel_state.dart';
-import 'package:currency_exchange/presentation/calculate/services/receipt_service_notifier.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/calculate/models/summary_panel_state.dart';
+import 'package:thanarak_exchange/presentation/calculate/services/receipt_service_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final summaryPanelNotifier =

@@ -1,10 +1,10 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/helpers/text_style_helper.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/history/widgets/history_calculate_item.dart';
-import 'package:currency_exchange/presentation/widgets/custom_button.dart';
-import 'package:currency_exchange/presentation/widgets/item_container.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/helpers/text_style_helper.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/presentation/history/widgets/history_calculate_item.dart';
+import 'package:thanarak_exchange/presentation/widgets/custom_button.dart';
+import 'package:thanarak_exchange/presentation/widgets/item_container.dart';
 import 'package:flutter/material.dart';
 
 class HistoryItem extends StatelessWidget {

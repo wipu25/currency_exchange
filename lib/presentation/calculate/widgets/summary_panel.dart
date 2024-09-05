@@ -1,11 +1,11 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/calculate/notifier/summary_dialog_notifier.dart';
-import 'package:currency_exchange/presentation/calculate/notifier/summary_panel_notifier.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/summary_dialog.dart';
-import 'package:currency_exchange/presentation/calculate/widgets/summary_item.dart';
-import 'package:currency_exchange/presentation/widgets/custom_button.dart';
-import 'package:currency_exchange/presentation/widgets/item_container.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/summary_dialog_notifier.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/summary_panel_notifier.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/summary_dialog.dart';
+import 'package:thanarak_exchange/presentation/calculate/widgets/summary_item.dart';
+import 'package:thanarak_exchange/presentation/widgets/custom_button.dart';
+import 'package:thanarak_exchange/presentation/widgets/item_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

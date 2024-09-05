@@ -1,8 +1,8 @@
-import 'package:currency_exchange/constants/app_colors.dart';
-import 'package:currency_exchange/helpers/text_style_helper.dart';
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/exchange/models/exchange_item.dart';
-import 'package:currency_exchange/presentation/widgets/item_container.dart';
+import 'package:thanarak_exchange/constants/app_colors.dart';
+import 'package:thanarak_exchange/helpers/text_style_helper.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/exchange/models/exchange_item.dart';
+import 'package:thanarak_exchange/presentation/widgets/item_container.dart';
 import 'package:flutter/material.dart';
 
 class HistoryCalculateItem extends StatelessWidget {

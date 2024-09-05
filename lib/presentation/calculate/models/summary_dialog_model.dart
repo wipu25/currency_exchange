@@ -1,4 +1,4 @@
-import 'package:currency_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
 
 enum BillOperation {
   save,
