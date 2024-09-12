@@ -65,9 +65,13 @@ class PrintReceiptService {
     pw.text('DateTime: ${dateTimeSplit[0]} ${dateTimeSplit[1]}');
     pw.text('NO: $receiptId', linesAfter: 1);
 
-    pw.text('Name: ${transactionItem!.clientInfo?.name ?? ''}');
-    pw.text('Address: ${transactionItem!.clientInfo?.address ?? ''}');
-    pw.text('ID/Passport: $id', linesAfter: 1);
+    if (transactionItem?.clientInfo != null) {
+      pw.text('Name: ${transactionItem!.clientInfo?.name ?? ''}');
+      pw.text('Address: ${transactionItem!.clientInfo?.address ?? ''}');
+    }
+    if (id != null) {
+      pw.text('ID/Passport: $id', linesAfter: 1);
+    }
 
     pw.hr(ch: '=', linesAfter: 0);
 
@@ -109,6 +113,11 @@ class PrintReceiptService {
                         calculatedItem.priceRange?[calculateItem])
                     ?.getPrice() ??
                 '';
+        final getRange =
+            (calculatedItem.calculatedItem[calculateItem].priceRange ??
+                        calculatedItem.priceRange?[calculateItem])
+                    ?.getRange() ??
+                '';
         if (calculatedItem.transaction == Transaction.buy) {
           buyList.add([
             PosColumn(
@@ -117,13 +126,13 @@ class PrintReceiptService {
               styles: const PosStyles(align: PosAlign.left),
             ),
             PosColumn(
-              text: getPrice,
+              text: getRange,
               width: 3,
               styles: const PosStyles(align: PosAlign.center),
             ),
             PosColumn(
               text:
-                  '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+                  '${calculatedItem.calculatedItem[calculateItem].getAmount()} x $getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
               width: 6,
               styles: const PosStyles(align: PosAlign.right),
             ),
@@ -136,7 +145,7 @@ class PrintReceiptService {
               styles: const PosStyles(align: PosAlign.left),
             ),
             PosColumn(
-              text: getPrice,
+              text: getRange,
               width: 3,
               styles: const PosStyles(align: PosAlign.center),
             ),
