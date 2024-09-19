@@ -15,6 +15,8 @@ class HistoryScreenState with _$HistoryScreenState {
       bool isLoading,
       bool isCancel,
       bool isClientInfoComplete,
+      double totalDateSellPrice,
+      double totalDateBuyPrice,
       DateTime? dateTimeDisplay,
       Map<String, bool> currencyFilter,
       Map<String, bool> paymentFilter,
