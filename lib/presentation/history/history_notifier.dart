@@ -19,7 +19,10 @@ enum FilterType { currency, payment, transaction }
 class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
   @override
   HistoryScreenState build() => HistoryScreenState(
-      [], [], false, false, false, false, DateTime.now(), {}, {}, {});
+      [], [], false, false, false, false, 0.0, 0.0, DateTime.now(), {}, {}, {});
+
+  var totalDateBuyPrice = 0.0;
+  var totalDateSellPrice = 0.0;
 
   Future<void> init() async {
     state = state.copyWith(isLoading: true, dateTimeDisplay: DateTime.now());
@@ -45,6 +48,8 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
 
   Future<void> _getTransaction(DateTime dateTime) async {
     try {
+      totalDateSellPrice = 0.0;
+      totalDateBuyPrice = 0.0;
       final currentDate = DateFormat('yyyy-MM-dd').format(dateTime);
       final todayFile =
           await ref.read(firebaseProvider).getTransactionFile(currentDate);
@@ -52,11 +57,16 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
           savedHistoryList: List<TransactionItem>.from(json
               .decode(utf8.decode(todayFile!))['transaction']
               .map((item) => TransactionItem.fromJson(item))));
-
-      if (state.savedHistoryList.any((element) =>
-          element.totalSellPrice == null && element.totalBuyPrice == null)) {
-        _calculateTotal();
+      for (var item in state.savedHistoryList) {
+        if (item.totalSellPrice == null && item.totalBuyPrice == null) {
+          await _calculateTotal();
+        }
+        totalDateBuyPrice += item.totalBuyPrice!;
+        totalDateSellPrice += item.totalSellPrice!;
       }
+      state = state.copyWith(
+          totalDateSellPrice: totalDateSellPrice,
+          totalDateBuyPrice: totalDateBuyPrice);
     } catch (e) {
       if (e is PlatformException) {
         if (e.code == 'object-not-found' ||
@@ -71,7 +81,7 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     state = state.copyWith(historyList: state.savedHistoryList);
   }
 
-  void _calculateTotal() {
+  Future<void> _calculateTotal() async {
     for (var index = 0; index < state.savedHistoryList.length; index++) {
       final item = state.savedHistoryList[index];
       if (item.totalSellPrice == null && item.totalBuyPrice == null) {
@@ -96,7 +106,7 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
         state = state.copyWith(savedHistoryList: newList);
       }
     }
-    _saveTransaction();
+    await _saveTransaction();
   }
 
   Future<void> updateTransaction(
@@ -143,6 +153,8 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     final currencyFilter = state.currencyFilter;
     final paymentFilter = state.paymentFilter;
     final transactionFilter = state.transactionFilter;
+    var totalDateBuyPrice = this.totalDateBuyPrice;
+    var totalDateSellPrice = this.totalDateSellPrice;
     final removeCurrency = currencyFilter.keys
         .where((element) => currencyFilter[element] == false)
         .toList();
@@ -157,16 +169,22 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
           .contains(state.historyList[i].paymentMethod.getString())) {
         final newList = List<TransactionItem>.from(state.historyList);
         newList.removeAt(i);
+        totalDateSellPrice -= state.historyList[i].totalSellPrice!;
+        totalDateBuyPrice -= state.historyList[i].totalBuyPrice!;
         state = state.copyWith(historyList: newList);
         i--;
         continue;
       }
       final removeList = state.historyList[i].calculatedItem.toList();
-      removeList.removeWhere((element) {
-        final isCurrency = removeCurrency.contains(element.currency.toString());
-        final isTransaction =
-            removeTransaction.contains(element.transaction.name);
-        return isCurrency || isTransaction;
+      removeList.removeWhere((item) {
+        final isRemove = removeCurrency.contains(item.currency.toString()) ||
+            removeTransaction.contains(item.transaction.name);
+        if (isRemove) {
+          item.transaction == Transaction.sell
+              ? totalDateSellPrice -= item.amountExchange
+              : totalDateBuyPrice -= item.totalPrice;
+        }
+        return isRemove;
       });
       if (removeList.isEmpty) {
         final newList = List<TransactionItem>.from(state.historyList);
@@ -179,7 +197,10 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
       newList[i] = newList[i].copyWith(calculatedItem: removeList);
       state = state.copyWith(historyList: newList);
     }
-    state = state.copyWith(isLoading: false);
+    state = state.copyWith(
+        isLoading: false,
+        totalDateBuyPrice: totalDateBuyPrice,
+        totalDateSellPrice: totalDateSellPrice);
   }
 
   updateFilter(String name, bool? value, FilterType filterType) {
