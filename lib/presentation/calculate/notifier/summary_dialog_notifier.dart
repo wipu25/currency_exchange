@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:thanarak_exchange/models/client_info.dart';
-import 'package:thanarak_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/models/transaction_file.dart';
 import 'package:thanarak_exchange/presentation/calculate/models/summary_dialog_model.dart';
 import 'package:thanarak_exchange/presentation/calculate/models/summary_dialog_state.dart';
 import 'package:thanarak_exchange/presentation/calculate/services/print_receipt_service.dart';
@@ -49,37 +49,33 @@ class SummaryDialogNotifier extends Notifier<SummaryDialogState> {
   }
 
   Future<void> save() async {
-    final currentTransaction = ref.read(receiptProvider).currentTransaction;
+    final currentTransaction = ref.read(receiptProvider).currentTransaction!;
     state = state.copyWith(billOperation: BillOperation.save);
     final transactionFile = await _getTransactionFile();
     final timeNow = DateTime.now();
     final currentDate = DateFormat('yyyy-MM-dd').format(timeNow);
-    if (transactionFile == null) {
-      final map = {
-        'transaction': [currentTransaction!.toJson()]
-      };
-      try {
-        await ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
-        _clearAllCurrencyItem();
-        state = state.copyWith(billOperation: BillOperation.none);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    } else {
-      final oldTransaction = List<TransactionItem>.from(json
-          .decode(utf8.decode(transactionFile))['transaction']
-          .map((item) => TransactionItem.fromJson(item)));
-      final saveTransaction = [currentTransaction!] + oldTransaction;
-      final map = {
-        'transaction': List.from(saveTransaction.map((e) => e.toJson()))
-      };
-      try {
-        await ref.read(firebaseProvider).saveTransactionFile(map, currentDate);
-        _clearAllCurrencyItem();
-        state = state.copyWith(billOperation: BillOperation.none);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
+    var data = TransactionFile(
+        transaction: [currentTransaction],
+        totalBuyPrice: currentTransaction.totalBuyPrice,
+        totalSellPrice: currentTransaction.totalSellPrice);
+    if (transactionFile != null) {
+      final oldTransactionFile =
+          TransactionFile.fromJson(json.decode(utf8.decode(transactionFile)));
+      data = TransactionFile(
+          transaction: [currentTransaction] + oldTransactionFile.transaction,
+          totalBuyPrice: oldTransactionFile.totalBuyPrice ??
+              0.0 + currentTransaction.totalBuyPrice!,
+          totalSellPrice: oldTransactionFile.totalSellPrice ??
+              0.0 + currentTransaction.totalSellPrice!);
+    }
+    try {
+      await ref
+          .read(firebaseProvider)
+          .saveTransactionFile(data.toJson(), currentDate);
+      _clearAllCurrencyItem();
+      state = state.copyWith(billOperation: BillOperation.none);
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

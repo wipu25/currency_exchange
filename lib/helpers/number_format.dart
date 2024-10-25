@@ -6,8 +6,8 @@ class CustomNumberFormat {
     return value == 0 ? '0.0' : pattern.format(value ?? 0);
   }
 
-  static String commaFormat4(double? value) {
-    var pattern = NumberFormat("###,##0.0###", "en_US");
+  static String commaFormat5(double? value) {
+    var pattern = NumberFormat("###,##0.0####", "en_US");
     return value == 0 ? '0.0' : pattern.format(value ?? 0);
   }
 

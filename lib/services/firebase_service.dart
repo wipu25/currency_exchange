@@ -23,7 +23,7 @@ class FirebaseService {
 
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     storage = FirebaseStorage.instance;
-    if (kDebugMode) {
+    if (kReleaseMode) {
       path = prodPath;
     }
   }

@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_file.dart';
 import 'package:thanarak_exchange/models/transaction_item.dart';
 import 'package:thanarak_exchange/presentation/history/models/history_screen_state.dart';
 import 'package:thanarak_exchange/services/currency_list_service.dart';
 import 'package:thanarak_exchange/services/firebase_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -48,31 +49,37 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
 
   Future<void> _getTransaction(DateTime dateTime) async {
     try {
-      totalDateSellPrice = 0.0;
-      totalDateBuyPrice = 0.0;
+      var isCalculateTodayTotal = false;
       final currentDate = DateFormat('yyyy-MM-dd').format(dateTime);
       final todayFile =
           await ref.read(firebaseProvider).getTransactionFile(currentDate);
+      final transactionFile =
+          TransactionFile.fromJson(json.decode(utf8.decode(todayFile!)));
+      totalDateSellPrice = transactionFile.totalSellPrice ?? 0.0;
+      totalDateBuyPrice = transactionFile.totalBuyPrice ?? 0.0;
       state = state.copyWith(
-          savedHistoryList: List<TransactionItem>.from(json
-              .decode(utf8.decode(todayFile!))['transaction']
-              .map((item) => TransactionItem.fromJson(item))));
-      for (var item in state.savedHistoryList) {
-        if (item.totalSellPrice == null && item.totalBuyPrice == null) {
-          await _calculateTotal();
+        savedHistoryList: transactionFile.transaction,
+      );
+      if (transactionFile.totalBuyPrice == null &&
+          transactionFile.totalSellPrice == null) {
+        for (var item in state.savedHistoryList) {
+          totalDateBuyPrice += item.totalBuyPrice!;
+          totalDateSellPrice += item.totalSellPrice!;
         }
-        totalDateBuyPrice += item.totalBuyPrice!;
-        totalDateSellPrice += item.totalSellPrice!;
+        isCalculateTodayTotal = true;
+      }
+      final isRecalculateTotal = await _calculateTotal();
+      if (isRecalculateTotal || isCalculateTodayTotal) {
+        await _saveTransaction(
+            totalBuyPrice: totalDateBuyPrice,
+            totalSellPrice: totalDateSellPrice);
       }
       state = state.copyWith(
           totalDateSellPrice: totalDateSellPrice,
           totalDateBuyPrice: totalDateBuyPrice);
     } catch (e) {
-      if (e is PlatformException) {
-        if (e.code == 'object-not-found' ||
-            (e.code == 'firebase_storage' &&
-                (e.details as Map<dynamic, dynamic>)['code'] ==
-                    'object-not-found')) {
+      if (e is FirebaseException) {
+        if (e.code == 'object-not-found') {
           state = state.copyWith(savedHistoryList: []);
         }
       }
@@ -81,10 +88,12 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     state = state.copyWith(historyList: state.savedHistoryList);
   }
 
-  Future<void> _calculateTotal() async {
+  Future<bool> _calculateTotal() async {
+    var isTotalEmpty = false;
     for (var index = 0; index < state.savedHistoryList.length; index++) {
       final item = state.savedHistoryList[index];
       if (item.totalSellPrice == null && item.totalBuyPrice == null) {
+        isTotalEmpty = true;
         final newList = List<TransactionItem>.from(state.savedHistoryList);
         newList[index] = TransactionItem(
             calculatedItem: item.calculatedItem,
@@ -106,7 +115,7 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
         state = state.copyWith(savedHistoryList: newList);
       }
     }
-    await _saveTransaction();
+    return isTotalEmpty;
   }
 
   Future<void> updateTransaction(
@@ -125,13 +134,23 @@ class HistoryScreenNotifier extends AutoDisposeNotifier<HistoryScreenState> {
     await _saveTransaction();
   }
 
-  Future<void> _saveTransaction() async {
+  Future<void> _saveTransaction(
+      {double? totalBuyPrice, double? totalSellPrice}) async {
     final historyDate = DateFormat('yyyy-MM-dd').format(state.dateTimeDisplay!);
-    final map = {
-      'transaction': List.from(state.savedHistoryList.map((e) => e.toJson()))
-    };
+    var data = TransactionFile(
+        transaction: state.savedHistoryList,
+        totalSellPrice: totalSellPrice,
+        totalBuyPrice: totalBuyPrice);
+    if (totalBuyPrice != null) {
+      data = data.copyWith(totalBuyPrice: totalBuyPrice);
+    }
+    if (totalSellPrice != null) {
+      data = data.copyWith(totalSellPrice: totalSellPrice);
+    }
     try {
-      await ref.read(firebaseProvider).saveTransactionFile(map, historyDate);
+      await ref
+          .read(firebaseProvider)
+          .saveTransactionFile(data.toJson(), historyDate);
     } catch (e) {
       debugPrint(e.toString());
     }

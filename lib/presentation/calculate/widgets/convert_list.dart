@@ -97,7 +97,7 @@ class ConvertList extends ConsumerWidget {
                         style: TextStyle(fontSize: 14)),
                   ),
                   Text(
-                    CustomNumberFormat.commaFormat4(
+                    CustomNumberFormat.commaFormat5(
                         calculateState.calculatedItem[index].price),
                     style: const TextStyle(fontSize: 18),
                   ),

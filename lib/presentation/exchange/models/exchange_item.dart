@@ -28,6 +28,6 @@ class ExchangeItem with _$ExchangeItem {
   }
 
   String getAmountExchange() {
-    return CustomNumberFormat.commaFormat4(amountExchange);
+    return CustomNumberFormat.commaFormat5(amountExchange);
   }
 }
