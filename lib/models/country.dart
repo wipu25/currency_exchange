@@ -1,7 +1,7 @@
-import 'package:currency_exchange/models/price_range.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-part 'country.freezed.dart';
-part 'country.g.dart';
+part 'freezed/country.freezed.dart';
+part 'freezed/country.g.dart';
 
 @freezed
 class Country with _$Country {

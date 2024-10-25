@@ -1,22 +1,25 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/country.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/price_range.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/country.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/models/price_range.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CurrencyListService extends ChangeNotifier {
+final currencyListProvider = Provider((ref) => CurrencyListService());
+
+class CurrencyListService {
+  List<Country> _currencyList = <Country>[];
+  bool _isCurrencySet = false;
+
+  bool get isCurrencySet => _isCurrencySet;
+  List<Country> get currencyList => _currencyList;
+
+  //TODO: should be in exchange notifier
   final List<List<String?>> _buyCurrencyList = [];
   final List<List<String?>> _sellCurrencyList = [];
-  List<Country> _currencyList = <Country>[];
-
-  List<Country> get currencyList => _currencyList;
   List<List<String?>> get buyCurrencyList => _buyCurrencyList;
   List<List<String?>> get sellCurrencyList => _sellCurrencyList;
 
-  void setCurrencyList(List<Country> value) {
-    _currencyList = value;
-    notifyListeners();
-  }
+  void setCurrencyDone(bool value) => _isCurrencySet = value;
 
   void setBuyCurrencyList(int currency, int rate, String? amount) {
     _buyCurrencyList[currency][rate] = amount;
@@ -56,10 +59,10 @@ class CurrencyListService extends ChangeNotifier {
           sellPriceRange: _getPriceRange(currentCountry, i, PriceType.sell));
       _currencyList[i] = newCountry;
     }
-    notifyListeners();
   }
 
-  bool generateBuySellList() {
+  bool generateBuySellList(List<Country> value) {
+    _currencyList = value;
     var isNullItem = false;
     for (var currency in _currencyList) {
       final List<String?> buyRangeList = [];
@@ -92,7 +95,6 @@ class CurrencyListService extends ChangeNotifier {
     } else {
       setBuyCurrencyList(currency, rate, amount);
     }
-    notifyListeners();
   }
 
   String? addRate(int currency, int rate, String value, PriceType type) {

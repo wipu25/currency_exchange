@@ -12,3 +12,8 @@ class PrintingException implements Exception {
   final String message;
   PrintingException(this.message);
 }
+
+class ClientInfoException implements Exception {
+  final String message;
+  ClientInfoException(this.message);
+}

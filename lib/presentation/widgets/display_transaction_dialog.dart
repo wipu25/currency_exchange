@@ -1,6 +1,7 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
-import 'package:currency_exchange/presentation/widgets/loading.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/presentation/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
 class DisplayTransactionDialog extends StatelessWidget {
@@ -24,34 +25,53 @@ class DisplayTransactionDialog extends StatelessWidget {
                           children: [
                             Container(
                                 padding: const EdgeInsets.all(4.0),
-                                color: index.transaction == 'buy'
+                                color: index.transaction == Transaction.buy
                                     ? Colors.lightGreen.withOpacity(0.5)
                                     : Colors.red.withOpacity(0.5),
                                 child: Text(
-                                  '${index.transaction.toUpperCase()} ${index.currency}',
-                                  style: const TextStyle(fontSize: 22),
+                                  '${index.transaction.name.toUpperCase()} ${index.currency}',
+                                  style: const TextStyle(fontSize: 24),
                                 )),
                             ...List.generate(
-                                index.priceRange.length,
+                                index.calculatedItem.length,
                                 (item) => Row(
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: Text(index.priceRange[item]
-                                                .getRange())),
+                                            child: Text(
+                                                index.calculatedItem[item]
+                                                    .priceRange!
+                                                    .getRange(),
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                ))),
                                         Expanded(
                                             flex: 2,
                                             child: Text(
-                                                '${index.calculatedItem[item].getAmount()} X ${index.priceRange[item].getPrice()}')),
+                                                '${index.calculatedItem[item].getAmount()} X ${index.calculatedItem[item].priceRange!.getPrice()}',
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                ))),
                                         Expanded(
                                             child: Text(
-                                                '= ${index.calculatedItem[item].getPrice()}'))
+                                                '= ${index.calculatedItem[item].getPrice()}',
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                )))
                                       ],
                                     )),
-                            // Text('Amount ${index.amountExchange} ${index.transaction == 'buy' ? index.currency : 'THB'}',style: const TextStyle(fontSize: 30),),
+                            const SizedBox(
+                              height: 8,
+                            ),
                             Text(
-                              'Total ${index.getTotalPrice()} ${index.transaction != 'buy' ? index.currency : 'THB'}',
-                              style: const TextStyle(fontSize: 30),
+                              'Amount ${index.amountExchange} ${index.transaction == Transaction.buy ? index.currency : 'THB'}',
+                              style: const TextStyle(
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text(
+                              'Total ${index.getTotalPrice()} ${index.transaction != Transaction.buy ? index.currency : 'THB'}',
+                              style: const TextStyle(fontSize: 24),
                             )
                           ],
                         ),
@@ -59,6 +79,7 @@ class DisplayTransactionDialog extends StatelessWidget {
                     ))
                 .toList(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (currentTransaction?.totalBuyPrice != null &&
                     currentTransaction!.totalBuyPrice! > 0.0)
@@ -66,11 +87,12 @@ class DisplayTransactionDialog extends StatelessWidget {
                     children: [
                       const Text(
                         AppStrings.enTotalBuy,
-                        style: TextStyle(fontSize: 30),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "${currentTransaction!.getTotalBuyPrice()} ${AppStrings.thb}",
-                        style: const TextStyle(fontSize: 30),
+                        style: const TextStyle(fontSize: 24),
                       ),
                     ],
                   ),
@@ -81,11 +103,12 @@ class DisplayTransactionDialog extends StatelessWidget {
                     children: [
                       const Text(
                         AppStrings.enTotalSell,
-                        style: TextStyle(fontSize: 30),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "${currentTransaction!.getTotalSellPrice()} ${AppStrings.thb}",
-                        style: const TextStyle(fontSize: 30),
+                        style: const TextStyle(fontSize: 24),
                       ),
                     ],
                   ),
@@ -94,11 +117,11 @@ class DisplayTransactionDialog extends StatelessWidget {
             ),
             const Text(
               AppStrings.enPaymentMethod,
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
               currentTransaction!.paymentMethod.getString(),
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 24),
             ),
           ])
         : const Loading();

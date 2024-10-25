@@ -1,4 +1,4 @@
-package com.example.currency_exchange
+package com.thanarak.exchange
 
 import io.flutter.embedding.android.FlutterActivity
 

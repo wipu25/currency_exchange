@@ -1,11 +1,11 @@
-import 'package:currency_exchange/helpers/number_format.dart';
-import 'package:currency_exchange/models/client_info.dart';
-import 'package:currency_exchange/models/exchange_item.dart';
-import 'package:currency_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/models/client_info.dart';
+import 'package:thanarak_exchange/presentation/exchange/models/exchange_item.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'transaction_item.freezed.dart';
-part 'transaction_item.g.dart';
+part 'freezed/transaction_item.freezed.dart';
+part 'freezed/transaction_item.g.dart';
 
 @freezed
 class TransactionItem with _$TransactionItem {

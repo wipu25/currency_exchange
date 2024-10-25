@@ -46,12 +46,31 @@ class AppStrings {
   static const String errorFillAll = 'เติมให้ครบช่อง';
   static const String errorNegative = 'ตัวเลขติดลบ';
 
+  static const List<String> exchangeHeader = [
+    AppStrings.currency,
+    AppStrings.price,
+    AppStrings.buying,
+    AppStrings.selling
+  ];
+
+  static const List<String> historyHeader = [
+    'วันที่',
+    'เวลา',
+    'สกุลเงิน',
+    'ธนบัตร',
+    'ราคา',
+    'จำนวน',
+    'ราคารวม THB',
+    'จ่ายผ่าน',
+    'เพิ่มเติม'
+  ];
+
   //history-screen
   static const String date = 'วันที่';
   static const String noTransaction = 'ไม่มีธุรกรรม';
   static const String cancel = 'ยกเลิก';
   static const String cancelling = 'กำลังยกเลิก';
-  static const String cancellingTime = 'เวลาธุรกรรม';
+  static const String time = 'เวลา';
   static const String moreInfo = 'เพิ่มเติม';
   static const String filter = 'กรอง';
 
@@ -62,4 +81,8 @@ class AppStrings {
   static const String hintName = 'ชื่อ นามสกุล';
   static const String hintAddress = 'ที่อยู่';
   static const String hintID = '123456789';
+
+  //error
+  static const String errorNetwork = 'เกิดข้อผิดพลาด';
+  static const String clientInfoIncomplete = 'ข้อมูลไม่ครบ';
 }

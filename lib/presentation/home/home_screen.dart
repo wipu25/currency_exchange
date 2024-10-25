@@ -1,11 +1,12 @@
-import 'package:currency_exchange/presentation/calculate/calculate_screen.dart';
-import 'package:currency_exchange/presentation/exchange/exchange_screen.dart';
-import 'package:currency_exchange/presentation/history/history_screen.dart';
-import 'package:currency_exchange/presentation/sales/sales_screen.dart';
-import 'package:currency_exchange/presentation/widgets/menu_side_bar.dart';
-import 'package:currency_exchange/services/global_widget_service.dart';
+import 'package:thanarak_exchange/presentation/calculate/calculate_screen.dart';
+import 'package:thanarak_exchange/presentation/exchange/exchange_screen.dart';
+import 'package:thanarak_exchange/presentation/history/history_screen.dart';
+import 'package:thanarak_exchange/presentation/sales/sales_screen.dart';
+import 'package:thanarak_exchange/presentation/widgets/custom_button.dart';
+import 'package:thanarak_exchange/presentation/widgets/menu_side_bar.dart';
+import 'package:thanarak_exchange/services/global_widget_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,9 +19,9 @@ class HomeScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Consumer<GlobalWidgetService>(
-                builder: (_, globalWidgetService, __) => Text(
-                  globalWidgetService.menuSelect.name,
+              child: Consumer(
+                builder: (_, ref, __) => Text(
+                  ref.watch(menuSelectStateProvider).menuSelect.name,
                   style: const TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold),
                 ),
@@ -29,22 +30,28 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Consumer<GlobalWidgetService>(
-                    builder: (_, globalWidgetService, __) => MenuSideBar(
-                      menuSelect: globalWidgetService.menuSelect,
-                      isExpand: globalWidgetService.isExpand,
-                      expandMenu: () => globalWidgetService.expand(),
-                      selectedMenu: (MenuSelect itemMenu) =>
-                          globalWidgetService.switchScreen(itemMenu),
-                    ),
-                  ),
+                  Consumer(builder: (_, ref, __) {
+                    final menuProviderWatch =
+                        ref.watch(menuSelectStateProvider);
+                    return MenuSideBar(
+                      menuSelect: menuProviderWatch.menuSelect,
+                      isExpand: menuProviderWatch.isExpand,
+                      expandMenu: () =>
+                          ref.read(menuSelectStateProvider.notifier).expand(),
+                      selectedMenu: (MenuSelect itemMenu) => ref
+                          .read(menuSelectStateProvider.notifier)
+                          .switchScreen(itemMenu),
+                    );
+                  }),
                   Expanded(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: SingleChildScrollView(
-                        child: Consumer<GlobalWidgetService>(
-                          builder: (_, globalWidgetService, __) =>
-                              screenSelect(globalWidgetService.menuSelect),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 8.0),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: Consumer(
+                          builder: (_, ref, __) => screenSelect(
+                              ref.watch(menuSelectStateProvider).menuSelect),
                         ),
                       ),
                     ),
