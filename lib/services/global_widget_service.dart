@@ -1,22 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GlobalWidgetService with ChangeNotifier {
-  MenuSelect _menuSelect = MenuSelect.exchanges;
-  bool _isExpand = false;
-
-  bool get isExpand => _isExpand;
-  MenuSelect get menuSelect => _menuSelect;
-
-  void switchScreen(MenuSelect menuSelect) {
-    _menuSelect = menuSelect;
-    notifyListeners();
-  }
-
-  void expand() {
-    _isExpand = !_isExpand;
-    notifyListeners();
-  }
-}
+final menuSelectStateProvider =
+    StateNotifierProvider<MenuStateNotifier, MenuState>(
+        (ref) => MenuStateNotifier());
 
 enum MenuSelect {
   exchanges,
@@ -36,4 +22,19 @@ enum MenuSelect {
         return 'ยอด';
     }
   }
+}
+
+class MenuState {
+  final MenuSelect menuSelect;
+  final bool isExpand;
+
+  MenuState(this.menuSelect, this.isExpand);
+}
+
+class MenuStateNotifier extends StateNotifier<MenuState> {
+  MenuStateNotifier() : super(MenuState(MenuSelect.exchanges, false));
+
+  void switchScreen(MenuSelect menuSelect) =>
+      state = MenuState(menuSelect, state.isExpand);
+  void expand() => state = MenuState(state.menuSelect, !state.isExpand);
 }

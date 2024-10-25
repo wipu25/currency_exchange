@@ -1,8 +1,8 @@
-import 'package:currency_exchange/helpers/number_format.dart';
+import 'package:thanarak_exchange/helpers/number_format.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'price_range.freezed.dart';
-part 'price_range.g.dart';
+part 'freezed/price_range.freezed.dart';
+part 'freezed/price_range.g.dart';
 
 @freezed
 class PriceRange with _$PriceRange {

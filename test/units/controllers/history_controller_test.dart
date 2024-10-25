@@ -1,7 +1,7 @@
-import 'package:currency_exchange/models/receipt.dart';
-import 'package:currency_exchange/presentation/history/history_controller.dart';
-import 'package:currency_exchange/services/currency_list_service.dart';
-import 'package:currency_exchange/services/firebase_service.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/history/history_controller.dart';
+import 'package:thanarak_exchange/services/currency_list_service.dart';
+import 'package:thanarak_exchange/services/firebase_service.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';

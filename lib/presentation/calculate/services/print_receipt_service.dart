@@ -1,8 +1,11 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/models/exception.dart';
-import 'package:currency_exchange/models/transaction_item.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/exception.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/models/transaction_item.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/cupertino.dart';
 
 class PrintReceiptService {
   late NetworkPrinter pw;
@@ -26,6 +29,14 @@ class PrintReceiptService {
       }
       throw PrintingException('Print Unsuccessful');
     } catch (e) {
+      if (e is Error) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(
+            FlutterErrorDetails(
+                exception: PrintingException('Error Printing'),
+                stack: e.stackTrace));
+      }
+      FirebaseCrashlytics.instance.recordFlutterFatalError(
+          FlutterErrorDetails(exception: PrintingException(e.toString())));
       throw PrintingException(e.toString());
     }
   }
@@ -54,9 +65,13 @@ class PrintReceiptService {
     pw.text('DateTime: ${dateTimeSplit[0]} ${dateTimeSplit[1]}');
     pw.text('NO: $receiptId', linesAfter: 1);
 
-    pw.text('Name: ${transactionItem!.clientInfo?.name ?? ''}');
-    pw.text('Address: ${transactionItem!.clientInfo?.address ?? ''}');
-    pw.text('ID/Passport: $id', linesAfter: 1);
+    if (transactionItem?.clientInfo != null) {
+      pw.text('Name: ${transactionItem!.clientInfo?.name ?? ''}');
+      pw.text('Address: ${transactionItem!.clientInfo?.address ?? ''}');
+    }
+    if (id != null) {
+      pw.text('ID/Passport: $id', linesAfter: 1);
+    }
 
     pw.hr(ch: '=', linesAfter: 0);
 
@@ -75,8 +90,12 @@ class PrintReceiptService {
           styles: const PosStyles(align: PosAlign.left));
     }
     pw.hr(ch: '=', linesAfter: 1);
-    pw.text('Please verify the transaction and amount received',
-        styles: const PosStyles(bold: true, align: PosAlign.center));
+    pw.text('Please verify the transaction',
+        styles: const PosStyles(
+            bold: true, align: PosAlign.center, height: PosTextSize.size1));
+    pw.text('and amount received',
+        styles: const PosStyles(
+            bold: true, align: PosAlign.center, height: PosTextSize.size1));
     pw.feed(3);
     pw.cut();
   }
@@ -87,29 +106,57 @@ class PrintReceiptService {
     for (var item = 0; item < transactionItem!.calculatedItem.length; item++) {
       final calculatedItem = transactionItem!.calculatedItem[item];
       for (var calculateItem = 0;
-          calculateItem < calculatedItem.calculatedItem.length;
+          calculateItem < (calculatedItem.calculatedItem.length);
           calculateItem++) {
-        final item = [
-          PosColumn(
-            text: calculatedItem.currency,
-            width: 2,
-            styles: const PosStyles(align: PosAlign.left),
-          ),
-          PosColumn(
-            text: calculatedItem.priceRange[calculateItem].getRange(),
-            width: 3,
-            styles: const PosStyles(align: PosAlign.center),
-          ),
-          PosColumn(
-            text:
-                '${calculatedItem.calculatedItem[calculateItem].getAmount()}x${calculatedItem.priceRange[calculateItem].getPrice()}=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
-            width: 7,
-            styles: const PosStyles(align: PosAlign.right),
-          ),
-        ];
-        calculatedItem.transaction == 'buy'
-            ? buyList.add(item)
-            : sellList.add(item);
+        final getPrice =
+            (calculatedItem.calculatedItem[calculateItem].priceRange ??
+                        calculatedItem.priceRange?[calculateItem])
+                    ?.getPrice() ??
+                '';
+        final getRange =
+            (calculatedItem.calculatedItem[calculateItem].priceRange ??
+                        calculatedItem.priceRange?[calculateItem])
+                    ?.getRange() ??
+                '';
+        if (calculatedItem.transaction == Transaction.buy) {
+          buyList.add([
+            PosColumn(
+              text: calculatedItem.currency,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.left),
+            ),
+            PosColumn(
+              text: getRange,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.center),
+            ),
+            PosColumn(
+              text:
+                  '${calculatedItem.calculatedItem[calculateItem].getAmount()} x $getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+              width: 6,
+              styles: const PosStyles(align: PosAlign.right),
+            ),
+          ]);
+        } else {
+          sellList.add([
+            PosColumn(
+              text: calculatedItem.currency,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.left),
+            ),
+            PosColumn(
+              text: getRange,
+              width: 3,
+              styles: const PosStyles(align: PosAlign.center),
+            ),
+            PosColumn(
+              text:
+                  '$getPrice=${calculatedItem.calculatedItem[calculateItem].getPrice()}',
+              width: 6,
+              styles: const PosStyles(align: PosAlign.right),
+            ),
+          ]);
+        }
       }
     }
     if (buyList.isNotEmpty) {
@@ -126,5 +173,6 @@ class PrintReceiptService {
       }
       pw.hr(ch: '-', linesAfter: 0);
     }
+    pw.hr(ch: '-', linesAfter: 0);
   }
 }

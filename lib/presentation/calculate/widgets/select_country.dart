@@ -1,64 +1,61 @@
-import 'package:currency_exchange/constants/app_strings.dart';
-import 'package:currency_exchange/presentation/calculate/calculate_controller.dart';
-import 'package:currency_exchange/presentation/widgets/select_country_dialog.dart';
+import 'package:thanarak_exchange/constants/app_strings.dart';
+import 'package:thanarak_exchange/models/receipt.dart';
+import 'package:thanarak_exchange/presentation/calculate/notifier/calculate_notifier.dart';
+import 'package:thanarak_exchange/presentation/widgets/select_country_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectCountry extends StatelessWidget {
   const SelectCountry({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CalculateController>(
-        builder: (consumerContext, calculateControllers, __) {
-      final selectedCountry = calculateControllers.selectedCountry;
-      return GestureDetector(
-        onTap: () {
-          showDialog<void>(
-              context: consumerContext,
-              builder: (BuildContext dialogContext) {
-                return ChangeNotifierProvider.value(
-                  value: consumerContext.read<CalculateController>(),
-                  child: Consumer<CalculateController>(
-                    builder: (_, calculateControllers, __) =>
-                        SelectCountryDialog(
-                      selectedCountry: calculateControllers.selectedCountry,
-                      setSelectedCountry: (country) =>
-                          calculateControllers.setSelectedCurrency(country),
-                    ),
-                  ),
-                );
-              });
-        },
+    return GestureDetector(
+      onTap: () {
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return const SelectCountryDialog();
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                !calculateControllers.isTransactionBuy
-                    ? currencyIcon('', AppStrings.thb)
-                    : currencyIcon(selectedCountry?.logo,
-                        selectedCountry?.countryName ?? ''),
-                const SizedBox(
-                  width: 32,
-                ),
-                const Icon(
+            checkCurrencyIcon(Transaction.sell),
+            const SizedBox(
+              width: 32,
+            ),
+            Consumer(
+              builder: (_, ref, __) {
+                final transaction = ref.watch(calculateNotifier).transaction;
+                return Icon(
                   Icons.arrow_forward,
                   size: 100,
-                ),
-                const SizedBox(
-                  width: 32,
-                ),
-                calculateControllers.isTransactionBuy
-                    ? currencyIcon('', AppStrings.thb)
-                    : currencyIcon(selectedCountry?.logo,
-                        selectedCountry?.countryName ?? ''),
-              ],
+                  color: transaction == Transaction.buy
+                      ? Colors.green
+                      : Colors.red,
+                );
+              },
             ),
+            const SizedBox(
+              width: 32,
+            ),
+            checkCurrencyIcon(Transaction.buy),
           ],
         ),
-      );
+      ),
+    );
+  }
+
+  Widget checkCurrencyIcon(Transaction transaction) {
+    return Consumer(builder: (_, ref, __) {
+      final calculateState = ref.watch(calculateNotifier);
+      return calculateState.transaction == transaction
+          ? currencyIcon('', AppStrings.thb)
+          : currencyIcon(calculateState.selectedCurrency?.logo,
+              calculateState.selectedCurrency?.countryName ?? '');
     });
   }
 
