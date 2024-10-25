@@ -18,7 +18,7 @@ class PriceRange with _$PriceRange {
   String getRange() {
     var minStr = CustomNumberFormat.commaFormat5(min ?? 0.0);
     var maxStr = CustomNumberFormat.commaFormat5(max ?? 0.0);
-    var hyphen = '-';
+    var hyphen = ' - ';
     if (min == null) {
       minStr = '0.0';
       if (max != null) {
@@ -29,7 +29,7 @@ class PriceRange with _$PriceRange {
     if (max == null) {
       maxStr = '~';
     }
-    return '$minStr $hyphen $maxStr';
+    return '$minStr$hyphen$maxStr';
   }
 
   String getPrice() {
