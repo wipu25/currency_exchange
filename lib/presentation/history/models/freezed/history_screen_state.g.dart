@@ -19,6 +19,8 @@ _$HistoryScreenStateImpl _$$HistoryScreenStateImplFromJson(
       json['isLoading'] as bool,
       json['isCancel'] as bool,
       json['isClientInfoComplete'] as bool,
+      (json['totalDateSellPrice'] as num).toDouble(),
+      (json['totalDateBuyPrice'] as num).toDouble(),
       json['dateTimeDisplay'] == null
           ? null
           : DateTime.parse(json['dateTimeDisplay'] as String),
@@ -37,6 +39,8 @@ Map<String, dynamic> _$$HistoryScreenStateImplToJson(
       'isLoading': instance.isLoading,
       'isCancel': instance.isCancel,
       'isClientInfoComplete': instance.isClientInfoComplete,
+      'totalDateSellPrice': instance.totalDateSellPrice,
+      'totalDateBuyPrice': instance.totalDateBuyPrice,
       'dateTimeDisplay': instance.dateTimeDisplay?.toIso8601String(),
       'currencyFilter': instance.currencyFilter,
       'paymentFilter': instance.paymentFilter,

@@ -3,6 +3,7 @@ import 'package:thanarak_exchange/presentation/history/history_notifier.dart';
 import 'package:thanarak_exchange/presentation/history/widgets/date_time_button.dart';
 import 'package:thanarak_exchange/presentation/history/widgets/filter.dart';
 import 'package:thanarak_exchange/presentation/history/widgets/history_table.dart';
+import 'package:thanarak_exchange/presentation/history/widgets/total_baht_price.dart';
 import 'package:thanarak_exchange/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,6 +36,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const DateTimeButton(),
+                const SizedBox(width: 20),
                 const Spacer(),
                 CustomButton(
                   padding: const EdgeInsets.all(4.0),
@@ -56,6 +58,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           const Expanded(
             child: HistoryTable(),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          const TotalBahtPrice(),
         ],
       ),
     );
