@@ -1,6 +1,5 @@
 # Store Front Currency Exchange
-The Currency Exchange application enables users to adjust currency rates for buying and selling, calculate prices accordingly, and print receipts using a thermal printer. Additionally, it provides a feature to display the daily transaction history.
-** landscape orientation only
+The Currency Exchange application enables users to adjust currency rates for buying and selling, calculate prices accordingly, and print receipts using a thermal printer. Additionally, it includes a feature to display transaction history. *** The application is designed exclusively for landscape orientation.
 
 ## Development
 The Currency Exchange application is built using the Flutter framework and follows the MVC (Model-View-Controller) design pattern. It utilizes Riverpod for dependency injection, ensuring efficient state management and scalability. The data is stored online using Firestore, providing secure and real-time database capabilities. Additionally, Firebase Crashlytics is implemented to log and monitor real-time user errors, enhancing the application's reliability and debugging process.
